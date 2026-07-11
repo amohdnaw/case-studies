@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>I audited my own trading system — and killed my best result</title>
+<meta name="description" content="A statistical case study: day-clustered inference, an always-long baseline, and an honestly reported null result.">
+<style>
+  :root{
+    --paper:oklch(95.6% .017 92); --paper-deep:oklch(93.2% .021 90);
+    --ink:oklch(25% .02 65); --ink-soft:oklch(38% .02 65); --ink-faint:oklch(52% .018 70);
+    --rubric:oklch(43% .125 29); --wash:oklch(43% .125 29 / .07);
+    --hair:oklch(25% .02 65 / .28); --hair-faint:oklch(25% .02 65 / .14);
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --mono:ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);padding:4rem 1.5rem 5rem;line-height:1.6}
+  .sheet{max-width:46rem;margin:0 auto}
+  a{color:var(--rubric)}
+  .kicker{font:600 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--rubric);
+    border-bottom:1px solid var(--hair);padding-bottom:.6rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .kicker a{text-decoration:none}
+  h1{font-size:2.1rem;line-height:1.18;font-weight:600;margin:1.4rem 0 .8rem;letter-spacing:-.01em}
+  .standfirst{font-size:1.05rem;line-height:1.55;color:var(--ink-soft);font-style:italic;max-width:38rem}
+  h2{font-size:1.25rem;font-weight:600;margin:2.6rem 0 .7rem}
+  h2 .no{font:600 .78rem/1 var(--mono);color:var(--rubric);margin-right:.6rem;vertical-align:.14em}
+  p{margin:.8rem 0;font-size:.98rem}
+  .verdict{margin:2rem 0;padding:1rem 1.2rem;background:var(--wash);border-left:3px solid var(--rubric);font-size:.98rem;line-height:1.55}
+  .verdict b{color:var(--rubric)}
+  table{width:100%;border-collapse:collapse;margin:1.6rem 0;font-size:.85rem}
+  th{font:600 .68rem/1.3 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);
+    text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--hair)}
+  td{padding:.5rem .6rem;border-bottom:1px solid var(--hair-faint);font-family:var(--mono);font-size:.8rem}
+  td:first-child{font-family:var(--serif);font-size:.88rem}
+  .hit{color:var(--rubric);font-weight:700}
+  figure{margin:2rem 0;border:1px solid var(--hair);background:var(--paper-deep);padding:1rem}
+  figure img{width:100%;display:block}
+  figcaption{font:.72rem/1.5 var(--mono);color:var(--ink-soft);margin-top:.7rem}
+  code{font-family:var(--mono);font-size:.82em;background:var(--paper-deep);padding:.05em .35em}
+  .margin-note{float:right;width:11rem;margin:.2rem -13rem 1rem 1.5rem;font-size:.72rem;line-height:1.5;
+    color:var(--ink-faint);border-top:1px solid oklch(43% .125 29 / .55);padding-top:.4rem}
+  @media (max-width:76rem){.margin-note{float:none;width:auto;margin:1rem 0}}
+  .repro{margin:2.4rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.85rem}
+  .repro .lab{font:600 .65rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:.5rem}
+  .footnav{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:1rem;
+    font:.75rem/1.5 var(--mono);color:var(--rubric)}
+  .footnav a{text-decoration:none}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="kicker">
+    <span><a href="index.html">Case studies</a> · 01 · Quantitative honesty</span>
+    <span>n = 1,578 · Apr–Jul 2026</span>
+  </div>
+
+  <h1>I audited my own trading system — and killed my best result.</h1>
+  <p class="standfirst">Ninety trading days of paper trades showed +0.48% per trade, and an ordinary
+  bootstrap called it significant. The number was real, reproducible — and not evidence.
+  This is a study in running the statistics that hurt.</p>
+
+  <div class="verdict"><b>Verdict — no demonstrable edge.</b> Net expectancy +0.479%/trade, but the
+  day-clustered 95% CI is [−0.18, +1.10] — it includes zero. The excess over an always-long baseline
+  on identical instances is +0.15%/trade, CI [−0.33, +0.72] — includes zero. Gross accuracy 53.7%
+  against a 53.9% up-move base rate. The confidence score that sizes positions correlates with
+  outcomes at r&nbsp;=&nbsp;−0.015.</div>
+
+  <h2><span class="no">§1</span>The system, and the number I wanted to believe</h2>
+  <p>For five months I ran an automated signal system — news, technicals and derivatives data,
+  synthesized by an LLM into BUY/SELL/HOLD calls on a basket of crypto and US equities — and
+  paper-traded every call. By July the log showed a positive net expectancy after a 0.30%
+  round-trip fee. Before letting a number like that anywhere near real money, I audited it the way
+  I'd want an analyst to audit anyone's favorable result: check the sample, check the inference,
+  check the baseline.</p>
+
+  <h2><span class="no">§2</span>Is the sample what it claims to be?</h2>
+  <p>No. The headline count mixed in 419 <code>[Demo]</code> dry-run trades and 415 HOLD
+  advisories — calls that aren't directional bets, yet were logged and graded as trades. The sample
+  that matters is <b>1,578 real BUY/SELL trades on 90 trading days</b>. Every number below is
+  computed on that sample, from the raw trade log.</p>
+
+  <h2><span class="no">§3</span>Is the inference honest about dependence?</h2>
+  <div class="margin-note">Same-day signals on correlated assets are one market bet, not thirty.
+  When BTC gaps down, ETH, SOL and the miners gap with it. The honest sample is 90 days,
+  not 1,578 trades.</div>
+  <p>Treat each trade as independent and the edge looks proven: an iid bootstrap puts the 95% CI at
+  [+0.15, +0.83] — comfortably above zero. But the system fires many signals per day on correlated
+  assets, so the honest resampling unit is the <i>trading day</i>. Resample whole days instead of
+  trades and the same point estimate loses its significance entirely.</p>
+
+  <table>
+    <tr><th>Estimate (same data, same point estimate)</th><th>Net exp %/trade</th><th>95% CI</th></tr>
+    <tr><td>iid bootstrap — resample 1,578 trades</td><td>+0.479</td><td>[+0.154, +0.825] — "significant"</td></tr>
+    <tr><td>Day-clustered bootstrap — resample 90 days</td><td>+0.479</td><td class="hit">[−0.181, +1.102] — includes 0</td></tr>
+    <tr><td>Excess vs always-BUY, day-clustered (§4)</td><td>+0.153</td><td class="hit">[−0.328, +0.723] — includes 0</td></tr>
+  </table>
+
+  <figure>
+    <img src="figures/fig1-bootstrap.svg" alt="Histogram comparison: iid bootstrap distribution sits entirely above zero; the day-clustered distribution is wider and crosses zero.">
+    <figcaption>Fig. 1 — Two bootstrap distributions of the same mean. The iid version (gray fill)
+    calls the edge significant; clustering by trading day (red outline) widens the interval past
+    zero. The clustered interval is the honest one.</figcaption>
+  </figure>
+
+  <h2><span class="no">§4</span>Does it beat doing nothing?</h2>
+  <p>A signal system doesn't compete with zero — it competes with doing nothing intelligent. Over a
+  broadly rising tape, the fair null is <i>always-BUY on the identical instances</i>: same entries,
+  same exits, same fee, signal ignored. That do-nothing baseline earned +0.325%/trade net. The
+  system's excess over it is +0.153%/trade — and its day-clustered CI includes zero. Gross accuracy,
+  53.7%, doesn't even clear the period's 53.9% up-move base rate: a coin that always calls "up"
+  would have matched the signal layer.</p>
+
+  <figure>
+    <img src="figures/fig2-cumulative.svg" alt="Cumulative net pnl lines: the system ends at +755% summed over trades, the always-BUY baseline at +513%, with the baseline far more volatile.">
+    <figcaption>Fig. 2 — Cumulative net pnl, system vs always-BUY on the same instances. The system
+    ends ahead — but the gap is statistically indistinguishable from luck, which is exactly what the
+    clustered CI says.</figcaption>
+  </figure>
+
+  <h2><span class="no">§5</span>The confidence score carries no information</h2>
+  <p>Every signal ships with a 1–10 confidence score that gates logging (below 6 is discarded) and
+  scales paper position sizes. Across 1,578 real trades, its correlation with realized pnl is
+  <b>r&nbsp;=&nbsp;−0.015</b>. A number that sizes positions and filters the record — statistically
+  indistinguishable from noise.</p>
+
+  <figure>
+    <img src="figures/fig3-confidence.svg" alt="Scatter of confidence score versus realized pnl with an essentially flat fit line, r = -0.015.">
+    <figcaption>Fig. 3 — Confidence score vs realized pnl per trade (jittered). The fit is flat.</figcaption>
+  </figure>
+
+  <h2><span class="no">§6</span>What the honest answer changed</h2>
+  <p>The point of an audit is what it changes. Because of this one:</p>
+  <p>— <b>Promotion to live capital became a mechanical gate</b>, not a feeling: day-clustered
+  CI&nbsp;&gt;&nbsp;0 <i>and</i> positive excess vs always-BUY, sustained over ≥60 trading days of
+  post-fix data.<br>
+  — <b>The honesty layer moved into the production pipeline</b>: the dashboard now prints the
+  day-clustered CI and the baseline excess next to every headline metric, so the flattering number
+  can never appear without its context again.<br>
+  — <b>The confidence score is being retired from position sizing</b> until it demonstrates
+  correlation with outcomes out of sample.</p>
+  <p>A positive result would have been more fun. A defensible process is worth more.</p>
+
+  <div class="repro">
+    <span class="lab">Reproduce this</span>
+    Complete trade log: <a href="https://github.com/amohdnaw/case-studies/blob/main/data/trades.csv">data/trades.csv</a>
+    (1 row per paper trade) · Full analysis:
+    <a href="https://github.com/amohdnaw/case-studies/blob/main/notebooks/trading-honesty-audit.ipynb">notebooks/trading-honesty-audit.ipynb</a>
+    (fixed seed — every interval above reproduces exactly). Paper trading only; no real money was
+    harmed in the making of this null result.
+  </div>
+
+  <div class="footnav">
+    <a href="index.html">← All case studies</a>
+    <span>Next: Capability rebase at 15,000-characteristic scale (forthcoming)</span>
+  </div>
+</div>
+</body>
+</html>

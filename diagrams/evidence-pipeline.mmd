@@ -1,0 +1,31 @@
+graph LR
+  subgraph live["Live system (private box)"]
+    BT["trading-signals<br/>backtest.json"]
+  end
+  subgraph repo["case-studies repo (public)"]
+    EXP["scripts/export_trades.py"]
+    CSV["data/trades.csv"]
+    NB["notebooks/<br/>trading-honesty-audit.ipynb"]
+    FIG["docs/figures/*.svg"]
+    RES["data/results.json"]
+    PAGE["docs/trading-honesty-audit.html"]
+    IDX["docs/index.html"]
+    SPECS["specs/ 02 SPC + 03 ICOS<br/>(synthetic-data recipes)"]
+    FUT["future docs/ pages"]
+  end
+  subgraph pub["Public surface"]
+    GHP["GitHub Pages<br/>amohdnaw.github.io/case-studies"]
+    CV["CV links + portfolio site"]
+  end
+  BT -->|"drops headline text,<br/>derives is_demo"| EXP
+  EXP --> CSV
+  CSV -->|"fixed seed: day-clustered bootstrap,<br/>always-BUY baseline, confidence corr"| NB
+  NB --> FIG
+  NB --> RES
+  FIG --> PAGE
+  RES -->|"numbers cited on page"| PAGE
+  PAGE --> IDX
+  SPECS -.->|"executed later<br/>by cheaper models"| FUT
+  FUT -.-> IDX
+  IDX --> GHP
+  GHP --> CV

@@ -1,0 +1,44 @@
+# Spec — Portfolio site goes public + case-studies section
+
+Status: DEFERRED (decision 2026-07-12: CV links point at the case-studies GitHub Pages until
+this executes). Parent contract: `portfolio-evidence-contract.md`.
+
+## Goal
+
+The personal portfolio (`~/apps/portfolio/index.html`, currently localhost:1995 via manual
+`python http.server`) becomes publicly reachable and gains a case-studies section linking to
+the three studies.
+
+## Open decision for Ammar at execution time (one AskUserQuestion)
+
+Hosting: **GitHub Pages** (static, zero new services — recommended) vs **CF tunnel
+subdomain** on amohdnaw.xyz (consistent domain, but adds a permanent service + systemd unit
+to a fleet the 2026-07-12 strategic review said to shrink).
+
+## Pre-publish scrub (mandatory, in order)
+
+1. Remove/relocate from the served tree: `index_backup_*.html` (5+ stale copies),
+   `cv-*.pdf` (CVs contain phone/address — decide per file), `screenshots/` (review contents).
+2. Grep the remaining HTML for phone numbers, home address, employer name — the portfolio may
+   name the employer only in CV-standard "experience" terms, never linked to the case-study
+   content (studies keep the OSAT descriptor).
+3. If Git history will be published (GitHub Pages route), init a FRESH repo for the portfolio
+   — do not publish the existing dir's history without the same scrub applied historically.
+
+## Case-studies section
+
+- Design: follow the portfolio's own `design-system.md` (Nothing style) — NOT the case-studies
+  Paper Workbench. The section is a portfolio component linking out; the studies keep their
+  own register.
+- Content: three entries mirroring `docs/index.html` titles + one-line summaries, linking to
+  the live case-studies URLs. Mark 02/03 forthcoming until they ship.
+- New composition on an existing page → per house rules this needs a quick mock (single page,
+  2–3 labeled variants) before building. Small scope: section only, not a redesign.
+
+## Acceptance checks
+
+1. Public URL loads the portfolio; case-studies section visible with working links.
+2. No backup files, CV PDFs, or personal identifiers reachable under the public root.
+3. CV updated to point at the portfolio URL (this is the moment the "CV re-pointing"
+   exclusion from the parent contract lifts).
+4. Browser-verified: desktop + mobile, screenshots, before "done".

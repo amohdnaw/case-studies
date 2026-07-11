@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case studies — Ammar Nawawi</title>
+<meta name="description" content="Case studies in applied statistics: honest inference on trading data, SPC capability at production scale, yield analytics.">
+<style>
+  :root{
+    --paper:oklch(95.6% .017 92); --paper-deep:oklch(93.2% .021 90);
+    --ink:oklch(25% .02 65); --ink-soft:oklch(38% .02 65); --ink-faint:oklch(52% .018 70);
+    --rubric:oklch(43% .125 29); --wash:oklch(43% .125 29 / .07);
+    --hair:oklch(25% .02 65 / .28); --hair-faint:oklch(25% .02 65 / .14);
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --mono:ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);padding:4rem 1.5rem 5rem;line-height:1.6}
+  .sheet{max-width:46rem;margin:0 auto}
+  a{color:var(--rubric)}
+  .kicker{font:600 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--rubric);
+    border-bottom:1px solid var(--hair);padding-bottom:.6rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  h1{font-size:2.1rem;line-height:1.18;font-weight:600;margin:1.4rem 0 .8rem;letter-spacing:-.01em}
+  .standfirst{font-size:1.05rem;line-height:1.55;color:var(--ink-soft);font-style:italic;max-width:38rem;margin-bottom:2.4rem}
+  .study{border-top:1px solid var(--hair);padding:1.4rem 0 1.6rem}
+  .study .meta{font:600 .68rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--rubric);
+    display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .study .meta .soon{color:var(--ink-faint)}
+  .study h2{font-size:1.35rem;font-weight:600;line-height:1.25;margin:.7rem 0 .4rem}
+  .study h2 a{color:inherit;text-decoration:none}
+  .study h2 a:hover{color:var(--rubric)}
+  .study p{font-size:.95rem;color:var(--ink-soft);max-width:40rem}
+  .study .open{font:600 .75rem/1 var(--mono);letter-spacing:.06em;color:var(--rubric);text-decoration:none;
+    display:inline-block;margin-top:.7rem}
+  .footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--hair);
+    font:.75rem/1.7 var(--mono);color:var(--ink-faint);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .footer a{text-decoration:none}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="kicker"><span>Ammar Nawawi · Case studies</span><span>Applied statistics, from real systems</span></div>
+  <h1>Evidence, not claims.</h1>
+  <p class="standfirst">Three studies from systems I built and run — a trading log audited to a
+  null result, statistical process control realigned at production scale, and yield analytics.
+  Each one page, each reproducible from the data it ships with.</p>
+
+  <div class="study">
+    <div class="meta"><span>01 · Quantitative honesty</span><span>n = 1,578 trades · Apr–Jul 2026</span></div>
+    <h2><a href="trading-honesty-audit.html">I audited my own trading system — and killed my best result</a></h2>
+    <p>A paper-trading log showed +0.48%/trade and an iid bootstrap called it significant.
+    Day-clustered inference, an always-long baseline on identical instances, and a confidence score
+    at r = −0.015 said otherwise. A null result, honestly reported — with the runnable notebook.</p>
+    <a class="open" href="trading-honesty-audit.html">Read the study →</a>
+  </div>
+
+  <div class="study">
+    <div class="meta"><span>02 · Process capability</span><span class="soon">Forthcoming</span></div>
+    <h2>Rebasing capability statistics at 15,000-characteristic scale</h2>
+    <p>Realigning an SPC platform to the AIAG &amp; VDA 2026 convention (within-σ vs overall-σ
+    indices) in a semiconductor assembly &amp; test production environment — where flipping the
+    classification gate doubled the fail list, and why that was the correct answer.</p>
+  </div>
+
+  <div class="study">
+    <div class="meta"><span>03 · Yield analytics</span><span class="soon">Forthcoming</span></div>
+    <h2>Finding the yield signal in inspection data</h2>
+    <p>Turning automated optical inspection outcomes into a yield dashboard that ranks loss drivers
+    by recoverable units — Pareto discipline over intuition in a production test environment.</p>
+  </div>
+
+  <div class="footer">
+    <span>Built and analyzed by <a href="mailto:ammar.nawawi5@gmail.com">Ammar Nawawi</a></span>
+    <span><a href="https://github.com/amohdnaw/case-studies">Source, data &amp; notebooks on GitHub →</a></span>
+  </div>
+</div>
+</body>
+</html>

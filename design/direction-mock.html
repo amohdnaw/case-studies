@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case-study page — Direction A / B / C</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#555; }
+  .variant-label { font:700 13px/1 ui-monospace,Menlo,monospace; letter-spacing:.08em; text-transform:uppercase;
+    background:#111; color:#fff; padding:10px 16px; position:sticky; top:0; z-index:9; }
+  .variant-label span { color:#8f8; margin-left:12px; font-weight:400; text-transform:none; letter-spacing:0; }
+
+  /* ============ DIRECTION A — PAPER WORKBENCH ============ */
+  .A { background:oklch(95.6% .017 92); color:oklch(25% .02 65);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif; padding:4rem 1.5rem 5rem; }
+  .A .sheet { max-width:46rem; margin:0 auto; }
+  .A .kicker { font:600 .72rem/1 ui-monospace,Menlo,monospace; letter-spacing:.14em; text-transform:uppercase;
+    color:oklch(43% .125 29); border-bottom:1px solid oklch(25% .02 65/.28); padding-bottom:.6rem;
+    display:flex; justify-content:space-between; }
+  .A h1 { font-size:2.1rem; line-height:1.18; font-weight:600; margin:1.4rem 0 .8rem; letter-spacing:-.01em; }
+  .A .standfirst { font-size:1.05rem; line-height:1.55; color:oklch(38% .02 65); font-style:italic; max-width:38rem; }
+  .A .verdict { margin:2rem 0; padding:1rem 1.2rem; background:oklch(43% .125 29/.07);
+    border-left:3px solid oklch(43% .125 29); font-size:.98rem; line-height:1.55; }
+  .A .verdict b { color:oklch(43% .125 29); }
+  .A table { width:100%; border-collapse:collapse; margin:1.6rem 0; font-size:.85rem; }
+  .A th { font:600 .68rem/1.3 ui-monospace,Menlo,monospace; text-transform:uppercase; letter-spacing:.08em;
+    color:oklch(52% .018 70); text-align:left; padding:.45rem .6rem; border-bottom:1px solid oklch(25% .02 65/.28); }
+  .A td { padding:.5rem .6rem; border-bottom:1px solid oklch(25% .02 65/.14); font-family:ui-monospace,Menlo,monospace; font-size:.8rem; }
+  .A td:first-child { font-family:inherit; font-size:.88rem; }
+  .A .hit { color:oklch(43% .125 29); font-weight:700; }
+  .A figure { margin:2rem 0; border:1px solid oklch(25% .02 65/.28); background:oklch(93.2% .021 90); padding:1rem; }
+  .A .figbox { height:180px; display:flex; align-items:center; justify-content:center;
+    color:oklch(52% .018 70); font:italic .85rem/1 Georgia,serif;
+    background:repeating-linear-gradient(0deg, transparent, transparent 23px, oklch(25% .02 65/.08) 24px); }
+  .A figcaption { font:.72rem/1.5 ui-monospace,Menlo,monospace; color:oklch(38% .02 65); margin-top:.7rem; }
+  .A .footnav { margin-top:3rem; padding-top:1rem; border-top:1px solid oklch(25% .02 65/.28);
+    display:flex; justify-content:space-between; font:.75rem/1 ui-monospace,Menlo,monospace; color:oklch(43% .125 29); }
+  .A .margin-note { float:right; width:11rem; margin:-0.2rem -13rem 1rem 1.5rem; font-size:.72rem; line-height:1.5;
+    color:oklch(52% .018 70); border-top:1px solid oklch(43% .125 29/.55); padding-top:.4rem; }
+  @media (max-width:76rem){ .A .margin-note{ float:none; width:auto; margin:1rem 0; } }
+
+  /* ============ DIRECTION B — SWISS INDUSTRIAL ============ */
+  .B { background:#f2f1ed; color:#141412; font-family:"Helvetica Neue",Helvetica,Arial,sans-serif; padding:0 0 4rem; }
+  .B .grid { max-width:1160px; margin:0 auto; padding:0 clamp(16px,3vw,40px); }
+  .B .masthead { display:flex; justify-content:space-between; align-items:baseline;
+    border-bottom:3px solid #141412; padding:1.2rem 0 .7rem; }
+  .B .masthead .lot { font:700 11px/1 "IBM Plex Mono",ui-monospace,Menlo,monospace; letter-spacing:.1em; }
+  .B .masthead .lot em { color:#d81e05; font-style:normal; }
+  .B h1 { font-size:clamp(2rem,4.6vw,3.4rem); line-height:1.02; font-weight:700; letter-spacing:-.025em;
+    text-transform:uppercase; margin:2.2rem 0 1rem; max-width:18ch; }
+  .B .standfirst { font-size:1rem; line-height:1.5; max-width:52ch; color:#141412; }
+  .B .cols { display:grid; grid-template-columns:1fr 1fr; gap:2px; background:rgba(20,20,18,.28); margin:2.2rem 0;
+    border:1px solid rgba(20,20,18,.28); }
+  .B .cell { background:#f2f1ed; padding:1.1rem 1.2rem; }
+  .B .cell .lab { font:700 10px/1 "IBM Plex Mono",monospace; letter-spacing:.12em; text-transform:uppercase; color:rgba(20,20,18,.55); }
+  .B .cell .val { font:700 1.9rem/1.1 "Helvetica Neue",Helvetica,sans-serif; letter-spacing:-.02em; margin-top:.5rem; }
+  .B .cell .val.red { color:#d81e05; }
+  .B .cell .note { font-size:.75rem; color:rgba(20,20,18,.6); margin-top:.4rem; }
+  .B table { width:100%; border-collapse:collapse; font:12.5px/1.5 "IBM Plex Mono",ui-monospace,monospace; margin:1.5rem 0; }
+  .B th { text-align:left; font-weight:700; font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+    border-top:3px solid #141412; border-bottom:1px solid rgba(20,20,18,.28); padding:.5rem .6rem; }
+  .B td { padding:.55rem .6rem; border-bottom:1px solid rgba(20,20,18,.12); }
+  .B .hit { color:#d81e05; font-weight:700; }
+  .B figure { border:1px solid rgba(20,20,18,.28); margin:2rem 0; }
+  .B .figbox { height:200px; display:flex; align-items:center; justify-content:center; color:rgba(20,20,18,.45);
+    font:11px/1 "IBM Plex Mono",monospace; text-transform:uppercase; letter-spacing:.1em;
+    background:repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(20,20,18,.07) 40px); }
+  .B figcaption { font:11px/1.5 "IBM Plex Mono",monospace; padding:.6rem; border-top:1px solid rgba(20,20,18,.28);
+    display:flex; justify-content:space-between; }
+  .B figcaption em { font-style:normal; color:#d81e05; }
+  .B .footnav { border-top:3px solid #141412; padding-top:.8rem; display:flex; justify-content:space-between;
+    font:700 11px/1 "IBM Plex Mono",monospace; letter-spacing:.08em; text-transform:uppercase; }
+  .B .footnav a { color:#d81e05; text-decoration:none; }
+  @media (max-width:640px){ .B .cols { grid-template-columns:1fr; } }
+
+  /* ============ DIRECTION C — ARCHIVAL / EDITORIAL DARK ============ */
+  .C { background:#0c0a09; color:#f2e6d8; font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif; padding:0 0 5rem; position:relative; }
+  .C .frame { max-width:960px; margin:0 auto; padding:0 clamp(20px,5vw,96px); }
+  .C .plate { border-bottom:1px solid rgba(255,255,255,.1); padding:2.5rem 0 1rem; display:flex; justify-content:space-between; align-items:baseline; }
+  .C .plate .no { font:1 .8rem "Didot","Bodoni 72","Playfair Display",Georgia,serif; font-size:3rem; color:#ff6b2c; line-height:1; }
+  .C .plate .cat { font:600 .68rem/1.6 "Helvetica Neue",Arial,sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#a08a76; text-align:right; }
+  .C h1 { font-family:"Didot","Bodoni 72","Playfair Display",Georgia,serif; font-weight:400;
+    font-size:clamp(2.2rem,5vw,3.6rem); line-height:1.08; margin:2.4rem 0 1.2rem; max-width:22ch; }
+  .C h1 em { font-style:italic; color:#ff6b2c; }
+  .C .standfirst { font-size:1.02rem; line-height:1.65; color:#a08a76; max-width:44rem; }
+  .C .verdict { margin:2.4rem 0; padding:1.4rem 0; border-top:1px solid #ff6b2c; border-bottom:1px solid rgba(255,255,255,.1);
+    font-size:1.15rem; line-height:1.6; }
+  .C .verdict .lab { font:600 .62rem/1 "Helvetica Neue",Arial,sans-serif; letter-spacing:.24em; text-transform:uppercase;
+    color:#ff6b2c; display:block; margin-bottom:.8rem; }
+  .C table { width:100%; border-collapse:collapse; margin:1.8rem 0; font:.78rem/1.6 "Courier New",Courier,monospace; }
+  .C th { text-align:left; font:600 .6rem/1.4 "Helvetica Neue",Arial,sans-serif; letter-spacing:.18em; text-transform:uppercase;
+    color:#a08a76; padding:.5rem .6rem; border-bottom:1px solid rgba(255,255,255,.1); }
+  .C td { padding:.55rem .6rem; border-bottom:1px solid rgba(255,255,255,.06); color:#f2e6d8; }
+  .C td:first-child { font-family:"Iowan Old Style",Georgia,serif; font-size:.9rem; }
+  .C .hit { color:#ff6b2c; font-weight:700; }
+  .C figure { margin:2.2rem 0; border:1px solid rgba(255,255,255,.1); }
+  .C .figbox { height:200px; display:flex; align-items:center; justify-content:center; color:#a08a76;
+    font:italic .85rem/1 Georgia,serif; background:radial-gradient(ellipse at 50% 120%, rgba(255,107,44,.08), transparent 60%); }
+  .C figcaption { font:.68rem/1.6 "Helvetica Neue",Arial,sans-serif; letter-spacing:.08em; text-transform:uppercase;
+    color:#a08a76; padding:.7rem .8rem; border-top:1px solid rgba(255,255,255,.1); }
+  .C .footnav { margin-top:3rem; padding-top:1.2rem; border-top:1px solid rgba(255,255,255,.1);
+    display:flex; justify-content:space-between; font:600 .65rem/1 "Helvetica Neue",Arial,sans-serif;
+    letter-spacing:.2em; text-transform:uppercase; color:#ff6b2c; }
+</style>
+</head>
+<body>
+
+<div class="variant-label">Direction A — Paper Workbench <span>lab-notebook register: serif measure, rubric red, margin notes, ruled figures</span></div>
+<section class="A">
+  <div class="sheet">
+    <div class="kicker"><span>Case Study 01 · Quantitative Honesty</span><span>n = 1,976 · Feb–Jul 2026</span></div>
+    <h1>I audited my own trading system — and killed my best result.</h1>
+    <p class="standfirst">Five months of paper trades showed +0.45% per trade. The number was real, reproducible, and meaningless. This is a study in running the statistics that hurt.</p>
+    <div class="margin-note">Same-day signals on correlated assets are one bet, not thirty. The honest sample is 89 days, not 1,555 trades.</div>
+    <div class="verdict"><b>Verdict — no demonstrable edge.</b> Real-trade net expectancy +0.447%/trade, but the day-clustered 95% CI is [−0.25, +1.08] — it includes zero. Gross accuracy 53.2% against a 55.2% up-move base rate.</div>
+    <table>
+      <tr><th>Sample</th><th>n (days)</th><th>Net exp %/trade</th><th>Day-clustered 95% CI</th></tr>
+      <tr><td>Headline (incl. demo)</td><td>1,976 (149)</td><td>+0.284</td><td>[−0.27, +0.79]</td></tr>
+      <tr><td>Real trades only</td><td>1,555 (89)</td><td>+0.447</td><td class="hit">[−0.25, +1.08] — includes 0</td></tr>
+      <tr><td>Excess vs always-BUY</td><td>1,555 (89)</td><td>+0.159</td><td class="hit">[−0.325, +0.726] — includes 0</td></tr>
+    </table>
+    <figure>
+      <div class="figbox">fig. 1 — iid bootstrap vs day-clustered bootstrap, expectancy distributions</div>
+      <figcaption>Fig. 1 — The iid bootstrap calls the edge "significant" ([+0.10, +0.79]); clustering same-day trades widens it to include zero. The clustered interval is the honest one.</figcaption>
+    </figure>
+    <div class="footnav"><span>← All case studies</span><span>Next: Capability rebase at 15,000-characteristic scale →</span></div>
+  </div>
+</section>
+
+<div class="variant-label">Direction B — Swiss Industrial <span>spec-sheet register: grotesk caps, red accents, stat cells, hard grid</span></div>
+<section class="B">
+  <div class="grid">
+    <div class="masthead"><span class="lot">CASE STUDY <em>01</em> / 03</span><span class="lot">QUANTITATIVE HONESTY · FEB–JUL 2026</span></div>
+    <h1>I audited my own trading system and killed my best result</h1>
+    <p class="standfirst">Five months of paper trades showed +0.45% per trade. The number was real, reproducible, and meaningless — a study in running the statistics that hurt.</p>
+    <div class="cols">
+      <div class="cell"><div class="lab">Reported expectancy</div><div class="val">+0.447%</div><div class="note">per trade, 1,555 real trades</div></div>
+      <div class="cell"><div class="lab">Day-clustered 95% CI</div><div class="val red">includes 0</div><div class="note">[−0.25, +1.08] · effective n = 89 days</div></div>
+      <div class="cell"><div class="lab">Gross accuracy</div><div class="val">53.2%</div><div class="note">vs 55.2% up-move base rate</div></div>
+      <div class="cell"><div class="lab">Verdict</div><div class="val red">NO EDGE</div><div class="note">excess vs always-BUY: +0.16, CI [−0.33, +0.73]</div></div>
+    </div>
+    <table>
+      <tr><th>Sample</th><th>n (days)</th><th>Net exp %/trade</th><th>Day-clustered 95% CI</th></tr>
+      <tr><td>Headline (incl. demo)</td><td>1,976 (149)</td><td>+0.284</td><td>[−0.27, +0.79]</td></tr>
+      <tr><td>Real trades only</td><td>1,555 (89)</td><td>+0.447</td><td class="hit">[−0.25, +1.08] — includes 0</td></tr>
+      <tr><td>Excess vs always-BUY</td><td>1,555 (89)</td><td>+0.159</td><td class="hit">[−0.325, +0.726] — includes 0</td></tr>
+    </table>
+    <figure>
+      <div class="figbox">FIG.01 / BOOTSTRAP COMPARISON — IID VS DAY-CLUSTERED</div>
+      <figcaption><span>FIG.01 — Clustering same-day trades widens the CI past zero.</span><em>THE CLUSTERED INTERVAL IS THE HONEST ONE</em></figcaption>
+    </figure>
+    <div class="footnav"><a href="#">← INDEX</a><a href="#">NEXT: CAPABILITY REBASE, 15,000 CHARACTERISTICS →</a></div>
+  </div>
+</section>
+
+<div class="variant-label">Direction C — Archival Editorial <span>dark museum register: didone display, burnt-orange plate numbers, exhibit captions</span></div>
+<section class="C">
+  <div class="frame">
+    <div class="plate"><span class="no">01</span><span class="cat">Case Studies · Quantitative Honesty<br>Feb — Jul 2026</span></div>
+    <h1>I audited my own trading system — and <em>killed my best result.</em></h1>
+    <p class="standfirst">Five months of paper trades showed +0.45% per trade. The number was real, reproducible, and meaningless. This is a study in running the statistics that hurt.</p>
+    <div class="verdict"><span class="lab">Verdict</span>No demonstrable edge. Real-trade net expectancy +0.447%/trade — but the day-clustered 95% confidence interval is [−0.25, +1.08], and it includes zero. Gross accuracy 53.2% against a 55.2% up-move base rate.</div>
+    <table>
+      <tr><th>Sample</th><th>n (days)</th><th>Net exp %/trade</th><th>Day-clustered 95% CI</th></tr>
+      <tr><td>Headline (incl. demo)</td><td>1,976 (149)</td><td>+0.284</td><td>[−0.27, +0.79]</td></tr>
+      <tr><td>Real trades only</td><td>1,555 (89)</td><td>+0.447</td><td class="hit">[−0.25, +1.08] — includes 0</td></tr>
+      <tr><td>Excess vs always-BUY</td><td>1,555 (89)</td><td>+0.159</td><td class="hit">[−0.325, +0.726] — includes 0</td></tr>
+    </table>
+    <figure>
+      <div class="figbox">plate i — bootstrap distributions, iid vs day-clustered</div>
+      <figcaption>Plate I — The iid bootstrap calls the edge significant; clustering same-day trades widens the interval past zero. The clustered interval is the honest one.</figcaption>
+    </figure>
+    <div class="footnav"><span>← All case studies</span><span>Next — Capability Rebase</span></div>
+  </div>
+</section>
+
+</body>
+</html>

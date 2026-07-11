@@ -1,0 +1,29 @@
+{
+  "window": [
+    "2026-04-05",
+    "2026-07-08"
+  ],
+  "n_evaluated": 2412,
+  "n_real": 1578,
+  "n_demo": 419,
+  "n_days_real": 90,
+  "acc_gross_real": 53.7,
+  "base_rate_up": 53.9,
+  "net_exp_real": 0.479,
+  "ci_iid": [
+    0.154,
+    0.825
+  ],
+  "ci_day": [
+    -0.181,
+    1.102
+  ],
+  "always_buy_net": 0.325,
+  "excess_mean": 0.153,
+  "ci_excess": [
+    -0.328,
+    0.723
+  ],
+  "conf_corr": -0.015,
+  "fee_rt_pct": 0.3
+}
