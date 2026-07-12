@@ -42,3 +42,14 @@ to a fleet the 2026-07-12 strategic review said to shrink).
 3. CV updated to point at the portfolio URL (this is the moment the "CV re-pointing"
    exclusion from the parent contract lifts).
 4. Browser-verified: desktop + mobile, screenshots, before "done".
+
+## Addendum 2026-07-12 (post-overhaul)
+
+- The overhauled portfolio's Live Data section + terminal use BOTH relative `/api/spc-demo`,
+  `/api/msa-demo` routes (need the fronting proxy to route them to the SPC/MSA apps) AND an
+  absolute `https://spc.amohdnaw.xyz/api/demo` fetch (needs CORS allow for the portfolio
+  origin). Hosting choice must satisfy both, or the section falls back to sample data.
+- Portfolio is now a git repo (~/apps/portfolio, main) — publishing = push this repo, no scrub
+  of backups needed if only index.html + assets are deployed (backups/CVs excluded via the
+  deploy path, or scrub per §Pre-publish above).
+- CV prints portfolio.amohdnaw.xyz — currently dead. This spec is what makes it live.
