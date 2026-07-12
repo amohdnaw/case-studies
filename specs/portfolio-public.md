@@ -53,3 +53,19 @@ to a fleet the 2026-07-12 strategic review said to shrink).
   of backups needed if only index.html + assets are deployed (backups/CVs excluded via the
   deploy path, or scrub per §Pre-publish above).
 - CV prints portfolio.amohdnaw.xyz — currently dead. This spec is what makes it live.
+
+## EXECUTED 2026-07-12
+
+Discovery: the chain already existed — CF DNS (proxied) → pvek8 tunnel → Kubuntu nginx
+`static-dashboards` site (:1995), including `/api/spc-demo` + `/api/msa-demo` proxy locations.
+The "domain dead" note was stale.
+
+Done: nginx root re-pointed working-dir → `~/apps/portfolio/public/` (index.html + CV only;
+config backed up as static-dashboards.bak-20260712); exposure of .git/backups/specs verified
+CLOSED (404s). CORS for the portfolio origin added to spc-api + msa-api (.env CORS_ORIGINS,
+both restarted) — Bench fetches are absolute now, so the page works from ANY host. GitHub
+Pages mirror also exists (amohdnaw/portfolio-site, 3 files, custom domain claimed) — redundant
+standby; DNS currently rides the tunnel path.
+
+**Deploy flow from now on: edit ~/apps/portfolio/index.html → commit → `cp index.html public/`.**
+CV re-pointing exclusion lifted: CV already prints portfolio.amohdnaw.xyz, which is now live.
