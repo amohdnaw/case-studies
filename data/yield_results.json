@@ -1,0 +1,147 @@
+{
+  "synthetic": true,
+  "seed": 20260712,
+  "window": [
+    "2026-04-06",
+    "2026-06-26"
+  ],
+  "n_days": 60,
+  "n_lots": 2400,
+  "units_per_lot": 300,
+  "n_units_inspected": 720000,
+  "n_machines": 10,
+  "n_flagged": 133444,
+  "n_scrapped": 54358,
+  "flag_rate_pct": 18.5,
+  "overall_yield_pct": 92.45,
+  "n_categories": 9,
+  "top_by_count": {
+    "category": "cosmetic mark",
+    "rank_by_count": 1,
+    "rank_by_recoverable": 7,
+    "flags": 35872,
+    "recoverable_units": 3543,
+    "scrap_rate_pct": 9.9,
+    "yield_pts_recoverable": 0.49
+  },
+  "top_by_recoverable": {
+    "category": "placement offset",
+    "rank_by_count": 2,
+    "rank_by_recoverable": 1,
+    "flags": 21379,
+    "recoverable_units": 15363,
+    "scrap_rate_pct": 71.9,
+    "yield_pts_recoverable": 2.13
+  },
+  "biggest_climb": {
+    "category": "die crack",
+    "rank_by_count": 7,
+    "rank_by_recoverable": 3,
+    "flags": 6918,
+    "recoverable_units": 6571,
+    "scrap_rate_pct": 95.0,
+    "yield_pts_recoverable": 0.91
+  },
+  "biggest_drop": {
+    "category": "cosmetic mark",
+    "rank_by_count": 1,
+    "rank_by_recoverable": 7,
+    "flags": 35872,
+    "recoverable_units": 3543,
+    "scrap_rate_pct": 9.9,
+    "yield_pts_recoverable": 0.49
+  },
+  "lever_top_machine_share_pct": 10.9,
+  "localized_category": "lead lift",
+  "localized_flags": 5281,
+  "localized_top2_share_pct": 92.2,
+  "localized_top2_machines": [
+    "M03",
+    "M07"
+  ],
+  "total_recoverable_units": 54358,
+  "total_recoverable_yield_pts": 7.55,
+  "drivers": [
+    {
+      "category": "placement offset",
+      "rank_by_count": 2,
+      "rank_by_recoverable": 1,
+      "flags": 21379,
+      "recoverable_units": 15363,
+      "scrap_rate_pct": 71.9,
+      "yield_pts_recoverable": 2.13
+    },
+    {
+      "category": "solder void",
+      "rank_by_count": 3,
+      "rank_by_recoverable": 2,
+      "flags": 17701,
+      "recoverable_units": 10278,
+      "scrap_rate_pct": 58.1,
+      "yield_pts_recoverable": 1.43
+    },
+    {
+      "category": "die crack",
+      "rank_by_count": 7,
+      "rank_by_recoverable": 3,
+      "flags": 6918,
+      "recoverable_units": 6571,
+      "scrap_rate_pct": 95.0,
+      "yield_pts_recoverable": 0.91
+    },
+    {
+      "category": "wire bond fault",
+      "rank_by_count": 6,
+      "rank_by_recoverable": 4,
+      "flags": 10190,
+      "recoverable_units": 5622,
+      "scrap_rate_pct": 55.2,
+      "yield_pts_recoverable": 0.78
+    },
+    {
+      "category": "lead lift",
+      "rank_by_count": 8,
+      "rank_by_recoverable": 5,
+      "flags": 5281,
+      "recoverable_units": 4657,
+      "scrap_rate_pct": 88.2,
+      "yield_pts_recoverable": 0.65
+    },
+    {
+      "category": "delamination",
+      "rank_by_count": 9,
+      "rank_by_recoverable": 6,
+      "flags": 4943,
+      "recoverable_units": 4109,
+      "scrap_rate_pct": 83.1,
+      "yield_pts_recoverable": 0.57
+    },
+    {
+      "category": "cosmetic mark",
+      "rank_by_count": 1,
+      "rank_by_recoverable": 7,
+      "flags": 35872,
+      "recoverable_units": 3543,
+      "scrap_rate_pct": 9.9,
+      "yield_pts_recoverable": 0.49
+    },
+    {
+      "category": "surface contamination",
+      "rank_by_count": 4,
+      "rank_by_recoverable": 8,
+      "flags": 17366,
+      "recoverable_units": 2539,
+      "scrap_rate_pct": 14.6,
+      "yield_pts_recoverable": 0.35
+    },
+    {
+      "category": "mold flash",
+      "rank_by_count": 5,
+      "rank_by_recoverable": 9,
+      "flags": 13794,
+      "recoverable_units": 1676,
+      "scrap_rate_pct": 12.2,
+      "yield_pts_recoverable": 0.23
+    }
+  ]
+}

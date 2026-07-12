@@ -8,8 +8,8 @@ repo.
 | # | Study | Status |
 |---|-------|--------|
 | 01 | [I audited my own trading system — and killed my best result](https://amohdnaw.github.io/case-studies/trading-honesty-audit.html) · [notebook](notebooks/trading-honesty-audit.ipynb) | Live |
-| 02 | Rebasing capability statistics at 15,000-characteristic scale ([spec](specs/spc-rebase-study.md)) | Forthcoming |
-| 03 | Finding the yield signal in inspection data ([spec](specs/icos-yield-study.md)) | Forthcoming |
+| 02 | [Rebasing capability statistics at 15,000-characteristic scale](https://amohdnaw.github.io/case-studies/spc-capability-rebase.html) · [notebook](notebooks/spc-rebase.ipynb) | Live |
+| 03 | [Finding the yield signal in inspection data](https://amohdnaw.github.io/case-studies/icos-yield-signal.html) · [notebook](notebooks/icos-yield.ipynb) | Live |
 
 ## Reproduce study 01
 

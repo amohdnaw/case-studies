@@ -1,0 +1,32 @@
+{
+  "production_scale": 15000,
+  "n_char": 2000,
+  "n_subgroups": 25,
+  "n_per_subgroup": 5,
+  "n_measurements": 250000,
+  "gate": 1.33,
+  "pop_mix": {
+    "capable": 1100,
+    "drift": 600,
+    "incapable": 300
+  },
+  "within_fail": 315,
+  "within_fail_pct": 15.8,
+  "overall_fail": 673,
+  "overall_fail_pct": 33.7,
+  "ratio": 2.14,
+  "n_flipped": 361,
+  "flipped_pct_of_passers": 21.4,
+  "flip_drift_share_pct": 100.0,
+  "drift_cwk_median": 1.9,
+  "drift_ppk_median": 1.2,
+  "drift_detected_unstable_pct": 90.0,
+  "prod_within_fail": 2051,
+  "prod_overall_fail": 4094,
+  "example_stable_id": 606,
+  "example_drift_id": 208,
+  "example_stable_cwk": 2.01,
+  "example_stable_ppk": 2.24,
+  "example_drift_cwk": 1.77,
+  "example_drift_ppk": 0.4
+}
