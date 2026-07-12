@@ -21,9 +21,18 @@
   "always_buy_net": 0.325,
   "excess_mean": 0.153,
   "ci_excess": [
-    -0.328,
-    0.723
+    -0.326,
+    0.708
   ],
   "conf_corr": -0.015,
+  "conf_spearman": 0.008,
+  "ci_block3": [
+    -0.434,
+    1.263
+  ],
+  "n_blocks": 30,
+  "day_weighted_net": 0.136,
+  "trimmed_net": 0.405,
+  "n_sell": 283,
   "fee_rt_pct": 0.3
 }
