@@ -1,0 +1,45 @@
+{
+ "n_trades": 163,
+ "by_reason": {
+  "stop_loss": {
+   "n": 47,
+   "mean_recorded_pct": -10.74,
+   "mean_corrected_pct": -8.09,
+   "usd_recorded": -4167,
+   "usd_corrected": -3103,
+   "worst_recorded_pct": -27.7
+  },
+  "take_profit": {
+   "n": 20,
+   "mean_recorded_pct": 15.89,
+   "mean_corrected_pct": 13.35,
+   "usd_recorded": 2455,
+   "usd_corrected": 2084,
+   "worst_recorded_pct": 10.24
+  },
+  "signal_reversal": {
+   "n": 94,
+   "mean_recorded_pct": -0.48,
+   "mean_corrected_pct": -0.48,
+   "usd_recorded": -528,
+   "usd_corrected": -528,
+   "worst_recorded_pct": -11.96
+  },
+  "manual_close": {
+   "n": 2,
+   "mean_recorded_pct": 9.93,
+   "mean_corrected_pct": 9.93,
+   "usd_recorded": 99,
+   "usd_corrected": 99,
+   "worst_recorded_pct": -0.01
+  }
+ },
+ "fees_usd": 409,
+ "net_recorded_usd": -2548,
+ "net_corrected_usd": -1856,
+ "artifact_usd": 692,
+ "win_rate_pct": 39.9,
+ "payoff_ratio": 1.13,
+ "breakeven_payoff": 1.51,
+ "stop_slip_pct": 0.3
+}

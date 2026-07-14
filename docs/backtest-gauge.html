@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My backtest was a gauge that had never passed GR&amp;R</title>
+<meta name="description" content="A measurement-systems case study: the backtest engine was biased in two directions at once, and every conclusion drawn from it was noise interpreted with confidence.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="My backtest was a gauge that had never passed GR&amp;R">
+<meta property="og:description" content="Three defects in the measuring instrument, biased in opposite directions so they cancelled in the mean and hid in the tails. MSA before capability — including when the gauge is your own code.">
+<meta property="og:url" content="https://amohdnaw.github.io/case-studies/backtest-gauge.html">
+<meta property="og:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
+<style>
+  :root{
+    --paper:oklch(95.6% .017 92); --paper-deep:oklch(93.2% .021 90);
+    --ink:oklch(25% .02 65); --ink-soft:oklch(38% .02 65); --ink-faint:oklch(52% .018 70);
+    --rubric:oklch(43% .125 29); --wash:oklch(43% .125 29 / .07);
+    --hair:oklch(25% .02 65 / .28); --hair-faint:oklch(25% .02 65 / .14);
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --mono:ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);padding:4rem 1.5rem 5rem;line-height:1.6}
+  .sheet{max-width:46rem;margin:0 auto}
+  a{color:var(--rubric)}
+  .kicker{font:600 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--rubric);
+    border-bottom:1px solid var(--hair);padding-bottom:.6rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .kicker a{text-decoration:none}
+  h1{font-size:2.1rem;line-height:1.18;font-weight:600;margin:1.4rem 0 .8rem;letter-spacing:-.01em}
+  .standfirst{font-size:1.05rem;line-height:1.55;color:var(--ink-soft);font-style:italic;max-width:38rem}
+  h2{font-size:1.25rem;font-weight:600;margin:2.6rem 0 .7rem}
+  h2 .no{font:600 .78rem/1 var(--mono);color:var(--rubric);margin-right:.6rem;vertical-align:.14em}
+  p{margin:.8rem 0;font-size:.98rem;max-width:38rem}
+  .verdict{margin:2rem 0;padding:1rem 1.2rem;background:var(--wash);border-left:3px solid var(--rubric);font-size:.98rem;line-height:1.55}
+  .verdict b{color:var(--rubric)}
+  table{width:100%;border-collapse:collapse;margin:1.6rem 0;font-size:.85rem}
+  th{font:600 .68rem/1.3 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);
+    text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--hair)}
+  td{padding:.5rem .6rem;border-bottom:1px solid var(--hair-faint);font-family:var(--mono);font-size:.8rem;vertical-align:top}
+  td:first-child{font-family:var(--serif);font-size:.88rem}
+  .hit{color:var(--rubric);font-weight:700}
+  figure{margin:2rem 0;border:1px solid var(--hair);background:var(--paper-deep);padding:1rem;
+    background-image:repeating-linear-gradient(var(--paper-deep) 0 23px, var(--hair-faint) 23px 24px)}
+  figure img{width:100%;display:block}
+  figcaption{font:.72rem/1.5 var(--mono);color:var(--ink-soft);margin-top:.7rem}
+  code{font-family:var(--mono);font-size:.82em;background:var(--paper-deep);padding:.05em .35em}
+  .margin-note{float:right;width:11rem;margin:.2rem -13rem 1rem 1.5rem;font-size:.72rem;line-height:1.5;
+    color:var(--ink-faint);border-top:1px solid oklch(43% .125 29 / .55);padding-top:.4rem}
+  @media (max-width:76rem){.margin-note{float:none;width:auto;margin:1rem 0}}
+  .repro{margin:2.4rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.85rem}
+  .repro .lab{font:600 .65rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:.5rem}
+  .repro code{background:none;display:block;padding:.15rem 0}
+  .footnav{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:1rem;
+    font:.75rem/1.5 var(--mono);color:var(--rubric)}
+  .footnav a{text-decoration:none}
+  .pull{font-size:1.12rem;line-height:1.45;color:var(--ink);border-left:3px solid var(--rubric);
+    padding-left:1rem;margin:1.8rem 0;max-width:34rem}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="kicker">
+    <span><a href="index.html">Case studies</a> · 04 · Measurement systems</span>
+    <span>n = 163 trades · 7 yr backtest · Jul 2026</span>
+  </div>
+
+  <h1>My backtest was a gauge that had never passed GR&amp;R.</h1>
+  <p class="standfirst">For months I read numbers off a measuring instrument I had never
+  calibrated. When I finally checked it, it was biased in two directions at once — which is
+  precisely why it looked fine.</p>
+  <p style="font:.8rem/1.6 var(--mono);color:var(--ink-soft);margin:.6rem 0 0">
+  By a process engineer (SPC) in semiconductor assembly &amp; test — the measurement-systems
+  discipline I apply to production gauges, turned on my own code.
+  <b>Paper trading throughout; no real money.</b></p>
+
+  <div class="verdict"><b>Verdict — the instrument was wrong, and so was the experiment.</b>
+  Three defects in the backtest engine biased results in <em>opposite</em> directions, cancelling
+  in the mean and hiding in the tails. <span class="hit">$692</span> of a recorded
+  <span class="hit">−$2,548</span> loss was an artifact of the gauge, not the market. Correcting it
+  did not rescue the strategy — it made the failure <em>legible</em>. Final result: no demonstrable
+  edge, reported as such.</p></div>
+
+  <h2><span class="no">01</span>The rule I break at work, and broke here</h2>
+
+  <p>In semiconductor quality you do not run a capability study on a gauge that has not passed
+  measurement-system analysis. It is the first thing you learn and the last thing you skip. If the
+  instrument is biased, every Cpk you compute afterwards is a confident statement about nothing.</p>
+
+  <p>In software research, almost nobody does MSA at all. The backtest engine <em>is</em> the gauge —
+  it is the thing standing between a price series and every number you will ever believe — and it
+  ships unvalidated because it produces plausible output and nobody diffs plausible output against
+  reality.</p>
+
+  <p class="pull">I had been doing sophisticated statistics on the readings of an instrument
+  I had never checked.</p>
+
+  <h2><span class="no">02</span>Three defects, and why they hid</h2>
+
+  <p class="margin-note">The fills were never compared against the <em>order</em> the book intended to
+  place. That comparison is the entire audit, and it takes one afternoon.</p>
+
+  <p><b>The stops filled at the wrong price.</b> A stop-loss rests on the exchange and triggers
+  intrabar. The engine instead closed the position at whatever price it observed on its <em>next
+  poll</em>. Price gaps through the stop between polls, so a stop configured at −12% recorded an
+  average realised loss of <span class="hit">−12.9%</span>, worst case <span class="hit">−27.7%</span>.
+  The instrument was systematically <b>pessimistic</b>.</p>
+
+  <p><b>The take-profits filled better than the limit.</b> Same defect, same line of code — and here
+  it ran the other way. A resting limit sell fills <em>at</em> the limit and never above it. The
+  engine booked whatever price it happened to see, recording <span class="hit">+18%</span> on a
+  <span class="hit">+15%</span> order. Money that does not exist. Systematically <b>optimistic</b>.</p>
+
+  <p><b>And the price feed was silently truncated.</b> The history fetcher passed a <em>day</em> count
+  where the exchange API expected a <em>candle</em> count. A request for 180 days of hourly bars
+  returned <span class="hit">185 bars — eight days</span> — instead of 4,320. Every intraday study I
+  had run was reading eight days of data and calling it six months.</p>
+
+  <figure>
+    <img src="figures/gauge-fig1.svg" alt="Bar chart: for stop-loss exits the gauge recorded a worse loss than the order intended; for take-profit exits it recorded a better gain than the limit allowed.">
+    <figcaption>FIG 1 — The gauge is biased in both directions. Stops record worse than the order
+    placed; take-profits record better. A single-direction bias shows up in the aggregate. Two
+    opposing biases cancel in the mean and survive only in the tails, which is where nobody looks.</figcaption>
+  </figure>
+
+  <p>This is the part worth carrying away. A gauge with one bias is <em>easy</em> to catch: the mean
+  drifts and something looks wrong. A gauge biased in two directions at once produces a plausible
+  net, a plausible P&amp;L curve, and two badly wrong tails. It passes every sniff test you would
+  think to apply, because the errors are busy cancelling each other in exactly the statistic you
+  are checking.</p>
+
+  <h2><span class="no">03</span>Recalibrating did not save the result. It made it readable.</h2>
+
+  <p>Correcting the fill model moved the book from a recorded <span class="hit">−$2,548</span> to a
+  true <span class="hit">−$1,856</span>. Roughly <span class="hit">$692</span> of the loss had been
+  manufactured by the instrument.</p>
+
+  <table>
+    <tr><th>Exit type</th><th>n</th><th>Order placed</th><th>Gauge recorded</th><th>Corrected fill</th></tr>
+    <tr><td>Stop-loss</td><td>47</td><td>−9.5%</td><td class="hit">−10.7%</td><td>−8.1%</td></tr>
+    <tr><td>Take-profit</td><td>20</td><td>+13.3%</td><td class="hit">+15.9%</td><td>+13.3%</td></tr>
+    <tr><td>Signal reversal</td><td>94</td><td>market</td><td>−0.5%</td><td>−0.5%</td></tr>
+  </table>
+
+  <p>But the strategy was still dead, and now I could see <em>why</em> instead of merely that it was.
+  With trustworthy fills the diagnosis is one line of arithmetic:</p>
+
+  <p class="pull">A <b>39.9%</b> win rate needs a payoff ratio of <b>1.51</b> to break even.
+  It had <b>1.13</b>. The system was losing <em>by arithmetic</em> — no signal quality could have
+  saved it.</p>
+
+  <p>The take-profit was capping winners at +10–15% while stops let losers run past their level. Both
+  errors pointed the same way: winners cut short, losers left long — the precise inverse of what any
+  system with a fat-tailed payoff requires. This was never a signal problem. It was a structural one,
+  and it had been sitting inside a distorted gauge where it could not be read.</p>
+
+  <h2><span class="no">04</span>A calibrated gauge measuring a rigged experiment</h2>
+
+  <p>With the instrument fixed I re-ran the research properly — and found the <em>experimental
+  design</em> had been manufacturing false positives independently of the gauge.</p>
+
+  <p class="margin-note">42 paper books were running simultaneously. That is not 42 chances to find
+  an edge. It is <em>one</em> chance, divided 42 ways.</p>
+
+  <p>A 48-configuration sweep produced a best in-sample Sharpe of <b>+0.67</b>. Deflating it for the
+  number of configurations tried — the Sharpe you would expect from luck alone at that search
+  breadth — leaves <b>+0.09</b>. On an untouched holdout it scored <b>−0.79</b>.</p>
+
+  <figure>
+    <img src="figures/gauge-fig2.svg" alt="Bar chart: best-of-48 in-sample Sharpe +0.67, falling to +0.09 after deflation, and to -0.79 on the untouched holdout.">
+    <figcaption>FIG 2 — A strong backtest is the normal output of searching, not evidence of an edge.
+    Deflated Sharpe (Bailey &amp; López de Prado) prices in the number of configurations tried. Across
+    the whole investigation I examined 59 — every deflation figure computed per-study is therefore
+    optimistic, and I say so rather than quote the flattering number.</figcaption>
+  </figure>
+
+  <h2><span class="no">05</span>Out-of-sample in time is not out-of-sample in population</h2>
+
+  <p>The final rule — daily bars, no take-profit, trailing stop, regime gate — survived its
+  chronological holdout. I pre-registered it, wrote its kill condition, and seated it as the one
+  strategy allowed to claim an edge.</p>
+
+  <p>Then I ran it, frozen and untouched, on twelve liquid coins it had never been fitted to. It beat
+  buy-and-hold on <span class="hit">zero of twelve</span>. Median return <span class="hit">−60%</span>
+  against buy-and-hold's <span class="hit">+194%</span>.</p>
+
+  <figure>
+    <img src="figures/gauge-fig3.svg" alt="Bar chart across 12 unseen coins: the strategy underperforms buy-and-hold on every one.">
+    <figcaption>FIG 3 — The strategy against buy-and-hold on twelve instruments it was never fitted
+    to. Universe screened for tradability first (no stablecoins, no tokenised equities, spread under
+    5bp, 900+ days of history) — testing on illiquid names would have manufactured an edge out of
+    unpayable slippage.</figcaption>
+  </figure>
+
+  <p>It died the same day it was seated, and it had never taken a live trade. The cause was the
+  trailing stop: it capped the outlier winners the strategy depended on — best trade
+  <span class="hit">+1,293% → +112%</span>. I had spent a week establishing that capping winners is
+  fatal, and then seated a rule that capped them harder, through a mechanism I had not recognised as
+  the same mistake.</p>
+
+  <p>It survived the time-holdout because a later window of the <em>same instruments</em> is a weak
+  test. A different <em>population</em> is a hard one. They are not the same control, and only the
+  second one caught it.</p>
+
+  <h2><span class="no">06</span>What transfers</h2>
+
+  <p>Every failure here has an exact twin in quality engineering. I already knew all of them. I
+  simply did not recognise them out of uniform.</p>
+
+  <table>
+    <tr><th>In the trading system</th><th>The same thing, at work</th></tr>
+    <tr><td>Backtest engine never validated</td><td>Running capability studies on a gauge that never passed MSA</td></tr>
+    <tr><td>Two biases cancelling in the mean</td><td>Gauge bias that only shows at the spec limits</td></tr>
+    <tr><td>48 configs → one looks great</td><td>Testing factors until one goes significant</td></tr>
+    <tr><td>Tuning rules to past prices</td><td>Fitting control limits to historical data</td></tr>
+    <tr><td>Universe screened on today's survivors</td><td>Analysing only the lots that shipped</td></tr>
+    <tr><td>Optimising per-trade Sharpe</td><td>Chasing a KPI that does not track the outcome</td></tr>
+  </table>
+
+  <p>The last one cost me the most. Ranking exits by per-trade Sharpe favoured the trailing stop,
+  because a trailing stop produces many small consistent wins — and a fat right tail looks like
+  <em>variance</em> to a Sharpe ratio. I optimised a metric that was actively penalising the source
+  of the profit. Choosing the objective is a modelling decision, and the wrong one does not fail
+  loudly. It quietly inverts your conclusion and hands you a confident answer.</p>
+
+  <div class="verdict"><b>Final verdict — no demonstrable edge.</b> Not in the LLM signals, not in
+  trend-following, not in regime gating. The strategies all died. What survived is the apparatus that
+  killed them: a gauge that now measures what it claims to, a pre-registration gate, a deflation
+  penalty, an out-of-sample-in-population test, and a correlation-aware risk budget. An honest null,
+  reported as a null.</p></div>
+
+  <p style="color:var(--ink-soft);font-size:.92rem">The system now grades <b>zero</b> strategies and
+  says so on every run. That is the correct output. The alternative — a plausible equity curve drawn
+  by an uncalibrated instrument — was always available, and would have cost real money to disbelieve.</p>
+
+  <div class="repro">
+    <span class="lab">Reproduce</span>
+    <code>python3 scripts/export_gauge_trades.py   # 163 spot trades from the live system</code>
+    <code>python3 scripts/gauge_rr.py              # recalibration + figures</code>
+    <p style="margin:.6rem 0 0;font-size:.82rem;color:var(--ink-soft)">Every number above recomputes
+    from <code>data/gauge_trades.csv</code>. The 32 short-side rows in the raw state are excluded, not
+    averaged in — a live short branch in <code>close_position()</code> had been pricing them with
+    inverted P&amp;L in a long-only spot book. That was defect four.</p>
+  </div>
+
+  <div class="footnav">
+    <a href="index.html">← All case studies</a>
+    <a href="trading-honesty-audit.html">01 · The statistics that hurt →</a>
+  </div>
+</div>
+</body>
+</html>

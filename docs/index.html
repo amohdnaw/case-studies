@@ -7,7 +7,7 @@
 <meta name="description" content="Case studies in applied statistics: honest inference on trading data, SPC capability at production scale, yield analytics.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Evidence, not claims — case studies by Ammar Nawawi">
-<meta property="og:description" content="Three studies in applied statistics, reproducible from the data they ship with — published even when the answer was no.">
+<meta property="og:description" content="Four studies in applied statistics, reproducible from the data they ship with — published even when the answer was no.">
 <meta property="og:url" content="https://amohdnaw.github.io/case-studies/">
 <meta property="og:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
@@ -49,8 +49,9 @@
 <div class="sheet">
   <div class="kicker"><span>Ammar Nawawi · Case studies</span><span>Applied statistics, from real systems</span></div>
   <h1>Evidence, not claims.</h1>
-  <p class="standfirst">Three studies from systems I built and run — a trading log audited to a
-  null result, statistical process control realigned at production scale, and yield analytics.
+  <p class="standfirst">Four studies from systems I built and run — a trading log audited to a
+  null result, statistical process control realigned at production scale, yield analytics, and a
+  backtest engine put through the measurement-system analysis it never had.
   Each one page, each reproducible from the data it ships with.</p>
 
   <div class="study">
@@ -77,6 +78,15 @@
     <p>Turning automated optical inspection outcomes into a yield dashboard that ranks loss drivers
     by recoverable units — Pareto discipline over intuition in a production test environment.</p>
     <a class="open" href="icos-yield-signal.html">Read the study →</a>
+  </div>
+
+  <div class="study">
+    <div class="meta"><span>04 · Measurement systems</span><span>163 trades · 7-yr backtest</span></div>
+    <h2><a href="backtest-gauge.html">My backtest was a gauge that had never passed GR&amp;R</a></h2>
+    <p>The measuring instrument was biased in two directions at once — pessimistic on stops,
+    optimistic on take-profits — so the errors cancelled in the mean and hid in the tails. MSA
+    before capability, including when the gauge is your own code. Ends on an honest null.</p>
+    <a class="open" href="backtest-gauge.html">Read the study →</a>
   </div>
 
   <div class="footer">
