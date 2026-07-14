@@ -41,6 +41,33 @@ ink-faint for baselines/reference. Light theme only (paper is the identity; prin
 - **Figure**: hair border, paper-deep well, ruled-paper background lines
   (`repeating-linear-gradient` 24px), mono figcaption below. Figures are SVG.
 - **Footnav**: hair top rule, mono, rubric, space-between (← index / next study →).
+- **Byline** (added v4, 2026-07-14): mono, uppercase, ls .18em — `Ammar Nawawi` (rubric, links
+  `portfolio.amohdnaw.xyz`) left, `Process Engineer (SPC)` (ink-faint) right, hair-faint underline.
+  Sits ABOVE the kicker, forming a two-line masthead. **This component is shared verbatim with the
+  portfolio home and bench** — it is the single element that makes two differently-dressed sites
+  read as one hand. It wears the LOCAL accent (rubric here, teal there). The name is exactly
+  `Ammar Nawawi`, matching the CV; an identical byline that isn't identical is worse than none.
+
+## The estate — ONE ACCENT PER SURFACE (2026-07-14)
+
+The portfolio (`portfolio.amohdnaw.xyz`) was reworked to white paper + **teal** + Manrope +
+lowercase first-person prose. **These studies were NOT retheming to match, and must not be.**
+
+A teal recolour was mocked in full and rejected:
+
+- **Red here is rhetoric, not decoration.** The verdict box is an indictment; `−$2,548` and
+  `−27.7%` are damages. In teal the verdict reads as a friendly info callout and the damages read
+  as neutral statistics — while the chart bars beside them stay red for the same meaning. The
+  document ends up saying "bad" in two colours, which is worse than either choice alone.
+- **Measured:** teal on cream is **4.57:1**; rubric red is **7.2:1**. Cooler *and* fainter.
+- **A case study is a document.** Serif body at a reading measure, mono apparatus, sentence-case
+  formal voice, verdict up front, print-friendly — that is what makes it read as research rather
+  than a blog post about research. It is the credibility artifact the CV points at. Do not set a
+  statistical audit in lowercase Manrope.
+
+The rule is **one accent per surface, not one accent per person**. Teal owns the personal site;
+rubric red owns the papers. The estate is unified by the **spine** — the byline, the mono
+apparatus, the kicker grammar, the radius rule — never by the hue.
 
 ## Rules
 

@@ -26,6 +26,15 @@
   body{background:var(--paper);color:var(--ink);font-family:var(--serif);padding:4rem 1.5rem 5rem;line-height:1.6}
   .sheet{max-width:46rem;margin:0 auto}
   a{color:var(--rubric)}
+  /* Shared byline — the one component identical across the estate (portfolio home, the bench,
+     and every study). It is what makes two differently-dressed sites read as one hand.
+     Note it wears the LOCAL accent (rubric), not the portfolio's teal: one accent per surface. */
+  .byline{font:700 .68rem/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;
+    display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:baseline;
+    padding-bottom:.55rem;border-bottom:1px solid var(--hair-faint);margin-bottom:.55rem}
+  .byline a{color:var(--rubric);text-decoration:none}
+  .byline a:hover{text-decoration:underline}
+  .byline .disc{color:var(--ink-faint);font-weight:600;letter-spacing:.12em}
   .kicker{font:600 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--rubric);
     border-bottom:1px solid var(--hair);padding-bottom:.6rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
   .kicker a{text-decoration:none}
@@ -58,6 +67,10 @@
 </head>
 <body>
 <div class="sheet">
+  <div class="byline">
+    <a href="https://portfolio.amohdnaw.xyz/">Ammar Nawawi</a>
+    <span class="disc">Process Engineer (SPC)</span>
+  </div>
   <div class="kicker">
     <span><a href="index.html">Case studies</a> · 01 · Quantitative honesty</span>
     <span>n = 1,578 · Apr–Jul 2026</span>
