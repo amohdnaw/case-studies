@@ -8,8 +8,8 @@ notebook — quiet paper, one rubric red, serif body, mono apparatus. Derived fr
 
 | token | value | use |
 |---|---|---|
-| `--paper` | `oklch(95.6% .017 92)` | page background |
-| `--paper-deep` | `oklch(93.2% .021 90)` | figure wells, inset panels |
+| `--paper` | `oklch(100% 0 0)` | page background — **white since 2026-07-14**, shares the portfolio's sheet |
+| `--paper-deep` | `oklch(97.6% 0 0)` | figure wells, inset panels |
 | `--ink` | `oklch(25% .02 65)` | body text, headings |
 | `--ink-soft` | `oklch(38% .02 65)` | standfirst, captions |
 | `--ink-faint` | `oklch(52% .018 70)` | margin notes, th labels |
@@ -19,7 +19,15 @@ notebook — quiet paper, one rubric red, serif body, mono apparatus. Derived fr
 | `--hair-faint` | `oklch(25% .02 65 / .14)` | row rules |
 
 No other hues. Charts: ink for data, rubric for the one series being argued about,
-ink-faint for baselines/reference. Light theme only (paper is the identity; print-friendly).
+ink-faint for baselines/reference. Light theme only; print-friendly.
+
+**Paper history:** the sheet was cream (`oklch(95.6% .017 92)`) from the v1 freeze until
+2026-07-14, when it went white to bridge to the reworked portfolio. Cream was doing real work —
+it said "printed thing" before you read a word, and it made the serif look chosen rather than
+defaulted. It was given up deliberately, judged from a side-by-side mock, because the jump from
+the (white) home page to a cream study read as two different people. The serif, the sentence
+case and the rubric red are what carry the document register now. **If the pages ever start
+reading like generic articles, the cream is the first thing to try putting back.**
 
 ## Type
 
@@ -59,7 +67,8 @@ A teal recolour was mocked in full and rejected:
   `−27.7%` are damages. In teal the verdict reads as a friendly info callout and the damages read
   as neutral statistics — while the chart bars beside them stay red for the same meaning. The
   document ends up saying "bad" in two colours, which is worse than either choice alone.
-- **Measured:** teal on cream is **4.57:1**; rubric red is **7.2:1**. Cooler *and* fainter.
+- **Measured (on the then-cream sheet):** teal **4.57:1**; rubric red **7.2:1**. Cooler *and*
+  fainter. On the white sheet rubric red is stronger still — the argument only hardens.
 - **A case study is a document.** Serif body at a reading measure, mono apparatus, sentence-case
   formal voice, verdict up front, print-friendly — that is what makes it read as research rather
   than a blog post about research. It is the credibility artifact the CV points at. Do not set a
@@ -77,9 +86,21 @@ apparatus, the kicker grammar, the radius rule — never by the hue.
 - Ban list: dark mode, gradients (except the ruled-line repeating gradient), emoji as icons,
   glassmorphism, border-radius, drop shadows, system-default sans as body, hero-with-cards
   layouts, more than one accent hue.
-- Print must work: paper palette is already print-safe; no fixed elements.
+- Print must work: white sheet is print-native; no fixed elements.
 
 ## Corrections
 
 Screenshot critiques are judged against this doc. A correction updates this file, not just
 the instance.
+
+## Figures — the paper is baked in, twice
+
+Figure SVGs are matplotlib exports, so the sheet colour lives in TWO places: the rendered
+`docs/figures/*.svg` AND the `PAPER, PAPER_DEEP, HAIR` triple at the top of each generator
+(`scripts/*.py`, `notebooks/*.ipynb`). Change one without the other and the next notebook run
+silently reverts the site.
+
+Gotcha found 2026-07-14: the creams were **not one hex**. Studies 01–03 used `#f4f0e4`; 04–05
+used `#f4efe4` + `#ece5d6`. One character apart, and a naive find-and-replace catches only half
+the figures — leaving cream plots sitting on a white page. Sweep by *luminance*, not by the hex
+you happen to remember.

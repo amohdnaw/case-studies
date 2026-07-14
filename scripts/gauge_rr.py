@@ -34,7 +34,7 @@ STOP_SLIP_PCT = 0.3      # a stop-market order slips past its trigger. 0.3% on a
 
 # Paper Workbench palette (DESIGN.md) — ink for data, rubric for the series under argument.
 INK, INK_FAINT, RUBRIC = "#3d3327", "#877e72", "#8c2f22"
-PAPER, PAPER_DEEP, HAIR = "#f4efe4", "#ece5d6", "#c9c0b0"
+PAPER, PAPER_DEEP, HAIR = "#ffffff", "#fafafa", "#e2e2e2"
 
 
 def style(ax):

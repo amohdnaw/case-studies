@@ -26,7 +26,7 @@ L 604.8 266.4
 L 604.8 0 
 L 0 0 
 z
-" style="fill: #f4f0e4"/>
+" style="fill: #ffffff"/>
   </g>
   <g id="axes_1">
    <g id="patch_2">
@@ -35,7 +35,7 @@ L 312.141322 226.017045
 L 312.141322 34.603636 
 L 52.727273 34.603636 
 z
-" style="fill: #f4f0e4"/>
+" style="fill: #ffffff"/>
    </g>
    <g id="matplotlib.axis_1">
     <g id="xtick_1">
@@ -570,7 +570,7 @@ L 589.927686 226.017045
 L 589.927686 34.603636 
 L 330.513636 34.603636 
 z
-" style="fill: #f4f0e4"/>
+" style="fill: #ffffff"/>
    </g>
    <g id="matplotlib.axis_3">
     <g id="xtick_7">
