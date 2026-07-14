@@ -17,7 +17,7 @@
   :root{
     --paper:oklch(100% 0 0); --paper-deep:oklch(97.6% 0 0);
     --ink:oklch(25% .008 65); --ink-soft:oklch(38% .02 65); --ink-faint:oklch(52% .018 70);
-    --rubric:oklch(43% .125 29); --wash:oklch(43% .125 29 / .07);
+    --rubric:oklch(43% .125 29); --accent:oklch(48% .085 196); --wash:oklch(43% .125 29 / .07);
     --hair:oklch(25% .02 65 / .28); --hair-faint:oklch(25% .02 65 / .14);
     --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
     --mono:ui-monospace,Menlo,Consolas,monospace;
@@ -25,23 +25,23 @@
   *{margin:0;padding:0;box-sizing:border-box}
   body{background:var(--paper);color:var(--ink);font-family:var(--serif);padding:4rem 1.5rem 5rem;line-height:1.6}
   .sheet{max-width:46rem;margin:0 auto}
-  a{color:var(--rubric)}
+  a{color:var(--accent)}
   /* Shared byline — the one component identical across the estate (portfolio home, the bench,
      and every study). It is what makes two differently-dressed sites read as one hand.
      Note it wears the LOCAL accent (rubric), not the portfolio's teal: one accent per surface. */
   .byline{font:700 .68rem/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;
     display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:baseline;
     padding-bottom:.55rem;border-bottom:1px solid var(--hair-faint);margin-bottom:.55rem}
-  .byline a{color:var(--rubric);text-decoration:none}
+  .byline a{color:var(--accent);text-decoration:none}
   .byline a:hover{text-decoration:underline}
   .byline .disc{color:var(--ink-faint);font-weight:600;letter-spacing:.12em}
-  .kicker{font:600 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--rubric);
+  .kicker{font:600 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);
     border-bottom:1px solid var(--hair);padding-bottom:.6rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
   .kicker a{text-decoration:none}
   h1{font-size:2.1rem;line-height:1.18;font-weight:600;margin:1.4rem 0 .8rem;letter-spacing:-.01em}
   .standfirst{font-size:1.05rem;line-height:1.55;color:var(--ink-soft);font-style:italic;max-width:38rem}
   h2{font-size:1.25rem;font-weight:600;margin:2.6rem 0 .7rem}
-  h2 .no{font:600 .78rem/1 var(--mono);color:var(--rubric);margin-right:.6rem;vertical-align:.14em}
+  h2 .no{font:600 .78rem/1 var(--mono);color:var(--accent);margin-right:.6rem;vertical-align:.14em}
   p{margin:.8rem 0;font-size:.98rem;max-width:38rem}
   .verdict{margin:2rem 0;padding:1rem 1.2rem;background:var(--wash);border-left:3px solid var(--rubric);font-size:.98rem;line-height:1.55}
   .verdict b{color:var(--rubric)}
@@ -57,15 +57,15 @@
   figcaption{font:.72rem/1.5 var(--mono);color:var(--ink-soft);margin-top:.7rem}
   code{font-family:var(--mono);font-size:.82em;background:var(--paper-deep);padding:.05em .35em}
   .margin-note{float:right;width:11rem;margin:.2rem -13rem 1rem 1.5rem;font-size:.72rem;line-height:1.5;
-    color:var(--ink-faint);border-top:1px solid oklch(43% .125 29 / .55);padding-top:.4rem}
+    color:var(--ink-faint);border-top:1px solid oklch(48% .085 196 / .55);padding-top:.4rem}
   @media (max-width:76rem){.margin-note{float:none;width:auto;margin:1rem 0}}
   .repro{margin:2.4rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.85rem}
   .repro .lab{font:600 .65rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:.5rem}
   .repro code{background:none;display:block;padding:.15rem 0}
   .footnav{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:1rem;
-    font:.75rem/1.5 var(--mono);color:var(--rubric)}
+    font:.75rem/1.5 var(--mono);color:var(--accent)}
   .footnav a{text-decoration:none}
-  .pull{font-size:1.12rem;line-height:1.45;color:var(--ink);border-left:3px solid var(--rubric);
+  .pull{font-size:1.12rem;line-height:1.45;color:var(--ink);border-left:3px solid var(--accent);
     padding-left:1rem;margin:1.8rem 0;max-width:34rem}
 </style>
 </head>
