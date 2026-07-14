@@ -10,13 +10,14 @@ repo.
 | 01 | [I audited my own trading system — and killed my best result](https://amohdnaw.github.io/case-studies/trading-honesty-audit.html) · [notebook](notebooks/trading-honesty-audit.ipynb) | Live |
 | 02 | [Rebasing capability statistics at 15,000-characteristic scale](https://amohdnaw.github.io/case-studies/spc-capability-rebase.html) · [notebook](notebooks/spc-rebase.ipynb) | Live |
 | 03 | [Finding the yield signal in inspection data](https://amohdnaw.github.io/case-studies/icos-yield-signal.html) · [notebook](notebooks/icos-yield.ipynb) | Live |
-| 04 | [My backtest was a gauge that had never passed GR&R](https://amohdnaw.github.io/case-studies/backtest-gauge.html) · [scripts](scripts/gauge_rr.py) | Live |
+| 04 | [My backtest was a gauge that had never passed GR&R](https://amohdnaw.github.io/case-studies/backtest-gauge.html) · [notebook](notebooks/backtest-gauge.ipynb) | Live |
 
 ## Reproduce study 04
 
 ```bash
-python3 scripts/export_gauge_trades.py   # 163 spot trades from the live system
-python3 scripts/gauge_rr.py              # recalibration + figures
+python3 -m venv .venv && .venv/bin/pip install pandas numpy scipy matplotlib jupyter
+python3 scripts/export_gauge_trades.py                    # 163 spot trades from the live system
+cd notebooks && ../.venv/bin/jupyter execute backtest-gauge.ipynb
 ```
 
 Runs on `data/gauge_trades.csv` (163 spot paper trades, one row per trade, each carrying the
