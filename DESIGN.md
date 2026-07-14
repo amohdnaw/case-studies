@@ -56,12 +56,26 @@ reading like generic articles, the cream is the first thing to try putting back.
   read as one hand. It wears the LOCAL accent (rubric here, teal there). The name is exactly
   `Ammar Nawawi`, matching the CV; an identical byline that isn't identical is worse than none.
 
-## The estate — ONE ACCENT PER SURFACE (2026-07-14)
+## The estate — TEAL CHROME, RED ARGUMENT (revised 2026-07-14, supersedes the section below)
 
-The portfolio (`portfolio.amohdnaw.xyz`) was reworked to white paper + **teal** + Manrope +
-lowercase first-person prose. **These studies were NOT retheming to match, and must not be.**
+Two tokens now, and the split is the whole point:
 
-A teal recolour was mocked in full and rejected:
+| token | value | owns |
+|---|---|---|
+| `--accent` | `oklch(48% .085 196)` (teal) | **chrome** — links, byline, kicker, section numbers, footnav, pull-quote rule, margin-note rule |
+| `--rubric` | `oklch(43% .125 29)` (red) | **the argument, and nothing else** — the verdict box (border + lead-in) and `.hit` (the damage figures) |
+
+The rule reads in one line: **red means "this is the bad finding". Teal means "this is Ammar's
+site".** Red appears nowhere else, so it never has to compete with itself — and the figures,
+which have always drawn defects and losses in red, now agree with the prose instead of
+contradicting it.
+
+Contrast on the white sheet: teal **5.24:1**, rubric red **8.25:1**. Both pass; the red is
+stronger, which is correct — it carries the claims.
+
+### Why the first attempt failed (keep this, it is the reason for the split)
+
+A *full* teal recolour — chrome AND verdict AND hits — was mocked and rejected:
 
 - **Red here is rhetoric, not decoration.** The verdict box is an indictment; `−$2,548` and
   `−27.7%` are damages. In teal the verdict reads as a friendly info callout and the damages read
