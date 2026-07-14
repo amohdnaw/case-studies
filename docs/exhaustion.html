@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>I tested 7,860 strategies across crypto and stocks. Doing nothing beat all of them.</title>
+<meta name="description" content="Two asset classes, two opposite failure modes, one conclusion. Crypto strategies lose money to fees; stock strategies make money and still lose to buy-and-hold. A study in scoring every backtest twice.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="I tested 7,860 strategies. Doing nothing beat all of them.">
+<meta property="og:description" content="Crypto: the signal is right and the fees eat it. Stocks: the signal makes money and still loses to holding. Two roads to the same null — with the data and the code attached.">
+<meta property="og:url" content="https://amohdnaw.github.io/case-studies/exhaustion.html">
+<meta property="og:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
+<style>
+  :root{
+    --paper:oklch(95.6% .017 92); --paper-deep:oklch(93.2% .021 90);
+    --ink:oklch(25% .02 65); --ink-soft:oklch(38% .02 65); --ink-faint:oklch(52% .018 70);
+    --rubric:oklch(43% .125 29); --wash:oklch(43% .125 29 / .07);
+    --hair:oklch(25% .02 65 / .28); --hair-faint:oklch(25% .02 65 / .14);
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --mono:ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);padding:4rem 1.5rem 5rem;line-height:1.6}
+  .sheet{max-width:46rem;margin:0 auto}
+  a{color:var(--rubric)}
+  .kicker{font:600 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--rubric);
+    border-bottom:1px solid var(--hair);padding-bottom:.6rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .kicker a{text-decoration:none}
+  h1{font-size:2.1rem;line-height:1.18;font-weight:600;margin:1.4rem 0 .8rem;letter-spacing:-.01em}
+  .standfirst{font-size:1.05rem;line-height:1.55;color:var(--ink-soft);font-style:italic;max-width:38rem}
+  h2{font-size:1.25rem;font-weight:600;margin:2.6rem 0 .7rem}
+  h2 .no{font:600 .78rem/1 var(--mono);color:var(--rubric);margin-right:.6rem;vertical-align:.14em}
+  p{margin:.8rem 0;font-size:.98rem;max-width:38rem}
+  .verdict{margin:2rem 0;padding:1rem 1.2rem;background:var(--wash);border-left:3px solid var(--rubric);font-size:.98rem;line-height:1.55}
+  .verdict b{color:var(--rubric)}
+  .tw{overflow-x:auto;margin:1.6rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.85rem;min-width:30rem}
+  th{font:600 .68rem/1.3 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);
+    text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--hair)}
+  td{padding:.5rem .6rem;border-bottom:1px solid var(--hair-faint);font-family:var(--mono);font-size:.8rem;vertical-align:top}
+  td:first-child{font-family:var(--serif);font-size:.88rem}
+  .hit{color:var(--rubric);font-weight:700}
+  figure{margin:2rem 0;border:1px solid var(--hair);background:var(--paper-deep);padding:1rem;
+    background-image:repeating-linear-gradient(var(--paper-deep) 0 23px, var(--hair-faint) 23px 24px)}
+  figure img{width:100%;display:block}
+  figcaption{font:.72rem/1.5 var(--mono);color:var(--ink-soft);margin-top:.7rem}
+  code{font-family:var(--mono);font-size:.82em;background:var(--paper-deep);padding:.05em .35em}
+  .margin-note{float:right;width:11rem;margin:.2rem -13rem 1rem 1.5rem;font-size:.72rem;line-height:1.5;
+    color:var(--ink-faint);border-top:1px solid oklch(43% .125 29 / .55);padding-top:.4rem}
+  @media (max-width:76rem){.margin-note{float:none;width:auto;margin:1rem 0}}
+  .repro{margin:2.4rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.85rem}
+  .repro .lab{font:600 .65rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:.5rem}
+  .repro code{background:none;display:block;padding:.15rem 0}
+  .footnav{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:1rem;
+    font:.75rem/1.5 var(--mono);color:var(--rubric)}
+  .footnav a{text-decoration:none}
+  .pull{font-size:1.12rem;line-height:1.45;color:var(--ink);border-left:3px solid var(--rubric);
+    padding-left:1rem;margin:1.8rem 0;max-width:34rem}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="kicker">
+    <span><a href="index.html">Case studies</a> · 05 · Research design</span>
+    <span>n = 7,860 backtests · Jul 2026</span>
+  </div>
+
+  <h1>I tested 7,860 strategies across crypto and stocks. Doing nothing beat all of them.</h1>
+  <p class="standfirst">Two asset classes at opposite ends of the cost spectrum. Two failure modes
+  with nothing in common. One conclusion, arrived at by two entirely different roads — which is
+  what makes it hard to argue with.</p>
+  <p style="font:.8rem/1.6 var(--mono);color:var(--ink-soft);margin:.6rem 0 0">
+  By a process engineer (SPC) in semiconductor assembly &amp; test.
+  <b>Paper trading throughout; no real money.</b></p>
+
+  <div class="verdict"><b>Verdict — no edge that you can hold.</b>
+  In crypto, strategies <em>lose money</em>: the signal is frequently right and the fees eat it
+  (<span class="hit">56%</span> of hourly losers were profitable <em>before costs</em>).
+  In stocks, strategies <em>make money</em> and still lose: <span class="hit">94%</span> are
+  profitable and <span class="hit">92%</span> of them underperform buy-and-hold, capturing only
+  <span class="hit">23%</span> of it. Different diseases. Same funeral.</p></div>
+
+  <h2><span class="no">01</span>The one change that made it visible</h2>
+
+  <p>Every strategy in my lab reported a single number: net return. When almost all of them lost,
+  that number told me <em>that</em> they lost and nothing about <em>why</em> — and the causes turn
+  out to need opposite fixes.</p>
+
+  <p>So I scored every backtest <b>twice</b>: once with costs, and once with the tolls switched off.
+  One extra column, and the whole picture reorganises itself.</p>
+
+  <div class="tw"><table>
+    <tr><th>Verdict</th><th>Test</th><th>What it means</th><th>The fix</th></tr>
+    <tr><td>signal_wrong</td><td>gross &lt; 0</td><td>Loses before any cost.</td><td>Delete it. Cheaper trading will not save it.</td></tr>
+    <tr><td>cost_killed</td><td>gross &gt; 0, net &lt; 0</td><td>The signal worked. The fees ate it.</td><td>Trade it <em>less often</em>.</td></tr>
+    <tr><td>lags_hold</td><td>net &gt; 0, net &lt; buy&amp;hold</td><td>Profitable — and worse than doing nothing.</td><td>Stop. You are subtracting value.</td></tr>
+  </table></div>
+
+  <p>That third verdict is one I had to add against my own vanity. My first pass called anything
+  profitable “ok”. It labelled <span class="hit">309</span> stock strategies “ok” while they
+  underperformed doing nothing by a median of <span class="hit">520 percentage points</span>.
+  <b>Making money is not the bar. Beating the null is the bar.</b></p>
+
+  <h2><span class="no">02</span>Crypto: the signal is right and the fees eat it</h2>
+
+  <p class="margin-note">The indicator was correct. The trader went broke paying to act on it.</p>
+
+  <p>ADA on an RSI-2 rule, hourly: <b>gross <span class="hit">+1,034%</span>. Net
+  <span class="hit">−81%</span>.</b> Across 1,358 trades. The rule was not wrong — it was
+  <em>expensive</em>. It is one of 1,800 hourly strategies that made money before costs and finished
+  underwater after them.</p>
+
+  <figure>
+    <img src="figures/exh-fig1.svg" alt="Left: six crypto strategies with large positive gross returns and negative net returns. Right: 336 stock strategies plotted against buy-and-hold, nearly all below the break-even diagonal.">
+    <figcaption>FIG 1 — Two diseases. LEFT: crypto strategies whose gross return was strongly positive
+    and whose net return was not. RIGHT: every stock strategy against its own buy-and-hold. The dashed
+    line is break-even against doing nothing; 6 of 336 sit above it.</figcaption>
+  </figure>
+
+  <h2><span class="no">03</span>The only variable that mattered was how often I paid</h2>
+
+  <p>Same indicators. Same coins. The <em>only</em> thing changed is the bar interval.</p>
+
+  <figure>
+    <img src="figures/exh-fig2.svg" alt="Bar chart: profitable share rises 15% hourly to 51% daily to 55% weekly, while the fee-killed share of losers collapses from 56% to 4% to 0%.">
+    <figcaption>FIG 2 — Profitability triples from hourly to daily, and the share of losses caused by
+    fees collapses from 56% to 4% to almost nothing. *Weekly is a smaller sample (231 runs). The gain
+    from slowing down is real and it is <em>finished</em> by the time you reach daily.</figcaption>
+  </figure>
+
+  <p class="pull">An indicator only makes money if its <b>edge per trade</b> exceeds its
+  <b>cost per trade × how often it trades.</b> Most indicators have a tiny real edge. A fast one
+  multiplies a tiny edge by a large number of expensive trades, and the tolls win.</p>
+
+  <h2><span class="no">04</span>The theory I brought, and why it was wrong</h2>
+
+  <p>I started with the obvious explanation: indicators are <em>lagging</em>. Price moves first, the
+  indicator confirms afterwards, and by the time you act the move is gone.</p>
+
+  <p><b>Every price indicator is lagging.</b> RSI, MACD, Stochastic, CCI — all of them are functions
+  of past prices. There is no leading indicator on a chart, because there is no information in a
+  chart that is not already history. What people call “leading” oscillators are simply
+  <em>faster</em>. Speed is not foresight.</p>
+
+  <p>And the data says lag is not the problem — it is the <em>cure</em>. On BTC daily, the biggest
+  winners are the slowest rules in the lab: price-above-SMA200 (<span class="hit">+188%</span>, 32
+  trades), the golden cross (<span class="hit">+85%</span>, <b>8 trades in four years</b>). The
+  losers are the fast, reactive ones. A slow indicator trades rarely, and trading rarely is how you
+  stop paying tolls.</p>
+
+  <h2><span class="no">05</span>Stocks: not wrong. Absent.</h2>
+
+  <p>Stocks cost about a fifth of what crypto costs to trade, so the toll booth should mostly vanish.
+  It does — median cost drag falls to <span class="hit">7%</span>, and charging full crypto fees
+  would kill only 4% of the money-makers. <b>Costs are simply not the problem in equities.</b></p>
+
+  <p>And it does not help at all.</p>
+
+  <figure>
+    <img src="figures/exh-fig3.svg" alt="Two bars: doing nothing returns 678% while the median strategy returns 158%, about 23% of it.">
+    <figcaption>FIG 3 — 94% of stock strategies are profitable. The median one turns a +678% market
+    into +158%. It captures under a quarter of the return that was available for doing nothing.</figcaption>
+  </figure>
+
+  <p>Stocks drift upward. Any rule that takes you to cash has to <b>earn its absence</b> — and almost
+  none do. You are not being punished for being wrong about direction. You are being punished for
+  <em>not being there</em>.</p>
+
+  <p class="pull">In crypto you are punished for being <b>wrong</b>.<br>
+  In stocks you are punished for being <b>absent</b>.</p>
+
+  <p>Two asset classes, at opposite ends of the cost spectrum, failing for causes that share nothing.
+  That is a far stronger result than one market refusing me twice. It is not a fee problem, a coin
+  problem, or a lag problem.</p>
+
+  <h2><span class="no">06</span>What I got wrong, and how I know</h2>
+
+  <p>This is the part worth publishing, because it is the part nobody publishes.</p>
+
+  <p><b>A lookahead bug.</b> A cross-sectional momentum test ranked assets on the close of bar
+  <code>i</code> and then immediately booked the return of bar <code>i</code> — earning the move it
+  had used to predict itself. It printed <span class="hit">+368,081%</span>. The absurd number
+  <em>was</em> the error message. <b>A backtest result that looks too good is not a discovery. It is
+  a bug announcing itself.</b></p>
+
+  <p><b>An inverted objective.</b> I ranked exit rules by per-trade Sharpe and it chose a trailing
+  stop — which then destroyed the returns, because a trailing stop produces many small consistent
+  wins and a fat right tail reads as <em>variance</em> to a Sharpe ratio. I had optimised a metric
+  that actively penalised the source of the profit. Choosing the objective is a modelling decision,
+  and the wrong one does not fail loudly. It quietly inverts your conclusion.</p>
+
+  <p><b>Survivorship.</b> The one strategy that survived a holdout was ranked across coins that are
+  liquid <em>today</em>. But a dying coin ranks <em>highest</em> right before it dies. Putting the
+  corpses back into the universe — Terra at −94%, FTX’s token at −99.7% — cost the strategy
+  <span class="hit">13,407 percentage points</span> of in-sample excess return. It had been measuring
+  a graveyard it could not see.</p>
+
+  <p><b>A flattering label.</b> The <code>lags_hold</code> verdict in section 01 exists because my
+  own code was calling 309 losing-to-the-null strategies “ok”.</p>
+
+  <p>Four errors. All four found by the apparatus rather than by the market — which is the entire
+  point of building the apparatus.</p>
+
+  <div class="verdict"><b>What survives.</b> Not a strategy. A method: score every backtest twice,
+  name the failure rather than the number, always carry a null, test on instruments you did not fit
+  to, and treat a spectacular result as a bug report. The strategies all died. The instrument that
+  killed them is the thing worth keeping.</p></div>
+
+  <p style="color:var(--ink-soft);font-size:.92rem">The honest close: after 7,860 backtests, the best
+  strategy I found was <b>holding</b>. That is not a satisfying answer, and it is not a marketable
+  one. It is just the one the data gave.</p>
+
+  <div class="repro">
+    <span class="lab">Reproduce</span>
+    <code>python3 scripts/exhaustion.py     # recomputes every figure and number</code>
+    <p style="margin:.6rem 0 0;font-size:.82rem;color:var(--ink-soft)">Runs on
+    <code>data/exhaustion_crypto.csv</code> (7,524 runs: 22 indicators × 11 coins × 3 combination
+    tiers, hourly and daily, 0.15%/side) and <code>data/exhaustion_stocks.csv</code> (336 runs: the
+    same indicators × 16 liquid US names, daily, 0.03%/side). Every row carries its gross return, net
+    return, cost drag and verdict, so the decomposition in section 01 is checkable line by line.</p>
+  </div>
+
+  <div class="footnav">
+    <a href="index.html">← All case studies</a>
+    <a href="backtest-gauge.html">04 · The gauge that was never calibrated →</a>
+  </div>
+</div>
+</body>
+</html>

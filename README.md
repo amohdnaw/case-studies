@@ -2,7 +2,7 @@
 
 Live: **https://amohdnaw.github.io/case-studies/**
 
-Four one-page studies from systems I built and run, each reproducible from the data in this
+Five one-page studies from systems I built and run, each reproducible from the data in this
 repo.
 
 | # | Study | Status |
@@ -11,6 +11,7 @@ repo.
 | 02 | [Rebasing capability statistics at 15,000-characteristic scale](https://amohdnaw.github.io/case-studies/spc-capability-rebase.html) · [notebook](notebooks/spc-rebase.ipynb) | Live |
 | 03 | [Finding the yield signal in inspection data](https://amohdnaw.github.io/case-studies/icos-yield-signal.html) · [notebook](notebooks/icos-yield.ipynb) | Live |
 | 04 | [My backtest was a gauge that had never passed GR&R](https://amohdnaw.github.io/case-studies/backtest-gauge.html) · [notebook](notebooks/backtest-gauge.ipynb) | Live |
+| 05 | [I tested 7,860 strategies across crypto and stocks. Doing nothing beat all of them.](https://amohdnaw.github.io/case-studies/exhaustion.html) · [script](scripts/exhaustion.py) | Live |
 
 ## Reproduce study 04
 

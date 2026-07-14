@@ -1,0 +1,24 @@
+{
+ "n_crypto": 7524,
+ "n_stocks": 336,
+ "n_total": 7860,
+ "crypto_1h_cost_killed": 1800,
+ "crypto_1h_losers": 3207,
+ "stocks_lags_hold": 309,
+ "stocks_beat_hold": 6,
+ "stocks_median_net_pct": 157.6,
+ "stocks_median_buyhold_pct": 678.3,
+ "stocks_capture_pct": 23.2,
+ "stocks_median_cost_drag_pct": 7.4,
+ "crypto_verdicts": {
+  "ok": 2471,
+  "cost_killed": 1874,
+  "signal_wrong": 3179
+ },
+ "stocks_verdicts": {
+  "lags_hold": 309,
+  "cost_killed": 5,
+  "signal_wrong": 16,
+  "ok": 6
+ }
+}

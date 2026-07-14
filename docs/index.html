@@ -7,7 +7,7 @@
 <meta name="description" content="Case studies in applied statistics: honest inference on trading data, SPC capability at production scale, yield analytics.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Evidence, not claims — case studies by Ammar Nawawi">
-<meta property="og:description" content="Four studies in applied statistics, reproducible from the data they ship with — published even when the answer was no.">
+<meta property="og:description" content="Five studies in applied statistics, reproducible from the data they ship with — published even when the answer was no.">
 <meta property="og:url" content="https://amohdnaw.github.io/case-studies/">
 <meta property="og:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
@@ -49,9 +49,10 @@
 <div class="sheet">
   <div class="kicker"><span>Ammar Nawawi · Case studies</span><span>Applied statistics, from real systems</span></div>
   <h1>Evidence, not claims.</h1>
-  <p class="standfirst">Four studies from systems I built and run — a trading log audited to a
-  null result, statistical process control realigned at production scale, yield analytics, and a
-  backtest engine put through the measurement-system analysis it never had.
+  <p class="standfirst">Five studies from systems I built and run — a trading log audited to a
+  null result, statistical process control realigned at production scale, yield analytics, a backtest
+  engine put through the measurement-system analysis it never had, and 7,860 strategies that all
+  lost to doing nothing.
   Each one page, each reproducible from the data it ships with.</p>
 
   <div class="study">
@@ -87,6 +88,15 @@
     optimistic on take-profits — so the errors cancelled in the mean and hid in the tails. MSA
     before capability, including when the gauge is your own code. Ends on an honest null.</p>
     <a class="open" href="backtest-gauge.html">Read the study →</a>
+  </div>
+
+  <div class="study">
+    <div class="meta"><span>05 · Research design</span><span>7,860 backtests · crypto + stocks</span></div>
+    <h2><a href="exhaustion.html">I tested 7,860 strategies across crypto and stocks. Doing nothing beat all of them.</a></h2>
+    <p>Two asset classes, two opposite failure modes, one conclusion. In crypto the signal is right and
+    the fees eat it; in stocks the signal makes money and still loses to buy-and-hold. Includes the four
+    errors the apparatus caught in its own work.</p>
+    <a class="open" href="exhaustion.html">Read the study →</a>
   </div>
 
   <div class="footer">
