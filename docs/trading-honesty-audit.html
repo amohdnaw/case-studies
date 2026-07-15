@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>I audited my own trading system — and killed my best result</title>
+<title>I audited my own trading system, and killed my best result</title>
 <meta name="description" content="A statistical case study: day-clustered inference, an always-long baseline, and an honestly reported null result.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="I audited my own trading system — and killed my best result">
+<meta property="og:title" content="I audited my own trading system, and killed my best result">
 <meta property="og:description" content="1,578 trades, day-clustered inference: the CI includes zero. An honest null result with the runnable notebook attached.">
 <meta property="og:url" content="https://amohdnaw.github.io/case-studies/trading-honesty-audit.html">
 <meta property="og:image" content="https://amohdnaw.github.io/case-studies/og-study01.png">
@@ -43,8 +43,9 @@
   h2{font-size:1.25rem;font-weight:600;margin:2.6rem 0 .7rem}
   h2 .no{font:600 .78rem/1 var(--mono);color:var(--accent);margin-right:.6rem;vertical-align:.14em}
   p{margin:.8rem 0;font-size:.98rem}
-  .verdict{margin:2rem 0;padding:1rem 1.2rem;background:var(--wash);border-left:3px solid var(--rubric);font-size:.98rem;line-height:1.55}
+  .verdict{margin:2rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.98rem;line-height:1.55}
   .verdict b{color:var(--rubric)}
+  .verdict .vlabel{font:700 .62rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--rubric);display:block;margin-bottom:.55rem}
   table{width:100%;border-collapse:collapse;margin:1.6rem 0;font-size:.85rem}
   th{font:600 .68rem/1.3 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);
     text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--hair)}
@@ -76,43 +77,43 @@
     <span>n = 1,578 · Apr–Jul 2026</span>
   </div>
 
-  <h1>I audited my own trading system — and killed my best result.</h1>
+  <h1>I audited my own trading system, and killed my best result.</h1>
   <p class="standfirst">Ninety trading days of paper trades showed +0.48% per trade, and an ordinary
   bootstrap called it significant. The number was real and reproducible. It was not evidence.
   This is a study in running the statistics that hurt.</p>
   <p style="font:.8rem/1.6 var(--mono);color:var(--ink-soft);margin:.6rem 0 0">
-  By a process engineer (SPC) in semiconductor assembly &amp; test — the same statistical
+  By a process engineer (SPC) in semiconductor assembly &amp; test: the same statistical
   discipline I apply to production data, applied to a personal system.
   <b>Paper trading throughout; no real money.</b></p>
 
-  <div class="verdict"><b>Verdict — no demonstrable edge.</b> Net expectancy +0.479%/trade, but the
-  day-clustered 95% CI is [−0.18, +1.10] — it includes zero. The excess over an always-long baseline
-  on identical instances is +0.15%/trade, CI [−0.33, +0.72] — includes zero. Gross accuracy 53.7%
+  <div class="verdict"><span class="vlabel">Verdict</span>No demonstrable edge. Net expectancy +0.479%/trade, but the
+  day-clustered 95% CI is [−0.18, +1.10]: it includes zero. The excess over an always-long baseline
+  on identical instances is +0.15%/trade, CI [−0.33, +0.72], which includes zero. Gross accuracy 53.7%
   against a 53.9% up-move base rate. The confidence score that sizes positions correlates with
   outcomes at r&nbsp;=&nbsp;−0.015. <br><br><b>In plain terms:</b> the system made many bets on the
-  same market day. Counted honestly — one bet per day, or per 3-day block — the sample is too
+  same market day. Counted honestly (one bet per day, or per 3-day block) the sample is too
   small to distinguish this system from luck.</div>
 
-  <h2><span class="no">§1</span>The system, and the number I wanted to believe</h2>
-  <p>For five months I ran an automated signal system — news, technicals and derivatives data,
-  synthesized by an LLM into BUY/SELL/HOLD calls on a basket of crypto and US equities — and
+  <h2>The system, and the number I wanted to believe</h2>
+  <p>For five months I ran an automated signal system (news, technicals and derivatives data,
+  synthesized by an LLM into BUY/SELL/HOLD calls on a basket of crypto and US equities) and
   paper-traded every call. By July the log showed a positive net expectancy after a 0.30%
   round-trip fee. Before letting a number like that anywhere near real money, I audited it the way
   I'd want an analyst to audit anyone's favorable result: check the sample, check the inference,
   check the baseline.</p>
 
-  <h2><span class="no">§2</span>Is the sample what it claims to be?</h2>
+  <h2>Is the sample what it claims to be?</h2>
   <p>No. The headline count mixed in 419 <code>[Demo]</code> dry-run trades and 415 HOLD
-  advisories — calls that aren't directional bets, yet were logged and graded as trades. The sample
+  advisories, calls that aren't directional bets, yet were logged and graded as trades. The sample
   that matters is <b>1,578 real BUY/SELL trades on 90 trading days</b>. Every number below is
   computed on that sample, from the raw trade log.</p>
 
-  <h2><span class="no">§3</span>Is the inference honest about dependence?</h2>
+  <h2>Is the inference honest about dependence?</h2>
   <div class="margin-note">Same-day signals on correlated assets are one market bet, not thirty.
-  And holds span up to 3 days, so even days overlap — the truly independent sample is closer to
+  And holds span up to 3 days, so even days overlap: the truly independent sample is closer to
   ~30 blocks than 1,578 trades.</div>
   <p>Treat each trade as independent and the edge looks proven: an iid bootstrap puts the 95% CI at
-  [+0.15, +0.83] — comfortably above zero. But the system fires many signals per day on correlated
+  [+0.15, +0.83], comfortably above zero. But the system fires many signals per day on correlated
   assets, so the valid resampling unit is the <i>trading day</i>. Resample whole days instead of
   trades and the same point estimate loses its significance entirely; resample non-overlapping
   3-day blocks (holds span up to 3 days, so even days overlap) and the interval widens further.
@@ -120,70 +121,70 @@
 
   <table>
     <tr><th>Estimate (same data, same point estimate)</th><th>Net exp %/trade</th><th>95% CI</th></tr>
-    <tr><td>iid bootstrap — resample 1,578 trades</td><td>+0.479</td><td>[+0.154, +0.825] — "significant"</td></tr>
-    <tr><td>Day-clustered bootstrap — resample 90 days</td><td>+0.479</td><td class="hit">[−0.181, +1.102] — includes 0</td></tr>
-    <tr><td>Excess vs always-BUY, day-clustered (§4)</td><td>+0.153</td><td class="hit">[−0.328, +0.723] — includes 0</td></tr>
-    <tr><td>3-day block bootstrap — resample ~30 blocks</td><td>+0.479</td><td class="hit">[−0.434, +1.263] — includes 0</td></tr>
+    <tr><td>iid bootstrap: resample 1,578 trades</td><td>+0.479</td><td>[+0.154, +0.825] ("significant")</td></tr>
+    <tr><td>Day-clustered bootstrap: resample 90 days</td><td>+0.479</td><td class="hit">[−0.181, +1.102] (includes 0)</td></tr>
+    <tr><td>Excess vs always-BUY, day-clustered (§4)</td><td>+0.153</td><td class="hit">[−0.328, +0.723] (includes 0)</td></tr>
+    <tr><td>3-day block bootstrap: resample ~30 blocks</td><td>+0.479</td><td class="hit">[−0.434, +1.263] (includes 0)</td></tr>
   </table>
 
   <figure>
     <img src="figures/fig1-bootstrap.svg" alt="Histogram comparison: iid bootstrap distribution sits entirely above zero; the day-clustered distribution is wider and crosses zero.">
-    <figcaption>Fig. 1 — Two bootstrap distributions of the same mean. The iid version (gray fill)
+    <figcaption>Fig. 1: Two bootstrap distributions of the same mean. The iid version (gray fill)
     calls the edge significant; clustering by trading day (red outline) widens the interval past
     zero. The clustered interval is the correctly specified one.</figcaption>
   </figure>
 
-  <h2><span class="no">§4</span>Does it beat doing nothing?</h2>
-  <p>A signal system doesn't compete with zero — it competes with doing nothing intelligent. Over a
+  <h2>Does it beat doing nothing?</h2>
+  <p>A signal system doesn't compete with zero: it competes with doing nothing intelligent. Over a
   broadly rising tape, the fair null is <i>always-BUY on the identical instances</i>: same entries,
   same exits, same fee, signal ignored. That do-nothing baseline earned +0.325%/trade net. The
-  system's excess over it is +0.153%/trade — and its day-clustered CI includes zero. Gross accuracy,
+  system's excess over it is +0.153%/trade, and its day-clustered CI includes zero. Gross accuracy,
   53.7%, doesn't even clear the period's 53.9% up-move base rate: a coin that always calls "up"
   would have matched the signal layer. One disclosure: the excess is zero for every BUY by
-  construction, so this comparison isolates the 283 SELL calls — the only place the system
+  construction, so this comparison isolates the 283 SELL calls, the only place the system
   actually diverged from the baseline.</p>
 
   <figure>
     <img src="figures/fig2-cumulative.svg" alt="Cumulative net pnl lines: the system ends at +755% summed over trades, the always-BUY baseline at +513%, with the baseline far more volatile.">
-    <figcaption>Fig. 2 — Cumulative net pnl, system vs always-BUY on the same instances. The system
-    ends ahead — but the gap is statistically indistinguishable from luck, which is exactly what the
+    <figcaption>Fig. 2: Cumulative net pnl, system vs always-BUY on the same instances. The system
+    ends ahead, but the gap is statistically indistinguishable from luck, which is exactly what the
     clustered CI says.</figcaption>
   </figure>
 
-  <h2><span class="no">§5</span>The confidence score shows no detectable signal</h2>
+  <h2>The confidence score shows no detectable signal</h2>
   <p>Every signal ships with a 1–10 confidence score that gates logging (below 6 is discarded) and
   scales paper position sizes. Across 1,578 real trades: Pearson r&nbsp;=&nbsp;−0.015,
   Spearman ρ&nbsp;=&nbsp;+0.008. One honest caveat: the gate means only the 6–10 range is
-  observable, and range truncation attenuates correlations — so "pure noise" is stronger than
+  observable, and range truncation attenuates correlations, so "pure noise" is stronger than
   the data can prove. What it can say: no linear or monotone association is detectable in the
   range we can see, and a score that sizes positions carries that burden of proof.</p>
 
   <figure>
     <img src="figures/fig3-confidence.svg" alt="Scatter of confidence score versus realized pnl with an essentially flat fit line, r = -0.015.">
-    <figcaption>Fig. 3 — Confidence score vs realized pnl per trade (jittered). The fit is flat.</figcaption>
+    <figcaption>Fig. 3: Confidence score vs realized pnl per trade (jittered). The fit is flat.</figcaption>
   </figure>
 
-  <h2><span class="no">§6</span>Limitations</h2>
-  <p>— This is a <b>post-hoc audit</b> of my own favorable number on one fixed dataset. It can
-  refute the in-sample evidence; it cannot establish out-of-sample edge — which is exactly why
+  <h2>Limitations</h2>
+  <p>This is a <b>post-hoc audit</b> of my own favorable number on one fixed dataset. It can
+  refute the in-sample evidence; it cannot establish out-of-sample edge, which is exactly why
   the promotion gate below demands new data.<br>
-  — <b>Sample composition:</b> the log begins 2026-02-04, but Feb–early Apr was an all-demo dry
+  <b>Sample composition:</b> the log begins 2026-02-04, but Feb–early Apr was an all-demo dry
   run; real trading spans 2026-04-05 → 2026-07-08 (90 trading days).<br>
-  — <b>One regime:</b> a broadly rising tape; drawdown behavior is uncharacterized.<br>
-  — <b>Costs assumed, not measured:</b> the 0.30% round-trip fee matches the paper books but is
+  <b>One regime:</b> a broadly rising tape; drawdown behavior is uncharacterized.<br>
+  <b>Costs assumed, not measured:</b> the 0.30% round-trip fee matches the paper books but is
   not stress-tested. The mean is also tail-sensitive (1%-trimmed: +0.405%/trade).<br>
-  — <b>The pipeline evolved mid-window</b> (prompt and gate fixes); pooling treats it as one
+  <b>The pipeline evolved mid-window</b> (prompt and gate fixes); pooling treats it as one
   system.</p>
 
-  <h2><span class="no">§7</span>What the honest answer changed</h2>
+  <h2>What the honest answer changed</h2>
   <p>The point of an audit is what it changes. Because of this one:</p>
-  <p>— <b>Promotion to live capital became a mechanical gate</b>, not a feeling: day-clustered
+  <p><b>Promotion to live capital became a mechanical gate</b>, not a feeling: day-clustered
   CI&nbsp;&gt;&nbsp;0 <i>and</i> positive excess vs always-BUY, sustained over ≥60 trading days of
   post-fix data.<br>
-  — <b>The honesty layer moved into the production pipeline</b>: the dashboard now prints the
+  <b>The honesty layer moved into the production pipeline</b>: the dashboard now prints the
   day-clustered CI and the baseline excess next to every headline metric, so the flattering number
   can never appear without its context again.<br>
-  — <b>The confidence score is being retired from position sizing</b> until it demonstrates
+  <b>The confidence score is being retired from position sizing</b> until it demonstrates
   correlation with outcomes out of sample.</p>
   <p>A positive result would have been more fun. A defensible process is worth more.</p>
 
@@ -192,7 +193,7 @@
     Complete trade log: <a href="https://github.com/amohdnaw/case-studies/blob/main/data/trades.csv">data/trades.csv</a>
     (1 row per paper trade) · Full analysis:
     <a href="https://github.com/amohdnaw/case-studies/blob/main/notebooks/trading-honesty-audit.ipynb">notebooks/trading-honesty-audit.ipynb</a>
-    (fixed seed — every interval above reproduces exactly). Paper trading only, throughout.
+    (fixed seed, every interval above reproduces exactly). Paper trading only, throughout.
   </div>
 
   <div class="footnav">

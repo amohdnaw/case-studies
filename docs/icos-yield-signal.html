@@ -7,7 +7,7 @@
 <meta name="description" content="A yield-analytics case study: ranking inspection defects by recoverable units, not raw count, reorders the priority list a production meeting acts on. Synthetic data, real method.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Finding the yield signal in inspection data">
-<meta property="og:description" content="The loudest defect wasn't the biggest lever — ranking loss drivers by recoverable units reorders the Pareto. Runnable notebook.">
+<meta property="og:description" content="The loudest defect wasn't the biggest lever: ranking loss drivers by recoverable units reorders the Pareto. Runnable notebook.">
 <meta property="og:url" content="https://amohdnaw.github.io/case-studies/icos-yield-signal.html">
 <meta property="og:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
@@ -43,8 +43,9 @@
   h2{font-size:1.25rem;font-weight:600;margin:2.6rem 0 .7rem}
   h2 .no{font:600 .78rem/1 var(--mono);color:var(--accent);margin-right:.6rem;vertical-align:.14em}
   p{margin:.8rem 0;font-size:.98rem}
-  .verdict{margin:2rem 0;padding:1rem 1.2rem;background:var(--wash);border-left:3px solid var(--rubric);font-size:.98rem;line-height:1.55}
+  .verdict{margin:2rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.98rem;line-height:1.55}
   .verdict b{color:var(--rubric)}
+  .verdict .vlabel{font:700 .62rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--rubric);display:block;margin-bottom:.55rem}
   table{width:100%;border-collapse:collapse;margin:1.6rem 0;font-size:.85rem}
   th{font:600 .68rem/1.3 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);
     text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--hair)}
@@ -78,49 +79,49 @@
 
   <h1>Finding the yield signal in inspection data.</h1>
   <p class="standfirst">Automated optical inspection flags thousands of units a day. Rank the defect
-  categories by how loud they are — raw count — and you send the meeting after the wrong problem.
-  Rank them by <i>recoverable units</i> — the yield a fix actually gives back — and the priority
+  categories by how loud they are (raw count) and you send the meeting after the wrong problem.
+  Rank them by <i>recoverable units</i> (the yield a fix actually gives back) and the priority
   list reorders. This is that reorder, from raw records to a table a production meeting can act on.</p>
   <p style="font:.8rem/1.6 var(--mono);color:var(--ink-soft);margin:.6rem 0 0">
-  Method demonstrated on a <b>simulated</b> inspection log — 720,000 units generated with a fixed
+  Method demonstrated on a <b>simulated</b> inspection log: 720,000 units generated with a fixed
   seed (generator committed), reproducing the phenomena of <b>a semiconductor assembly &amp; test
   (OSAT) production environment</b> with no production data. The Pareto discipline is the point,
   and it transfers to a real log with the same columns.</p>
 
-  <div class="verdict"><b>Verdict — the loudest defect wasn't the biggest lever.</b> Ranked by flag
-  count, <b>cosmetic mark</b> leads at 35,872 flags — but 90% of those are cosmetic-and-salvageable,
+  <div class="verdict"><span class="vlabel">Verdict</span>The loudest defect wasn't the biggest lever. Ranked by flag
+  count, <b>cosmetic mark</b> leads at 35,872 flags, but 90% of those are cosmetic-and-salvageable,
   so it costs only 3,543 units of yield and ranks <b>7th</b> by what a fix would recover. Ranked by
-  recoverable units, <b>placement offset</b> leads at <b>15,363 units</b> (2.13 yield points) — it
+  recoverable units, <b>placement offset</b> leads at <b>15,363 units</b> (2.13 yield points). It
   was only 2nd by count, but 72% of its flags scrap. <br><br><b>In plain terms:</b> counting flags
-  weights every defect equally; weighting by scrap counts only the yield actually lost — and
+  weights every defect equally; weighting by scrap counts only the yield actually lost, and
   recoverable if the root cause is fixed. The two rankings disagree at the top, and the
   recoverable-units one is the one tied to yield.</div>
 
-  <h2><span class="no">§1</span>The records, and the reflex</h2>
-  <p>The inspection log is one row per <i>flagged</i> unit — a clean pass generates no row — across
+  <h2>The records, and the reflex</h2>
+  <p>The inspection log is one row per <i>flagged</i> unit (a clean pass generates no row) across
   60 days, 2,400 lots (a fixed 300 units each), 10 AOI machines, and 9 defect categories. Overall
   yield is <b>92.5%</b>: of 720,000 units inspected, 133,444 were flagged (18.5%) and 54,358 were
-  ultimately scrapped. Each flagged unit carries a <code>recoverable</code> flag — <code>True</code>
+  ultimately scrapped. Each flagged unit carries a <code>recoverable</code> flag: <code>True</code>
   if it was salvaged by rework or retest (no yield loss), <code>False</code> if it was scrapped. The
   reflex in a production meeting is to open the count ranking and start at the top. That ranking is
   §2.</p>
 
-  <h2><span class="no">§2</span>Ranking by count sends you to the loudest defect</h2>
+  <h2>Ranking by count sends you to the loudest defect</h2>
   <p>Sort the categories by flag count and the list is dominated by high-volume cosmetic defects:
   <b>cosmetic mark</b> (35,872), then placement offset (21,379), surface contamination (17,366),
   solder void (17,701), mold flash (13,794). Four of the top five are categories where most flags
-  are salvaged — they are loud on the floor and cheap to yield. Counting treats a salvaged cosmetic
+  are salvaged: they are loud on the floor and cheap to yield. Counting treats a salvaged cosmetic
   flag and a scrapped die crack as the same event. They are not.</p>
 
-  <h2><span class="no">§3</span>Ranking by recoverable units reorders the list</h2>
+  <h2>Ranking by recoverable units reorders the list</h2>
   <div class="margin-note">Recoverable units = the scrap a driver causes = the yield a root-cause
   fix gives back. A salvaged (reworked/retested) flag cost no yield, so it earns no credit here;
   only non-recoverable scrap does.</div>
-  <p>Define the metric that matters: <b>recoverable units</b> — the units a driver scraps, which is
+  <p>Define the metric that matters, <b>recoverable units</b>: the units a driver scraps, which is
   exactly the yield you would recover by eliminating its root cause. Re-rank on it and the top of the
   list changes. <b>Placement offset</b> rises from 2nd to <b>1st</b>; <b>die crack</b>, only 7th by
   count, climbs to <b>3rd</b> because 95% of its flags scrap; and the loudest category, <b>cosmetic
-  mark</b>, falls from 1st to <b>7th</b>. Surface contamination and mold flash — 4th and 5th by count —
+  mark</b>, falls from 1st to <b>7th</b>. Surface contamination and mold flash, 4th and 5th by count,
   drop to 8th and 9th.</p>
 
   <table>
@@ -138,48 +139,48 @@
 
   <figure>
     <img src="figures/yield-fig1.svg" alt="Rank slopegraph: categories ranked by count on the left, by recoverable units on the right. Placement offset rises from 2nd to 1st; cosmetic mark falls from 1st to 7th; lines cross to show the reorder.">
-    <figcaption>Fig. 1 — The same nine categories, ranked by count (left) and by recoverable units
+    <figcaption>Fig. 1. The same nine categories, ranked by count (left) and by recoverable units
     (right). Placement offset (solid) rises to the top; the loudest category, cosmetic mark
     (dashed), falls to 7th. The crossing lines are the finding.</figcaption>
   </figure>
 
   <p>The gap is large, not marginal: fixing placement offset alone recovers 2.13 yield points, more
   than four times what fixing cosmetic mark would (0.49). Fixing every driver's root cause would
-  recover 54,358 units — 7.55 yield points — but the meeting has finite attention, and the
+  recover 54,358 units (7.55 yield points), but the meeting has finite attention, and the
   recoverable-units ranking spends it where the yield is.</p>
 
-  <h2><span class="no">§4</span>Is the loss systemic or localized?</h2>
+  <h2>Is the loss systemic or localized?</h2>
   <p>A ranking tells the meeting <i>what</i> to fix; the machine breakdown tells it <i>how</i>. The
-  two top-of-list drivers need opposite responses. <b>Placement offset</b> — the #1 lever — is
+  two top-of-list drivers need opposite responses. <b>Placement offset</b>, the #1 lever, is
   spread across the line: no single machine carries more than 10.9% of its scrap, so it is a
   <b>systemic process</b> issue, fixed at the recipe/setup level, not by pulling a tool.
-  <b>Lead lift</b> — a rare category, only 5,281 flags — is the opposite: <b>92.2%</b> of it lands
+  <b>Lead lift</b> (a rare category, only 5,281 flags) is the opposite: <b>92.2%</b> of it lands
   on just two machines (M03 and M07), so it is <b>localized</b> and fixed by containing those two
   stations. Same heatmap, two verdicts.</p>
 
   <figure>
     <img src="figures/yield-fig3.svg" alt="Machine by category heatmap of scrap units in a single-hue ink ramp. The lead lift column is dark only on machines M03 and M07; placement offset is a uniform mid-tone across all ten machines.">
-    <figcaption>Fig. 3 — Scrap units by machine × defect category (single-hue ink ramp; darker = more
-    scrap). Lead lift concentrates on M03 and M07; placement offset is uniform down the column — the
+    <figcaption>Fig. 3. Scrap units by machine × defect category (single-hue ink ramp; darker = more
+    scrap). Lead lift concentrates on M03 and M07; placement offset is uniform down the column: the
     signature of a systemic loss versus a localized one.</figcaption>
   </figure>
 
   <figure>
     <img src="figures/yield-fig2.svg" alt="Daily lot-level yield over 60 days near 92.5 percent, with a shaded band up to a counterfactual line near 94.5 percent showing the yield that fixing placement offset would recover.">
-    <figcaption>Fig. 2 — Daily lot-level yield as inspected (solid) against the counterfactual with
+    <figcaption>Fig. 2. Daily lot-level yield as inspected (solid) against the counterfactual with
     placement offset eliminated (dashed). The shaded band is the recoverable yield the top driver
     holds down, every day of the window.</figcaption>
   </figure>
 
-  <h2><span class="no">§5</span>What the meeting does differently</h2>
+  <h2>What the meeting does differently</h2>
   <p>The point of the reanalysis is what it changes in the room:</p>
-  <p>— <b>The priority list is sorted by recoverable units, not count.</b> The action item is
+  <p>• <b>The priority list is sorted by recoverable units, not count.</b> The action item is
   placement offset (a process/setup fix), not the cosmetic category that tops the count board and
   mostly reworks out anyway.<br>
-  — <b>Loud-but-cheap categories are triaged, not chased.</b> Cosmetic mark, surface contamination
+  • <b>Loud-but-cheap categories are triaged, not chased.</b> Cosmetic mark, surface contamination
   and mold flash are high-count and high-salvage; they belong in a rework-capacity conversation, not
   a yield-recovery one.<br>
-  — <b>Systemic and localized drivers are routed differently.</b> Placement offset goes to process
+  • <b>Systemic and localized drivers are routed differently.</b> Placement offset goes to process
   engineering; lead lift goes to containment on M03 and M07. The count ranking would have buried
   both under the cosmetic noise.</p>
   <p>The loudest defect is the easiest to see and the easiest to over-fund. Ranking by the yield you

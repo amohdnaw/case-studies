@@ -41,7 +41,9 @@ reading like generic articles, the cream is the first thing to try putting back.
 
 - **Kicker bar**: mono uppercase, rubric, space-between (label left, meta right), hair
   underline. Opens every page.
-- **Verdict box**: `--wash` fill, 3px rubric left border, no radius. One per study.
+- **Verdict box**: full hairline box (`border:1px solid var(--hair)`, no radius) with a mono
+  uppercase red `.vlabel` "Verdict" label on its own line. **No side-tab border** (de-slopped
+  2026-07-15 — see that section). Red lives in the label + the `.hit` figures. One per study.
 - **Margin note**: floated right into the right margin (11rem, rubric hairline top,
   ink-faint, .72rem); stacks inline on <76rem viewports.
 - **Table**: mono data, serif first column, hair underline on th, hair-faint rows.
@@ -118,3 +120,24 @@ Gotcha found 2026-07-14: the creams were **not one hex**. Studies 01–03 used `
 used `#f4efe4` + `#ece5d6`. One character apart, and a naive find-and-replace catches only half
 the figures — leaving cream plots sitting on a white page. Sweep by *luminance*, not by the hex
 you happen to remember.
+
+## De-slop pass (2026-07-15) — no side-tabs, no numbered markers, no em-dashes
+
+Ran Impeccable's anti-pattern detector (impeccable.style) over the live studies; Ammar chose to
+remediate the flagged tells. Surgical, Direction A ("enclosed"). Contract: `specs/deslop-estate-contract.md`.
+
+- **Verdict box: NO side-tab.** Was `border-left:3px solid var(--rubric)` + wash bg — "the most
+  recognizable tell of AI UIs." Now a **full hairline box** (`border:1px solid var(--hair)`) with a
+  mono uppercase red `.vlabel` "Verdict" label on its own line. Red still = the argument (the label +
+  the `.hit` damage figures). It still reads as THE verdict; it just isn't a coloured left stripe.
+- **Section markers: GONE.** The `01 / 02 / 03` (some studies used `§1`–`§N`) numbered scaffold is
+  removed; headings stand alone. The `h2 .no{}` rule is left unused. Do not reintroduce numbered
+  section markers.
+- **Pull-quote: no side-tab.** `border-left` dropped; now larger italic serif with its indent.
+- **No em-dashes in prose.** Every `—` in body copy → commas / colons / periods / parentheses
+  (meaning-preserving). En-dashes for real ranges/dates stay. This aligns the studies with the
+  house rule (em-dash = AI cadence tell). Placeholder/`→`/CSS em-dashes are out of scope.
+
+**Not done (deliberate):** the detector also flags `repeated-section-kickers` and
+`aphoristic-cadence` copy — Ammar kept both; the kicker grammar and the terse voice are the estate's
+identity, not slop to strip. Surgical scope = the load-bearing side-tabs + markers + em-dashes only.
