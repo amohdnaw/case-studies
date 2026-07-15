@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rebasing capability statistics — and roughly doubling the fail list on purpose</title>
+<title>Rebasing capability statistics, and roughly doubling the fail list on purpose</title>
 <meta name="description" content="A statistical case study: within-σ vs overall-σ capability indices, a classification gate that hid between-subgroup drift, and why the honest gate flags twice as much.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Rebasing capability statistics — and roughly doubling the fail list on purpose">
+<meta property="og:title" content="Rebasing capability statistics, and roughly doubling the fail list on purpose">
 <meta property="og:description" content="Within-σ vs overall-σ under AIAG & VDA 2026: why 2× more red was the honest answer. Simulated dataset, runnable notebook.">
 <meta property="og:url" content="https://amohdnaw.github.io/case-studies/spc-capability-rebase.html">
 <meta property="og:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
@@ -43,8 +43,12 @@
   h2{font-size:1.25rem;font-weight:600;margin:2.6rem 0 .7rem}
   h2 .no{font:600 .78rem/1 var(--mono);color:var(--accent);margin-right:.6rem;vertical-align:.14em}
   p{margin:.8rem 0;font-size:.98rem}
-  .verdict{margin:2rem 0;padding:1rem 1.2rem;background:var(--wash);border-left:3px solid var(--rubric);font-size:.98rem;line-height:1.55}
+  .verdict{margin:2rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.98rem;line-height:1.55}
   .verdict b{color:var(--rubric)}
+  .verdict .vlabel{font:700 .62rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--rubric);display:block;margin-bottom:.55rem}
+  .changes{list-style:none;margin:.8rem 0;font-size:.98rem;line-height:1.55}
+  .changes li{position:relative;padding-left:1.15rem;margin:.55rem 0}
+  .changes li::before{content:"";position:absolute;left:0;top:.66em;width:.5rem;height:1px;background:var(--rubric)}
   table{width:100%;border-collapse:collapse;margin:1.6rem 0;font-size:.85rem}
   th{font:600 .68rem/1.3 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);
     text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--hair)}
@@ -76,40 +80,40 @@
     <span>~2,000 characteristics · 25 × n5 · simulated</span>
   </div>
 
-  <h1>Rebasing capability statistics — and roughly doubling the fail list on purpose.</h1>
+  <h1>Rebasing capability statistics, and roughly doubling the fail list on purpose.</h1>
   <p class="standfirst">An SPC platform monitoring ~15,000 measured characteristics computed every
-  capability index correctly and still told the wrong story. The arithmetic was never the bug — the
+  capability index correctly and still told the wrong story. The arithmetic was never the bug: the
   choice of which variation the number is allowed to see was. This is a study in preferring the
   answer that generates more work.</p>
   <p style="font:.8rem/1.6 var(--mono);color:var(--ink-soft);margin:.6rem 0 0">
   By a process engineer (SPC) in a semiconductor assembly &amp; test (OSAT) production environment.
   <b>The phenomenon is real; the numbers on this page come from a simulated dataset that reproduces
-  it</b> — no real measurements, part numbers, product names, or customer names. The method is the
+  it</b>: no real measurements, part numbers, product names, or customer names. The method is the
   point, and every figure below regenerates from the committed generator and notebook.</p>
 
-  <div class="verdict"><b>Verdict — the doubling was the correct answer.</b> Under the AIAG &amp; VDA
+  <div class="verdict"><span class="vlabel">Verdict</span>The doubling was the correct answer. Under the AIAG &amp; VDA
   2026 harmonization, the <b>within-subgroup index (Cwk)</b> asks "is the process capable when
   stable?" and the <b>overall-σ index (Ppk)</b> asks "what does the customer receive?". The
   platform's pass/fail gate ran on Cwk. On the simulated set of 2,000 characteristics it failed
-  <b>315</b>; rebased onto Ppk it failed <b>673</b> — a <b>2.14×</b> jump (production: 2,051 →
+  <b>315</b>; rebased onto Ppk it failed <b>673</b>: a <b>2.14×</b> jump (production: 2,051 →
   4,094). Every one of the <b>361</b> newly-failing characteristics passed the within gate and
   failed the overall gate, and 100% of them are the drift population: tight subgroups, but a mean
   that walks between them. <br><br><b>In plain terms:</b> the old gate was blind to
-  between-subgroup drift — real variation the customer experiences. More red is more honest.</div>
+  between-subgroup drift, real variation the customer experiences. More red is more honest.</div>
 
-  <h2><span class="no">§1</span>The number that passed everything wrong</h2>
+  <h2>The number that passed everything wrong</h2>
   <p>The platform monitored roughly <b>15,000 measured characteristics</b> across the line, each with
   a capability index computed to standard and classified pass/fail against the usual 1.33 target. The
-  math checked out on audit. But the classification gate ran on the <i>within-subgroup</i> sigma —
-  the spread inside each subgroup of five — and that estimate cannot see a process whose subgroups
+  math checked out on audit. But the classification gate ran on the <i>within-subgroup</i> sigma
+  (the spread inside each subgroup of five) and that estimate cannot see a process whose subgroups
   are individually tight while their means drift over the run. A characteristic could look capable on
   the gate and still ship parts across the whole tolerance. To show the mechanism at reproducible
   scale, everything below runs on a <b>simulated dataset of 2,000 characteristics</b> (25 subgroups ×
   n = 5, tolerance normalised to ±1) engineered to reproduce that exact population.</p>
 
-  <h2><span class="no">§2</span>Two sigmas, two questions</h2>
+  <h2>Two sigmas, two questions</h2>
   <div class="margin-note">Under AIAG &amp; VDA 2026, the old "Cpk" split in two: within-σ is now
-  <b>Cwk</b> (R̄/d₂), overall-σ is <b>Cpk if stable, else Ppk</b> — same formula, the name signals
+  <b>Cwk</b> (R̄/d₂), overall-σ is <b>Cpk if stable, else Ppk</b>. Same formula; the name signals
   whether the process held still. The acceptance target sits on the overall index.</div>
   <p>Two estimates of the standard deviation come from the same 125 readings. <b>σ within</b> (R̄/d₂,
   cross-checked against pooled&nbsp;s/c₄) sees only the tightness inside each subgroup. <b>σ overall</b>
@@ -119,91 +123,95 @@
 
   <table>
     <tr><th>One drifting characteristic (#208)</th><th>Value</th><th>Reads as</th></tr>
-    <tr><td>σ within — R̄/d₂ (pooled s/c₄ agrees)</td><td>0.181&nbsp;&nbsp;(0.200)</td><td>tight subgroups</td></tr>
-    <tr><td>σ overall — total sample sd</td><td>0.812</td><td>4.5× wider</td></tr>
-    <tr><td>Cwk — within-subgroup index</td><td class="hit">1.77</td><td>"capable" — passes 1.33</td></tr>
-    <tr><td>Ppk — overall-σ index</td><td class="hit">0.40</td><td>fails 1.33 badly</td></tr>
+    <tr><td>σ within: R̄/d₂ (pooled s/c₄ agrees)</td><td>0.181&nbsp;&nbsp;(0.200)</td><td>tight subgroups</td></tr>
+    <tr><td>σ overall: total sample sd</td><td>0.812</td><td>4.5× wider</td></tr>
+    <tr><td>Cwk: within-subgroup index</td><td class="hit">1.77</td><td>"capable", passes 1.33</td></tr>
+    <tr><td>Ppk: overall-σ index</td><td class="hit">0.40</td><td>fails 1.33 badly</td></tr>
     <tr><td>X-bar stability test (A₂R̄)</td><td>UNSTABLE</td><td>subgroup means drift</td></tr>
   </table>
 
-  <h2><span class="no">§3</span>The population, not the anecdote</h2>
+  <h2>The population, not the anecdote</h2>
   <p>One characteristic is a story; 2,000 show a structure. Plot Cwk against Ppk for every
-  characteristic and most sit on the diagonal — stable processes, where within ≈ overall. But a whole
+  characteristic and most sit on the diagonal: stable processes, where within ≈ overall. But a whole
   cloud sits <i>below</i> the diagonal: healthy Cwk, sunk Ppk. That off-diagonal cloud is the drift
-  population — <b>600 characteristics</b> with median Cwk <b>1.90</b> but median Ppk <b>1.20</b>. The
+  population: <b>600 characteristics</b> with median Cwk <b>1.90</b> but median Ppk <b>1.20</b>. The
   gate you choose decides whether you ever see them.</p>
 
   <figure>
     <img src="figures/spc-fig1.svg" alt="Scatter of Cwk versus Ppk for 2,000 characteristics. Most points lie on the diagonal; a red cloud of drift-population points sits well below the diagonal, in the quadrant that passes the within-sigma gate but fails the overall-sigma gate.">
-    <figcaption>Fig. 1 — Cwk (within) vs Ppk (overall) for every characteristic. Points on the diagonal
-    are stable (within ≈ overall). The red cloud below it — the drift population — passes the vertical
+    <figcaption>Fig. 1. Cwk (within) vs Ppk (overall) for every characteristic. Points on the diagonal
+    are stable (within ≈ overall). The red cloud below it, the drift population, passes the vertical
     within-σ gate but falls below the horizontal overall-σ gate. That off-diagonal cloud is the story.</figcaption>
   </figure>
 
-  <h2><span class="no">§4</span>The gate flip</h2>
+  <h2>The gate flip</h2>
   <p>The operational question is a counting exercise: run the pass/fail gate on the within index, then
-  on the overall index, and tally the fail list each way. Nothing about the data changes — only which
+  on the overall index, and tally the fail list each way. Nothing about the data changes: only which
   sigma the classifier is allowed to see. The list roughly doubles.</p>
 
   <table>
     <tr><th>Classification gate (same data, same 1.33 target)</th><th>Fail list</th><th>% of 2,000</th></tr>
-    <tr><td>within-σ gate — Cwk &lt; 1.33</td><td>315</td><td>15.8%</td></tr>
-    <tr><td>overall-σ gate — Ppk &lt; 1.33</td><td class="hit">673</td><td class="hit">33.7% — 2.14×</td></tr>
+    <tr><td>within-σ gate: Cwk &lt; 1.33</td><td>315</td><td>15.8%</td></tr>
+    <tr><td>overall-σ gate: Ppk &lt; 1.33</td><td class="hit">673</td><td class="hit">33.7% (2.14×)</td></tr>
     <tr><td>newly failing (flipped: pass within, fail overall)</td><td class="hit">361</td><td>21.4% of within-passers</td></tr>
     <tr><td>production, same rebase</td><td class="hit">2,051 → 4,094</td><td>≈ 2.0×</td></tr>
   </table>
 
   <figure>
     <img src="figures/spc-fig2.svg" alt="Bar chart. The within-sigma gate bar shows 315 fails. The overall-sigma gate bar shows 673, split into the same 315 failing under both gates plus 358 newly-failing drift characteristics stacked in red on top.">
-    <figcaption>Fig. 2 — The fail list under each gate. The overall-σ bar is the within-σ bar plus the
+    <figcaption>Fig. 2. The fail list under each gate. The overall-σ bar is the within-σ bar plus the
     flipped drift population (red). 315 → 673 is a 2.14× jump; production ran 2,051 → 4,094.</figcaption>
   </figure>
 
-  <h2><span class="no">§5</span>Who flips, and why it is correct</h2>
+  <h2>Who flips, and why it is correct</h2>
   <p>The extra red is neither noise nor double-counting. All <b>361</b> newly-failing characteristics
   passed the within gate and failed the overall gate, and cross-tabulated against the ground-truth
-  simulation label they are <b>100% the drift population</b> — stable-looking subgroups hiding real
+  simulation label they are <b>100% the drift population</b>: stable-looking subgroups hiding real
   between-subgroup movement. And the flip is independently corroborated: <b>90%</b> of the drift
   population is flagged UNSTABLE by an X-bar mean test that never touches the capability gate. The
   within gate wasn't being conservative; it was blind to exactly the variation the customer feels.</p>
 
-  <h2><span class="no">§6</span>One characteristic, both truths</h2>
-  <p>Side by side: a stable-and-capable characteristic (Cwk 2.01, Ppk 2.24 — within and overall agree)
+  <h2>One characteristic, both truths</h2>
+  <p>Side by side: a stable-and-capable characteristic (Cwk 2.01, Ppk 2.24; within and overall agree)
   against the drifter from §2 (Cwk 1.77, Ppk 0.40). Same tolerance, same subgroup size. The drifter's
-  readings are tight within each subgroup — that is what keeps Cwk high — but the subgroup means walk
+  readings are tight within each subgroup (that is what keeps Cwk high) but the subgroup means walk
   across the run, and the overall sigma is the only estimate that counts that walk as variation.</p>
 
   <figure>
     <img src="figures/spc-fig3.svg" alt="Two subgroup run charts. Left: a stable capable characteristic whose subgroup means hold flat inside the control limits. Right: a drifting characteristic whose subgroup means walk across the chart while each subgroup's individual readings stay tightly clustered.">
-    <figcaption>Fig. 3 — Left, stable &amp; capable: subgroup means hold flat, within ≈ overall. Right,
+    <figcaption>Fig. 3. Left, stable &amp; capable: subgroup means hold flat, within ≈ overall. Right,
     the drifter: subgroups stay tight (Cwk healthy) while their means walk (dashed X-bar limits), so
     σ overall inflates and Ppk collapses. Within-spread vs between-drift, on one page.</figcaption>
   </figure>
 
-  <h2><span class="no">§7</span>What the honest gate changed</h2>
+  <h2>What the honest gate changed</h2>
   <p>The point of the rebase is what it changed operationally. Because of it:</p>
-  <p>— <b>The classification gate moved onto the overall-σ index</b> — the customer-facing question —
-  and the fail list roughly doubled. Every added item is a real drift signal the old gate suppressed.<br>
-  — <b>Owner communication became mandatory, not optional</b>: a fail list that doubles overnight has
-  to be framed as "the same data, judged by what the customer receives", or it reads as a regression.<br>
-  — <b>Cwk was retained as a per-chart diagnostic</b> — is this process capable if we stabilise it? —
-  while the headline everywhere became Ppk: what is shipping today.<br>
-  — <b>Between-subgroup drift became a first-class alarm</b>, not a footnote a tight within-σ could
-  hide behind.</p>
+  <ul class="changes">
+  <li><b>The classification gate moved onto the overall-σ index</b> (the customer-facing question)
+  and the fail list roughly doubled. Every added item is a real drift signal the old gate suppressed.</li>
+  <li><b>Owner communication became mandatory, not optional</b>: a fail list that doubles overnight has
+  to be framed as "the same data, judged by what the customer receives", or it reads as a regression.</li>
+  <li><b>Cwk was retained as a per-chart diagnostic</b> (is this process capable if we stabilise it?)
+  while the headline everywhere became Ppk: what is shipping today.</li>
+  <li><b>Between-subgroup drift became a first-class alarm</b>, not a footnote a tight within-σ could
+  hide behind.</li>
+  </ul>
   <p>A shorter fail list would have been more comfortable. A capability report that tells the
   customer's truth is worth more.</p>
 
-  <h2><span class="no">§8</span>Limitations</h2>
-  <p>— <b>Simulated dataset, not a production export.</b> It reproduces the phenomenon — a Cwk-good /
-  Ppk-bad drift population — at reduced scale (~2,000 vs ~15,000 characteristics). The generator and
+  <h2>Limitations</h2>
+  <ul class="changes">
+  <li><b>Simulated dataset, not a production export.</b> It reproduces the phenomenon, a Cwk-good /
+  Ppk-bad drift population, at reduced scale (~2,000 vs ~15,000 characteristics). The generator and
   seed are committed; the numbers reproduce exactly but are illustrative, not measurements of any real
-  process.<br>
-  — <b>The 1.33 gate is a convention.</b> A different target shifts both counts; the <i>ratio</i>
-  between gates is the durable finding, not the absolute numbers.<br>
-  — <b>One stability test.</b> Stability here is a single X-bar mean test; production SPC layers more
-  run rules, which would flag some "stable" characteristics too.<br>
-  — <b>Normal-ish data.</b> The simulation uses Gaussian within-subgroup noise; one-sided tolerances
-  and non-normal shapes, where the manual prescribes quantile-based indices, are out of scope.</p>
+  process.</li>
+  <li><b>The 1.33 gate is a convention.</b> A different target shifts both counts; the <i>ratio</i>
+  between gates is the durable finding, not the absolute numbers.</li>
+  <li><b>One stability test.</b> Stability here is a single X-bar mean test; production SPC layers more
+  run rules, which would flag some "stable" characteristics too.</li>
+  <li><b>Normal-ish data.</b> The simulation uses Gaussian within-subgroup noise; one-sided tolerances
+  and non-normal shapes, where the manual prescribes quantile-based indices, are out of scope.</li>
+  </ul>
 
   <div class="repro">
     <span class="lab">Reproduce this</span>
