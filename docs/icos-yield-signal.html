@@ -150,6 +150,24 @@
   recover 54,358 units (7.55 yield points), but the meeting has finite attention, and the
   recoverable-units ranking spends it where the yield is.</p>
 
+  <h2>Is the reorder real? Lot-clustered bootstrap</h2>
+  <p>A skeptical plant manager asks whether the reorder is just sampling noise in a 60-day window.
+  Resample the data at <b>lot</b> level (2,400 lots, 300 units each) so units that share a lot stay
+  together, run <b>2,000</b> bootstrap replicates, and re-rank by recoverable units each time.</p>
+  <p><b>Placement offset</b> stays rank&nbsp;1 in <b>100%</b> of replicates. <b>Cosmetic mark</b>
+  never reaches rank&nbsp;1 (0%). The gap to #2, <b>solder void</b>, is
+  <b>5,085 scrapped units</b> with a 95% CI of <b>[4,758,&nbsp;5,418]</b> — the error bars do not
+  overlap with #2's share band (18.5–19.3% of total scrap vs 27.8–28.7% for placement offset).
+  The meeting should not debate rank&nbsp;#1 vs #2 without error bars; with them, the lever is
+  separable.</p>
+
+  <figure>
+    <img src="figures/yield-fig4.svg" alt="Two-panel bootstrap figure. Left: 95 percent confidence intervals on recoverable-units share for top drivers. Right: bar chart of rank stability showing placement offset at 100 percent rank 1 probability and cosmetic mark at zero.">
+    <figcaption>Fig. 4. Lot-clustered bootstrap (2,000 replicates). Left: 95% CI on each driver's
+    share of total scrap. Right: rank stability — placement offset is #1 in every replicate; cosmetic
+    mark never is. Gap to #2: 5,085 units (95% CI does not include zero).</figcaption>
+  </figure>
+
   <h2>Is the loss systemic or localized?</h2>
   <p>A ranking tells the meeting <i>what</i> to fix; the machine breakdown tells it <i>how</i>. The
   two top-of-list drivers need opposite responses. <b>Placement offset</b>, the #1 lever, is
@@ -194,6 +212,8 @@
     <a href="https://github.com/amohdnaw/case-studies/blob/main/scripts/generate_yield_synthetic.py">scripts/generate_yield_synthetic.py</a>
     (fixed seed) · Full analysis:
     <a href="https://github.com/amohdnaw/case-studies/blob/main/notebooks/icos-yield.ipynb">notebooks/icos-yield.ipynb</a>
+    · Rank-stability bootstrap (Fig. 4):
+    <a href="https://github.com/amohdnaw/case-studies/blob/main/scripts/yield_rank_bootstrap.py">scripts/yield_rank_bootstrap.py</a>
     · Every number on this page reads from
     <a href="https://github.com/amohdnaw/case-studies/blob/main/data/yield_results.json">data/yield_results.json</a>,
     written by the notebook. Synthetic data throughout; no production data.

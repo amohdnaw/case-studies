@@ -143,5 +143,74 @@
       "scrap_rate_pct": 12.2,
       "yield_pts_recoverable": 0.23
     }
+  ],
+  "bootstrap_n": 2000,
+  "bootstrap_cluster": "lot",
+  "bootstrap_rank1_category": "placement offset",
+  "bootstrap_rank2_category": "solder void",
+  "bootstrap_p_rank1_top_lever": 1.0,
+  "bootstrap_p_rank1_cosmetic_mark": 0.0,
+  "bootstrap_gap_rank1_rank2_units": 5085,
+  "bootstrap_gap_rank1_rank2_ci_units": [
+    4758,
+    5418
+  ],
+  "bootstrap_gap_excludes_zero_pct": 100.0,
+  "bootstrap_top5": [
+    {
+      "category": "placement offset",
+      "recoverable_units": 15363,
+      "share_pct": 28.26,
+      "share_ci_pct": [
+        27.83,
+        28.71
+      ],
+      "p_rank1": 1.0,
+      "p_rank_top3": 1.0
+    },
+    {
+      "category": "solder void",
+      "recoverable_units": 10278,
+      "share_pct": 18.92,
+      "share_ci_pct": [
+        18.51,
+        19.32
+      ],
+      "p_rank1": 0.0,
+      "p_rank_top3": 1.0
+    },
+    {
+      "category": "die crack",
+      "recoverable_units": 6571,
+      "share_pct": 12.08,
+      "share_ci_pct": [
+        11.66,
+        12.52
+      ],
+      "p_rank1": 0.0,
+      "p_rank_top3": 1.0
+    },
+    {
+      "category": "wire bond fault",
+      "recoverable_units": 5622,
+      "share_pct": 10.35,
+      "share_ci_pct": [
+        10.06,
+        10.64
+      ],
+      "p_rank1": 0.0,
+      "p_rank_top3": 0.0
+    },
+    {
+      "category": "lead lift",
+      "recoverable_units": 4657,
+      "share_pct": 8.55,
+      "share_ci_pct": [
+        7.83,
+        9.32
+      ],
+      "p_rank1": 0.0,
+      "p_rank_top3": 0.0
+    }
   ]
 }
