@@ -107,6 +107,30 @@ def main():
         "stop_slip_pct": STOP_SLIP_PCT,
     })
 
+    rec = np.array([t["rec"] for t in rows])
+    cor = np.array([t["cor"] for t in rows])
+    ev = float(np.std(rec - cor, ddof=1))
+    pv = float(np.std(cor, ddof=1))
+    grr = ev
+    tv = float(np.sqrt(grr**2 + pv**2))
+    pct_grr = round(100 * grr / tv, 1) if tv else 0.0
+    ndc = int(np.floor(1.41 * pv / grr)) if grr > 1e-9 else 99
+    res["msa_variable"] = {
+        "n_parts": len(rows),
+        "n_appraisers": 2,
+        "appraisers": ["recorded fill", "corrected fill"],
+        "ev": round(ev, 4),
+        "av": 0.0,
+        "grr": round(grr, 4),
+        "pv": round(pv, 4),
+        "tv": round(tv, 4),
+        "pct_grr": pct_grr,
+        "pct_grr_acceptance": "< 10% excellent, < 30% acceptable (AIAG)",
+        "ndc": ndc,
+        "ndc_acceptance": "≥ 5 for effective SPC",
+        "verdict": "unacceptable" if pct_grr >= 30 or ndc < 5 else "marginal",
+    }
+
     # ── fig 1: the gauge bias — two errors, opposite directions ──────────────
     fig, ax = plt.subplots(figsize=(7.6, 3.5), facecolor=PAPER)
     s, t_ = res["by_reason"]["stop_loss"], res["by_reason"]["take_profit"]

@@ -49,18 +49,17 @@ def setup_mpl():
     })
 
 
-def summarise_matrix(m: np.ndarray) -> dict:
+def summarise_matrix(m: np.ndarray, d2: float = D2, a2: float = A2) -> dict:
     """m shape (K, N) — one characteristic."""
     xbar = m.mean(1)
     R = m.max(1) - m.min(1)
-    s = m.std(1, ddof=1)
     xbb, Rbar = m.mean(), R.mean()
-    sw_rd2 = Rbar / D2
+    sw_rd2 = Rbar / d2
     s_over = m.std(ddof=1)
     dist = min(USL - xbb, xbb - LSL)
     cwk = dist / (3 * sw_rd2)
     ppk = dist / (3 * s_over)
-    ucl, lcl = xbb + A2 * Rbar, xbb - A2 * Rbar
+    ucl, lcl = xbb + a2 * Rbar, xbb - a2 * Rbar
     stable = bool(((xbar <= ucl) & (xbar >= lcl)).all())
     return {
         "sw_rd2": sw_rd2,
@@ -72,6 +71,19 @@ def summarise_matrix(m: np.ndarray) -> dict:
         "overall_fail": ppk < GATE,
         "flipped": (cwk >= GATE) and (ppk < GATE),
     }
+
+
+def gen_drift_ar1_n(
+    sw: float, sb: float, rng: np.random.Generator, k: int, n: int
+) -> np.ndarray:
+    center = rng.normal(0, 0.04)
+    phi = 0.85
+    e = rng.normal(0, sb * np.sqrt(1 - phi**2), k)
+    means = np.empty(k)
+    means[0] = rng.normal(center, sb * 0.3)
+    for i in range(1, k):
+        means[i] = center + phi * (means[i - 1] - center) + e[i]
+    return rng.normal(0, sw, size=(k, n)) + means[:, None]
 
 
 def gen_stable(sw: float, rng: np.random.Generator) -> np.ndarray:
@@ -143,6 +155,53 @@ def gate_operating_curve(rng: np.random.Generator) -> tuple[np.ndarray, np.ndarr
     return sb_grid, np.array(overall_fail), np.array(flip_prob)
 
 
+SUBGROUP_CONST = {
+    3: (1.693, 1.023),
+    5: (2.326, 0.577),
+    10: (3.078, 0.308),
+}
+
+
+def subgroup_size_stress(rng: np.random.Generator) -> dict:
+    """Flip rate on pure drift population vs subgroup size n."""
+    sw, sb = 0.17, 0.25
+    n_rep = 400
+    out = {}
+    for n, (d2, a2) in SUBGROUP_CONST.items():
+        flips, ppk_fail = [], []
+        for _ in range(n_rep):
+            m = gen_drift_ar1_n(sw, sb, rng, K, n)
+            s = summarise_matrix(m, d2, a2)
+            flips.append(s["flipped"])
+            ppk_fail.append(s["overall_fail"])
+        out[n] = {
+            "flip_pct": round(100 * float(np.mean(flips)), 1),
+            "ppk_fail_pct": round(100 * float(np.mean(ppk_fail)), 1),
+        }
+    base = out[5]["flip_pct"]
+    for n in out:
+        out[n]["flip_ratio_vs_n5"] = round(out[n]["flip_pct"] / max(base, 1e-9), 2)
+    return out
+
+
+def fig6_subgroup(stress: dict) -> None:
+    ns = sorted(stress.keys())
+    flip = [stress[n]["flip_pct"] for n in ns]
+    fig, ax = plt.subplots(figsize=(8, 3.8))
+    colors = [INK_FAINT if n != 5 else RUBRIC for n in ns]
+    ax.bar([str(n) for n in ns], flip, color=colors, width=0.55)
+    ax.set_xlabel("subgroup size n (readings per subgroup)")
+    ax.set_ylabel("flip rate % (drift population, Monte Carlo)")
+    ax.set_title("Gate flip persists across subgroup sizes", loc="left", fontsize=11, pad=8)
+    for i, (n, v) in enumerate(zip(ns, flip)):
+        ax.text(i, v + 1.5, f"{v:.0f}%\nratio {stress[n]['flip_ratio_vs_n5']:.2f}×",
+                ha="center", fontsize=8, color=INK_SOFT)
+    ax.set_ylim(0, max(flip) * 1.25)
+    fig.tight_layout()
+    fig.savefig(FIGS / "spc-fig6.svg")
+    plt.close(fig)
+
+
 def fig4_autocorr(phis: list[float], med_cwk: list[float], med_ppk: list[float]) -> None:
     fig, ax = plt.subplots(figsize=(8, 3.8))
     ax.plot(phis, med_cwk, "o-", color=INK, lw=1.8, ms=6, label="median Cwk (within-σ index)")
@@ -189,11 +248,9 @@ def fig5_oc(sb_grid: np.ndarray, overall_fail: np.ndarray, flip_prob: np.ndarray
     plt.close(fig)
 
 
-def merge_results(phis, med_cwk, med_ppk, sb_grid, overall_fail, flip_prob) -> dict:
+def merge_results(phis, med_cwk, med_ppk, sb_grid, overall_fail, flip_prob, stress: dict) -> dict:
     with RESULTS.open() as f:
         base = json.load(f)
-    sb_mid = float(sb_grid[len(sb_grid) // 2])
-    idx_mid = len(sb_grid) // 2
     base.update({
         "autocorr_phi_grid": phis,
         "autocorr_median_cwk": [round(x, 3) for x in med_cwk],
@@ -206,6 +263,10 @@ def merge_results(phis, med_cwk, med_ppk, sb_grid, overall_fail, flip_prob) -> d
                                           3) if overall_fail[-1] >= 50 else None,
         "oc_sb_50pct_flip": round(float(sb_grid[np.searchsorted(flip_prob, 50)]),
                                   3) if flip_prob[-1] >= 50 else None,
+        "subgroup_n_grid": [int(n) for n in sorted(stress.keys())],
+        "subgroup_flip_pct": [stress[n]["flip_pct"] for n in sorted(stress.keys())],
+        "subgroup_ppk_fail_pct": [stress[n]["ppk_fail_pct"] for n in sorted(stress.keys())],
+        "subgroup_flip_ratio_vs_n5": [stress[n]["flip_ratio_vs_n5"] for n in sorted(stress.keys())],
     })
     with RESULTS.open("w") as f:
         json.dump(base, f, indent=2)
@@ -220,12 +281,14 @@ def main():
 
     phis, med_cwk, med_ppk = autocorrelation_sensitivity(rng)
     sb_grid, overall_fail, flip_prob = gate_operating_curve(rng)
+    stress = subgroup_size_stress(rng)
 
     fig4_autocorr(phis, med_cwk, med_ppk)
     fig5_oc(sb_grid, overall_fail, flip_prob)
-    stats = merge_results(phis, med_cwk, med_ppk, sb_grid, overall_fail, flip_prob)
+    fig6_subgroup(stress)
+    stats = merge_results(phis, med_cwk, med_ppk, sb_grid, overall_fail, flip_prob, stress)
 
-    print("spc-fig4.svg, spc-fig5.svg written")
+    print("spc-fig4.svg, spc-fig5.svg, spc-fig6.svg written")
     print(f"Cwk inflation at phi=0.8: +{stats['autocorr_cwk_inflation_pct_at_phi_0_8']}%")
     print(f"OC: 50% overall-fail near sb ≈ {stats['oc_sb_50pct_overall_fail']}")
     print(f"OC: 50% flip near sb ≈ {stats['oc_sb_50pct_flip']}")

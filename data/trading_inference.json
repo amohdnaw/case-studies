@@ -1,0 +1,34 @@
+{
+  "n_trades": 1578,
+  "n_days": 90,
+  "n_blocks": 30,
+  "fee_rt_pct": 0.3,
+  "trade_weighted_mean_net_pct": 0.479,
+  "day_weighted_mean_net_pct": 0.136,
+  "inference_rows": [
+    {
+      "method": "iid bootstrap (trades)",
+      "point": 0.479,
+      "ci_lo": 0.135,
+      "ci_hi": 0.813
+    },
+    {
+      "method": "day-clustered bootstrap",
+      "point": 0.479,
+      "ci_lo": -0.219,
+      "ci_hi": 1.083
+    },
+    {
+      "method": "3-day block bootstrap",
+      "point": 0.479,
+      "ci_lo": -0.43,
+      "ci_hi": 1.224
+    },
+    {
+      "method": "Newey\u2013West HAC (daily means)",
+      "point": 0.136,
+      "ci_lo": -0.766,
+      "ci_hi": 1.038
+    }
+  ]
+}

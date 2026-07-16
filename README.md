@@ -2,7 +2,7 @@
 
 Live: **https://amohdnaw.github.io/case-studies/**
 
-Five one-page studies from systems I built and run, each reproducible from the data in this
+Eight one-page studies from systems I built and run, each reproducible from the data in this
 repo.
 
 | # | Study | Status |
@@ -12,6 +12,9 @@ repo.
 | 03 | [Finding the yield signal in inspection data](https://amohdnaw.github.io/case-studies/icos-yield-signal.html) · [notebook](notebooks/icos-yield.ipynb) | Live |
 | 04 | [My backtest was a gauge that had never passed GR&R](https://amohdnaw.github.io/case-studies/backtest-gauge.html) · [notebook](notebooks/backtest-gauge.ipynb) | Live |
 | 05 | [I tested 7,860 strategies across crypto and stocks. Doing nothing beat all of them.](https://amohdnaw.github.io/case-studies/exhaustion.html) · [script](scripts/exhaustion.py) | Live |
+| 06 | [When forty charts fire and nothing changed](https://amohdnaw.github.io/case-studies/spc-false-alarms.html) · [script](scripts/spc_multiplicity.py) | Live |
+| 07 | [Before you rank the defects, calibrate the camera](https://amohdnaw.github.io/case-studies/aoi-attribute-msa.html) · [notebook](notebooks/aoi-attribute-msa.ipynb) | Live |
+| 08 | [Which chart catches the shift first?](https://amohdnaw.github.io/case-studies/spc-shift-detect.html) · [script](scripts/spc_shift_detect.py) | Live |
 
 ## Reproduce study 04
 
@@ -31,6 +34,7 @@ The 32 short-side rows in the raw state are excluded, not averaged in.
 ```bash
 python3 -m venv .venv && .venv/bin/pip install pandas numpy matplotlib jupyter
 cd notebooks && ../.venv/bin/jupyter execute trading-honesty-audit.ipynb
+python3 scripts/trading_inference.py   # inference table incl. Newey–West HAC row
 ```
 
 Everything runs from `data/trades.csv` (1,578 real paper trades + the demo/HOLD rows the
@@ -47,6 +51,6 @@ live system.
 - `diagrams/` — how the pieces connect (`evidence-pipeline.svg`)
 - `DESIGN.md` — the visual system the pages are built to
 
-Studies 02 and 03 use synthetic datasets that reproduce production phenomena from
+Studies 02, 03, 06, 07, and 08 use synthetic datasets that reproduce production phenomena from
 a semiconductor assembly & test (OSAT) environment; the trading study uses the real
 (personal) paper-trading log. No employer data appears in this repository.

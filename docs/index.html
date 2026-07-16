@@ -7,7 +7,7 @@
 <meta name="description" content="Case studies in applied statistics: honest inference on trading data, SPC capability at production scale, yield analytics.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Evidence, not claims: case studies by Ammar Nawawi">
-<meta property="og:description" content="Seven studies in applied statistics, reproducible from the data they ship with. Published even when the answer was no.">
+<meta property="og:description" content="Eight studies in applied statistics, reproducible from the data they ship with. Published even when the answer was no.">
 <meta property="og:url" content="https://amohdnaw.github.io/case-studies/">
 <meta property="og:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
@@ -63,11 +63,11 @@
   </div>
   <div class="kicker"><span>Case studies</span><span>Applied statistics, from real systems</span></div>
   <h1>Evidence, not claims.</h1>
-  <p class="standfirst">Seven studies from systems I built and run: a trading log audited to a
+  <p class="standfirst">Eight studies from systems I built and run: a trading log audited to a
   null result, statistical process control realigned at production scale, yield analytics, a backtest
   engine put through the measurement-system analysis it never had, 7,860 strategies that all
-  lost to doing nothing, the false-alarm arithmetic of monitoring 15,000 charts, and attribute MSA
-  on AOI pass/fail before the defect Pareto.
+  lost to doing nothing, the false-alarm arithmetic of monitoring 15,000 charts, attribute MSA
+  on AOI pass/fail before the defect Pareto, and a shift-detection shootout across X̄, EWMA, and CUSUM.
   Each one page, each reproducible from the data it ships with.</p>
 
   <div class="study">
@@ -129,6 +129,15 @@
     <p>Attribute gauge R&amp;R on AOI pass/fail: Cohen's κ, miss rate, and the lenient machine that
     looked like a yield hero until you measured the gauge. The check Study 03 assumes.</p>
     <a class="open" href="aoi-attribute-msa.html">Read the study →</a>
+  </div>
+
+  <div class="study">
+    <div class="meta"><span>08 · Shift detection</span><span>40 subgroups · 3 chart types · simulated</span></div>
+    <h2><a href="spc-shift-detect.html">Which chart catches the shift first?</a></h2>
+    <p>Once drift is real, latency matters. A 2σ step shift on subgroup means: CUSUM alarms in a
+    median of 2 subgroups, EWMA in 3, plain X̄ in 4 — at similar false-alarm rates. The companion
+    to Study 02's gate question.</p>
+    <a class="open" href="spc-shift-detect.html">Read the study →</a>
   </div>
 
   <div class="footer">

@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Which chart catches the shift first?</title>
+<meta name="description" content="A statistical case study: simulated step shift on an X-bar process — compare detection latency for X-bar, EWMA, and CUSUM charts at matched false-alarm rates.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Which chart catches the shift first?">
+<meta property="og:description" content="Shift detection latency: X-bar vs EWMA vs CUSUM on a synthetic in-control + step-change run.">
+<meta property="og:url" content="https://amohdnaw.github.io/case-studies/spc-shift-detect.html">
+<meta property="og:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
+<style>
+  :root{
+    --paper:oklch(100% 0 0); --paper-deep:oklch(97.6% 0 0);
+    --ink:oklch(25% .008 65); --ink-soft:oklch(38% .02 65); --ink-faint:oklch(52% .018 70);
+    --rubric:oklch(43% .125 29); --accent:oklch(48% .085 196); --wash:oklch(43% .125 29 / .07);
+    --hair:oklch(25% .02 65 / .28); --hair-faint:oklch(25% .02 65 / .14);
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --mono:ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);padding:4rem 1.5rem 5rem;line-height:1.6}
+  .sheet{max-width:46rem;margin:0 auto}
+  a{color:var(--accent);font-weight:600;text-decoration:none;border-bottom:none}
+  a:hover{color:oklch(38% .095 196);text-decoration:none;border-bottom:none}
+  .byline{font:700 .68rem/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;
+    display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:baseline;
+    padding-bottom:.55rem;border-bottom:1px solid var(--hair-faint);margin-bottom:.55rem}
+  .byline a{color:var(--accent);text-decoration:none}
+  .byline a:hover{color:oklch(38% .095 196);text-decoration:none}
+  .byline .disc{color:var(--ink-faint);font-weight:600;letter-spacing:.12em}
+  .kicker{font:600 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);
+    border-bottom:1px solid var(--hair);padding-bottom:.6rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .kicker a{text-decoration:none}
+  h1{font-size:2.1rem;line-height:1.18;font-weight:600;margin:1.4rem 0 .8rem;letter-spacing:-.01em}
+  .standfirst{font-size:1.05rem;line-height:1.55;color:var(--ink-soft);font-style:italic;max-width:38rem}
+  h2{font-size:1.25rem;font-weight:600;margin:2.6rem 0 .7rem}
+  p{margin:.8rem 0;font-size:.98rem}
+  .verdict{margin:2rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.98rem;line-height:1.55}
+  .verdict b{color:var(--rubric)}
+  .verdict .vlabel{font:700 .62rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--rubric);display:block;margin-bottom:.55rem}
+  table{width:100%;border-collapse:collapse;margin:1.6rem 0;font-size:.85rem}
+  th{font:600 .68rem/1.3 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);
+    text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--hair)}
+  td{padding:.5rem .6rem;border-bottom:1px solid var(--hair-faint);font-family:var(--mono);font-size:.8rem}
+  td:first-child{font-family:var(--serif);font-size:.88rem}
+  .hit{color:var(--rubric);font-weight:700}
+  figure{margin:2rem 0;border:1px solid var(--hair);background:var(--paper-deep);padding:1rem}
+  figure img{width:100%;display:block}
+  figcaption{font:.72rem/1.5 var(--mono);color:var(--ink-soft);margin-top:.7rem}
+  .margin-note{float:right;width:11rem;margin:.2rem -13rem 1rem 1.5rem;font-size:.72rem;line-height:1.5;
+    color:var(--ink-faint);border-top:1px solid oklch(48% .085 196 / .55);padding-top:.4rem}
+  @media (max-width:76rem){.margin-note{float:none;width:auto;margin:1rem 0}}
+  .repro{margin:2.4rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.85rem}
+  .repro .lab{font:600 .65rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:.5rem}
+  .footnav{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:1rem;
+    font:.75rem/1.5 var(--mono);color:var(--accent)}
+  .footnav a{text-decoration:none}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="byline">
+    <a href="https://portfolio.amohdnaw.xyz/">Ammar Nawawi</a>
+    <span class="disc">Process Engineer (SPC)</span>
+  </div>
+  <div class="kicker">
+    <span><a href="index.html">Case studies</a> · 08 · Shift detection</span>
+    <span>40 subgroups · n = 5 · 3,000 runs · simulated</span>
+  </div>
+
+  <h1>Which chart catches the shift first?</h1>
+  <p class="standfirst">Study 02 showed why an overall-σ gate flags drift the within gate missed.
+  This companion asks the next operational question: once a real step change hits, how many subgroups
+  pass before each chart type fires? Same synthetic process, three standard chart families, one
+  reproducible latency table.</p>
+  <p style="font:.8rem/1.6 var(--mono);color:var(--ink-soft);margin:.6rem 0 0">
+  Monte Carlo with fixed seed. In-control Gaussian subgroups (σ = 0.18), then a +2σ step on the
+  X̄ scale at subgroup 20. No production data.</p>
+
+  <div class="verdict"><span class="vlabel">Verdict</span>On a <b>2σ X̄-scale step shift</b>,
+  <b>CUSUM</b> alarms first (median <b>2</b> subgroups after the shift; 90th percentile <b>5</b>),
+  <b>EWMA</b> is close behind (median <b>3</b>), and the plain <b>3σ X̄ chart</b> is slowest
+  (median <b>4</b>, 90th <b>18</b>). False-alarm rates over 40 in-control subgroups stay in the
+  <b>6–11%</b> band across all three. <br><br><b>In plain terms:</b> if the plant's question is
+  "how fast do we see drift?", the chart choice matters as much as the capability index — and
+  memory-based charts (EWMA, CUSUM) pay for their extra arithmetic with earlier detection.</div>
+
+  <h2>The setup</h2>
+  <div class="margin-note">Latency is measured from the first in-control subgroup <i>after</i> the
+  step. A run that never alarms within the remaining window is censored at 20 subgroups.</div>
+  <p>Each simulation draws 40 subgroup means (n = 5 per subgroup). Subgroups 0–19 are in control at
+  μ = 0; from subgroup 20 onward the mean steps up by 2σ<sub>X̄</sub>. Three detectors run on the
+  same draw:</p>
+  <ul style="margin:.8rem 0 .8rem 1.2rem;font-size:.95rem;color:var(--ink-soft)">
+  <li><b>X̄ chart</b> — 3σ limits on subgroup means</li>
+  <li><b>EWMA</b> — λ = 0.2, L = 3.0 (standard control-chart constants)</li>
+  <li><b>CUSUM</b> — two-sided, k = 0.5, h = 4.77 (ARL₀ ≈ 370 subgroups)</li>
+  </ul>
+
+  <figure>
+    <img src="figures/shift-fig1.svg" alt="Two-panel chart: subgroup means with a step at index 20, and the EWMA trace responding shortly after.">
+    <figcaption>Fig. 1. One simulated run. Top: X̄ with 3σ limit (dashed). Bottom: EWMA trace.
+    Vertical line marks the step at subgroup 20.</figcaption>
+  </figure>
+
+  <h2>Latency and false alarms</h2>
+  <p>3,000 Monte Carlo replicates. "Detected" is the fraction that alarm within the 20 subgroups
+  after the step; "false alarm" is the fraction that alarm on a 40-subgroup all-in-control run.</p>
+
+  <table>
+    <tr><th>Chart</th><th>Median delay</th><th>90th pct delay</th><th>Detected</th><th>False alarm</th></tr>
+    <tr><td>X̄ (3σ)</td><td>4 subgroups</td><td>18</td><td>91.1%</td><td>10.5%</td></tr>
+    <tr><td>EWMA (λ = 0.2)</td><td class="hit">3</td><td class="hit">5</td><td>97.5%</td><td>5.9%</td></tr>
+    <tr><td>CUSUM (k = 0.5)</td><td class="hit">2</td><td class="hit">5</td><td>96.1%</td><td>8.7%</td></tr>
+  </table>
+
+  <figure>
+    <img src="figures/shift-fig2.svg" alt="Grouped bar chart comparing median and 90th percentile detection delay for X-bar, EWMA, and CUSUM.">
+    <figcaption>Fig. 2. Time-to-detect distribution summary across 3,000 runs. CUSUM and EWMA
+    dominate on median delay; X̄'s 90th percentile tail is much longer.</figcaption>
+  </figure>
+
+  <h2>What this pairs with Study 02</h2>
+  <p>Study 02 argued the <i>gate</i> should use overall σ so drift is not hidden. Study 08 argues
+  the <i>alarm</i> should use a chart tuned for the drift you expect: if between-subgroup walks are
+  the failure mode, memory charts detect them one to two subgroups sooner than a naked X̄ limit —
+  at similar false-alarm cost on this calibration.</p>
+  <p>Production SPC still layers Western Electric rules, autocorrelation checks (Study 02 Fig. 4),
+  and multiplicity control (Study 06). This study isolates one variable — chart family — so the
+  trade-off is visible.</p>
+
+  <h2>Limitations</h2>
+  <ul style="margin:.8rem 0 .8rem 1.2rem;font-size:.95rem;color:var(--ink-soft)">
+  <li><b>One shift size and direction.</b> A small 0.5σ creep favours CUSUM more; a massive 4σ jump
+  makes all three look instant.</li>
+  <li><b>Independent subgroups.</b> Autocorrelation within subgroups (Study 02) would change both
+  limits and latency; not modelled here.</li>
+  <li><b>Gaussian.</b> Heavy tails widen X̄ limits and slow detection; the ranking usually holds but
+  the gaps shrink.</li>
+  </ul>
+
+  <div class="repro">
+    <span class="lab">Reproduce this</span>
+    Simulation:
+    <a href="https://github.com/amohdnaw/case-studies/blob/main/scripts/spc_shift_detect.py">scripts/spc_shift_detect.py</a>
+    · Headline numbers:
+    <a href="https://github.com/amohdnaw/case-studies/blob/main/data/spc_shift_results.json">data/spc_shift_results.json</a>
+    (fixed seed 20260716; Figs. 1–2 regenerate exactly). Synthetic throughout.
+  </div>
+
+  <div class="footnav">
+    <a href="aoi-attribute-msa.html">← 07 · Attribute MSA</a>
+    <a href="index.html">All case studies →</a>
+  </div>
+</div>
+</body>
+</html>

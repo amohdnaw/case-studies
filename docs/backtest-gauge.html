@@ -152,6 +152,25 @@
   true <span class="hit">−$1,856</span>. Roughly <span class="hit">$692</span> of the loss had been
   manufactured by the instrument.</p>
 
+  <h2>The MSA printout the backtest never had</h2>
+  <p>Treat each trade as a "part" and the recorded vs corrected fill as two appraisers measuring the
+  same true exit P&amp;L. A variable gauge R&amp;R on the 163 spot trades gives the AIAG-style
+  decomposition below — the numbers a semiconductor plant would put on a gauge study before trusting
+  any capability index computed from the readings.</p>
+
+  <table>
+    <tr><th>Source</th><th>Std dev (%)</th><th>% of TV</th><th>Interpretation</th></tr>
+    <tr><td>EV (repeatability)</td><td>3.09</td><td>—</td><td>recorded vs corrected on the same trade</td></tr>
+    <tr><td>AV (reproducibility)</td><td>0.00</td><td>—</td><td>paired fills; no appraiser offset</td></tr>
+    <tr><td>GR&amp;R</td><td class="hit">3.09</td><td class="hit">38.4%</td><td>AIAG: &lt;10% excellent, &lt;30% acceptable</td></tr>
+    <tr><td>PV (part variation)</td><td>7.44</td><td>—</td><td>spread of corrected trade outcomes</td></tr>
+    <tr><td>ndc</td><td colspan="2" class="hit">3</td><td>need ≥5 for effective SPC discrimination</td></tr>
+  </table>
+
+  <p class="pull">Verdict: <b>unacceptable gauge</b>. GR&amp;R at 38% and ndc = 3 mean the backtest was
+  not precise enough to rank strategies — only coarse enough to hide a structural loss behind
+  opposing biases.</p>
+
   <table>
     <tr><th>Exit type</th><th>n</th><th>Order placed</th><th>Gauge recorded</th><th>Corrected fill</th></tr>
     <tr><td>Stop-loss</td><td>47</td><td>−9.5%</td><td class="hit">−10.7%</td><td>−8.1%</td></tr>

@@ -126,6 +126,7 @@
     <tr><td>Day-clustered bootstrap: resample 90 days</td><td>+0.479</td><td class="hit">[−0.181, +1.102] (includes 0)</td></tr>
     <tr><td>Excess vs always-BUY, day-clustered (§4)</td><td>+0.153</td><td class="hit">[−0.328, +0.723] (includes 0)</td></tr>
     <tr><td>3-day block bootstrap: resample ~30 blocks</td><td>+0.479</td><td class="hit">[−0.434, +1.263] (includes 0)</td></tr>
+    <tr><td>Newey–West HAC: daily mean net</td><td>+0.136</td><td class="hit">[−0.766, +1.038] (includes 0)</td></tr>
   </table>
 
   <figure>
@@ -194,6 +195,9 @@
     Complete trade log: <a href="https://github.com/amohdnaw/case-studies/blob/main/data/trades.csv">data/trades.csv</a>
     (1 row per paper trade) · Full analysis:
     <a href="https://github.com/amohdnaw/case-studies/blob/main/notebooks/trading-honesty-audit.ipynb">notebooks/trading-honesty-audit.ipynb</a>
+    · Inference table (incl. Newey–West):
+    <a href="https://github.com/amohdnaw/case-studies/blob/main/scripts/trading_inference.py">scripts/trading_inference.py</a>
+    → <a href="https://github.com/amohdnaw/case-studies/blob/main/data/trading_inference.json">data/trading_inference.json</a>
     (fixed seed, every interval above reproduces exactly). Paper trading only, throughout.
   </div>
 

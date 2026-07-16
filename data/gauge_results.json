@@ -41,5 +41,23 @@
  "win_rate_pct": 39.9,
  "payoff_ratio": 1.13,
  "breakeven_payoff": 1.51,
- "stop_slip_pct": 0.3
+ "stop_slip_pct": 0.3,
+ "msa_variable": {
+  "n_parts": 163,
+  "n_appraisers": 2,
+  "appraisers": [
+   "recorded fill",
+   "corrected fill"
+  ],
+  "ev": 3.0913,
+  "av": 0.0,
+  "grr": 3.0913,
+  "pv": 7.4365,
+  "tv": 8.0534,
+  "pct_grr": 38.4,
+  "pct_grr_acceptance": "< 10% excellent, < 30% acceptable (AIAG)",
+  "ndc": 3,
+  "ndc_acceptance": "\u2265 5 for effective SPC",
+  "verdict": "unacceptable"
+ }
 }

@@ -222,6 +222,20 @@
     generator's drift band (shaded) sits in the high-flip region.</figcaption>
   </figure>
 
+  <h2>Subgroup size stress: n = 3, 5, 10</h2>
+  <p>The committed dataset uses n = 5 (AIAG default). Smaller subgroups widen X-bar limits and
+  shrink R̄/d₂ — does the within-vs-overall flip depend on that choice? Hold the pure drift population
+  (s<sub>b</sub> = 0.25, K = 25 subgroups) and re-run the gate at n = 3, 5, and 10 with the correct
+  d₂ and A₂ for each size.</p>
+  <p>Flip rate and Ppk-fail rate stay in a narrow band (~63–69%) across all three sizes — within
+  4% of the n = 5 headline. The 2.14× ratio is not an artifact of picking five.</p>
+
+  <figure>
+    <img src="figures/spc-fig6.svg" alt="Bar chart comparing Ppk fail rate and Cwk-to-Ppk flip rate at subgroup sizes n equals 3, 5, and 10 on a pure drift population. All three bars cluster near 65 percent.">
+    <figcaption>Fig. 6. Subgroup size stress on a pure drift population (s<sub>b</sub> = 0.25).
+    Flip rate (pass Cwk → fail Ppk) and Ppk fail rate are stable from n = 3 to n = 10.</figcaption>
+  </figure>
+
   <h2>What the honest gate changed</h2>
   <p>The point of the rebase is what it changed operationally. Because of it:</p>
   <ul class="changes">
@@ -260,7 +274,7 @@
     → <a href="https://github.com/amohdnaw/case-studies/blob/main/data/spc_synthetic.csv">data/spc_synthetic.csv</a>
     (250,000 rows, one per measurement) · Full analysis:
     <a href="https://github.com/amohdnaw/case-studies/blob/main/notebooks/spc-rebase.ipynb">notebooks/spc-rebase.ipynb</a>
-    · Sensitivity extensions (Figs. 4–5):
+    · Sensitivity extensions (Figs. 4–6):
     <a href="https://github.com/amohdnaw/case-studies/blob/main/scripts/spc_rebase_sensitivity.py">scripts/spc_rebase_sensitivity.py</a>
     · Headline numbers: <a href="https://github.com/amohdnaw/case-studies/blob/main/data/spc_results.json">data/spc_results.json</a>
     (every figure above regenerates exactly). Simulated data throughout; the phenomenon is real.

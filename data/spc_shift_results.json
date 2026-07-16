@@ -1,0 +1,29 @@
+{
+  "synthetic": true,
+  "seed": 20260716,
+  "n_subgroups": 40,
+  "n_per_subgroup": 5,
+  "shift_sigma_xbar": 2.0,
+  "shift_at_subgroup": 20,
+  "n_simulations": 3000,
+  "charts": {
+    "xbar": {
+      "median_latency": 4,
+      "p90_latency": 18,
+      "detected_pct": 91.1,
+      "false_alarm_pct": 10.47
+    },
+    "ewma": {
+      "median_latency": 3,
+      "p90_latency": 5,
+      "detected_pct": 97.5,
+      "false_alarm_pct": 5.87
+    },
+    "cusum": {
+      "median_latency": 2,
+      "p90_latency": 5,
+      "detected_pct": 96.1,
+      "false_alarm_pct": 8.73
+    }
+  }
+}
