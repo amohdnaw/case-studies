@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Before you rank the defects, calibrate the camera</title>
+<meta name="description" content="Attribute MSA on AOI pass/fail: Cohen's kappa, miss rate, and why the lenient machine looks like a yield hero until you measure the gauge. Synthetic OSAT data.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Before you rank the defects, calibrate the camera">
+<meta property="og:description" content="Three AOI machines, one reference panel, 300 units. The lenient gauge had the best pass rate and the worst misses.">
+<meta property="og:url" content="https://amohdnaw.github.io/case-studies/aoi-attribute-msa.html">
+<meta property="og:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
+<style>
+  :root{
+    --paper:oklch(100% 0 0); --paper-deep:oklch(97.6% 0 0);
+    --ink:oklch(25% .008 65); --ink-soft:oklch(38% .02 65); --ink-faint:oklch(52% .018 70);
+    --rubric:oklch(43% .125 29); --accent:oklch(48% .085 196); --wash:oklch(43% .125 29 / .07);
+    --hair:oklch(25% .02 65 / .28); --hair-faint:oklch(25% .02 65 / .14);
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --mono:ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);padding:4rem 1.5rem 5rem;line-height:1.6}
+  .sheet{max-width:46rem;margin:0 auto}
+  a{color:var(--accent);font-weight:600;text-decoration:none;border-bottom:none}
+  a:hover{color:oklch(38% .095 196);text-decoration:none;border-bottom:none}
+  .byline{font:700 .68rem/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;
+    display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:baseline;
+    padding-bottom:.55rem;border-bottom:1px solid var(--hair-faint);margin-bottom:.55rem}
+  .byline a{color:var(--accent);text-decoration:none}
+  .byline a:hover{color:oklch(38% .095 196);text-decoration:none}
+  .byline .disc{color:var(--ink-faint);font-weight:600;letter-spacing:.12em}
+  .kicker{font:600 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);
+    border-bottom:1px solid var(--hair);padding-bottom:.6rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .kicker a{text-decoration:none}
+  h1{font-size:2.1rem;line-height:1.18;font-weight:600;margin:1.4rem 0 .8rem;letter-spacing:-.01em}
+  .standfirst{font-size:1.05rem;line-height:1.55;color:var(--ink-soft);font-style:italic;max-width:38rem}
+  h2{font-size:1.25rem;font-weight:600;margin:2.6rem 0 .7rem}
+  p{margin:.8rem 0;font-size:.98rem}
+  .verdict{margin:2rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.98rem;line-height:1.55}
+  .verdict b{color:var(--rubric)}
+  .verdict .vlabel{font:700 .62rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--rubric);display:block;margin-bottom:.55rem}
+  table{width:100%;border-collapse:collapse;margin:1.6rem 0;font-size:.85rem}
+  th{font:600 .68rem/1.3 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);
+    text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--hair)}
+  td{padding:.5rem .6rem;border-bottom:1px solid var(--hair-faint);font-family:var(--mono);font-size:.8rem}
+  td:first-child{font-family:var(--serif);font-size:.88rem}
+  .hit{color:var(--rubric);font-weight:700}
+  figure{margin:2rem 0;border:1px solid var(--hair);background:var(--paper-deep);padding:1rem}
+  figure img{width:100%;display:block}
+  figcaption{font:.72rem/1.5 var(--mono);color:var(--ink-soft);margin-top:.7rem}
+  code{font-family:var(--mono);font-size:.82em;background:var(--paper-deep);padding:.05em .35em}
+  .margin-note{float:right;width:11rem;margin:.2rem -13rem 1rem 1.5rem;font-size:.72rem;line-height:1.5;
+    color:var(--ink-faint);border-top:1px solid oklch(48% .085 196 / .55);padding-top:.4rem}
+  @media (max-width:76rem){.margin-note{float:none;width:auto;margin:1rem 0}}
+  .repro{margin:2.4rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.85rem}
+  .repro .lab{font:600 .65rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:.5rem}
+  .footnav{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:1rem;
+    font:.75rem/1.5 var(--mono);color:var(--accent)}
+  .footnav a{text-decoration:none}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="byline">
+    <a href="https://portfolio.amohdnaw.xyz/">Ammar Nawawi</a>
+    <span class="disc">Process Engineer (SPC)</span>
+  </div>
+  <div class="kicker">
+    <span><a href="index.html">Case studies</a> · 07 · Attribute MSA</span>
+    <span>300 units · 3 AOI machines · simulated</span>
+  </div>
+
+  <h1>Before you rank the defects, calibrate the camera.</h1>
+  <p class="standfirst">Study 03 ranked loss drivers from inspection counts. That only works if the
+  cameras agree on pass and fail. This is the attribute gauge R&amp;R in front of the Pareto: three
+  AOI machines, one reference panel, Cohen's κ, and the lenient machine that looked like a yield
+  hero.</p>
+  <p style="font:.8rem/1.6 var(--mono);color:var(--ink-soft);margin:.6rem 0 0">
+  Simulated attribute MSA in a <b>semiconductor assembly &amp; test (OSAT)</b> environment. Fixed seed;
+  no production images, part numbers, or customer names. Machines M03 and M07 echo the localization
+  story in <a href="icos-yield-signal.html">Study 03</a>.</p>
+
+  <div class="verdict"><span class="vlabel">Verdict</span>The lenient gauge is the dangerous one.
+  <b>M07</b> calls <b>92.0%</b> of units correctly by headline effectiveness — but misses
+  <b>40.8%</b> of true defects (escapes). <b>M05</b> is the reference-class machine: κ =
+  <b>0.87</b> vs the panel, effectiveness <b>96.3%</b>. <b>M03</b> is strict (12.7% false alarms,
+  κ = 0.62). Fleiss κ across all three machines is only <b>0.48</b> — you cannot pool raw counts
+  across the line without an MSA gate. <br><br><b>In plain terms:</b> ranking yield or defect Pareto
+  before calibrating pass/fail confuses gauge leniency with process quality.</div>
+
+  <h2>The layout</h2>
+  <p>A classic attribute MSA: <b>300 units</b> with a known reference state (pass/fail from the
+  committed generator, <b>16.3%</b> true fail), each inspected once by <b>three AOI machines</b>
+  (M03, M05, M07). Every cell is a pass/fail call. No continuous measurements — this is the inspection
+  layer Study 03 sits on top of.</p>
+
+  <h2>Agreement vs the reference panel</h2>
+  <div class="margin-note">Cohen's κ corrects for agreement you'd get by chance on a skewed
+  pass/fail panel. AIAG commonly uses κ ≥ 0.7 as a gate before trusting attribute data.</div>
+  <table>
+    <tr><th>Machine</th><th>κ vs truth</th><th>Effectiveness</th><th>Miss rate (escapes)</th><th>False alarm rate</th></tr>
+    <tr><td>M05 (reference-class)</td><td class="hit">0.87</td><td>96.3%</td><td>8.2%</td><td>2.8%</td></tr>
+    <tr><td>M07 (lenient)</td><td>0.66</td><td>92.0%</td><td class="hit">40.8%</td><td>1.6%</td></tr>
+    <tr><td>M03 (strict)</td><td>0.62</td><td>87.3%</td><td>12.2%</td><td class="hit">12.7%</td></tr>
+  </table>
+
+  <figure>
+    <img src="figures/attr-fig1.svg" alt="Three confusion matrices normalized by row: true pass/fail vs machine call for M03, M05, M07.">
+    <figcaption>Fig. 1. Confusion matrices vs the reference panel (row = truth). M07 collapses
+    true fails into pass calls; M03 inflates false fails on good units.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="figures/attr-fig2.svg" alt="Bar chart of Cohen kappa and effectiveness by machine; M05 highest, dotted line at kappa 0.7.">
+    <figcaption>Fig. 2. Cohen's κ and effectiveness by machine. Only M05 clears the usual κ ≥ 0.7
+    gate. High effectiveness alone does not qualify the gauge.</figcaption>
+  </figure>
+
+  <h2>The yield trap</h2>
+  <p>Sort machines by pass rate and <b>M07 wins</b>: it calls the most units pass, looks like the
+  line is running clean, and under-counts the defect population that Study 03 would later rank.
+  That is not yield improvement — it is measurement bias. Strict M03 does the opposite (extra false
+  fails, rework load). Only M05 tracks the reference panel closely enough to feed a Pareto.</p>
+
+  <figure>
+    <img src="figures/attr-fig3.svg" alt="Bar chart of percent pass calls by machine vs dashed true pass rate line; M07 highest above truth.">
+    <figcaption>Fig. 3. Pass rate by machine vs true pass rate (dashed). M07 sits above the truth
+    line — the signature of a lenient gauge, not a healthier process.</figcaption>
+  </figure>
+
+  <h2>What changes before Study 03</h2>
+  <p>• <b>Run attribute MSA before ranking defect categories.</b> Fleiss κ = 0.48 across machines
+  means the counts are not one homogeneous stream.<br>
+  • <b>Track miss rate and false alarms, not pass rate alone.</b> M07's escapes are the failure mode
+  that ships bad parts; M03's false alarms burn rework capacity.<br>
+  • <b>Pair with the yield study.</b> Recoverable-units Pareto (Study 03) assumes the inspection log
+  is the truth. This study is the check on that assumption.</p>
+
+  <div class="repro">
+    <span class="lab">Reproduce this</span>
+    Generator (fixed seed):
+    <a href="https://github.com/amohdnaw/case-studies/blob/main/scripts/generate_aoi_msa_synthetic.py">scripts/generate_aoi_msa_synthetic.py</a>
+    → <a href="https://github.com/amohdnaw/case-studies/blob/main/data/aoi_msa_synthetic.csv">data/aoi_msa_synthetic.csv</a>
+    · Analysis:
+    <a href="https://github.com/amohdnaw/case-studies/blob/main/scripts/aoi_attribute_msa.py">scripts/aoi_attribute_msa.py</a>
+    · Notebook:
+    <a href="https://github.com/amohdnaw/case-studies/blob/main/notebooks/aoi-attribute-msa.ipynb">notebooks/aoi-attribute-msa.ipynb</a>
+    · Headline numbers:
+    <a href="https://github.com/amohdnaw/case-studies/blob/main/data/aoi_msa_results.json">data/aoi_msa_results.json</a>
+  </div>
+
+  <div class="footnav">
+    <a href="spc-false-alarms.html">← 06 · False alarms at scale</a>
+    <a href="icos-yield-signal.html">Pairs with 03 · Yield signal →</a>
+  </div>
+</div>
+</body>
+</html>

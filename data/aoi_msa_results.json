@@ -1,0 +1,52 @@
+{
+  "synthetic": true,
+  "seed": 20260716,
+  "environment": "semiconductor assembly & test (OSAT) \u2014 simulated AOI attribute MSA",
+  "n_units": 300,
+  "n_machines": 3,
+  "machines": [
+    "M03",
+    "M05",
+    "M07"
+  ],
+  "true_fail_prevalence_pct": 16.3,
+  "fleiss_kappa_all_machines": 0.483,
+  "best_machine": "M05",
+  "worst_machine": "M07",
+  "by_machine": {
+    "M03": {
+      "n": 300,
+      "tp": 43,
+      "tn": 219,
+      "fp": 32,
+      "fn": 6,
+      "effectiveness_pct": 87.3,
+      "miss_rate_pct": 12.2,
+      "false_alarm_pct": 12.7,
+      "kappa": 0.618
+    },
+    "M05": {
+      "n": 300,
+      "tp": 45,
+      "tn": 244,
+      "fp": 7,
+      "fn": 4,
+      "effectiveness_pct": 96.3,
+      "miss_rate_pct": 8.2,
+      "false_alarm_pct": 2.8,
+      "kappa": 0.869
+    },
+    "M07": {
+      "n": 300,
+      "tp": 29,
+      "tn": 247,
+      "fp": 4,
+      "fn": 20,
+      "effectiveness_pct": 92.0,
+      "miss_rate_pct": 40.8,
+      "false_alarm_pct": 1.6,
+      "kappa": 0.663
+    }
+  },
+  "operational_note": "Ranking yield or defect Pareto by raw inspection counts before attribute MSA confuses gauge leniency with process quality."
+}

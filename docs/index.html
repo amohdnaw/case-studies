@@ -7,7 +7,7 @@
 <meta name="description" content="Case studies in applied statistics: honest inference on trading data, SPC capability at production scale, yield analytics.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Evidence, not claims: case studies by Ammar Nawawi">
-<meta property="og:description" content="Six studies in applied statistics, reproducible from the data they ship with. Published even when the answer was no.">
+<meta property="og:description" content="Seven studies in applied statistics, reproducible from the data they ship with. Published even when the answer was no.">
 <meta property="og:url" content="https://amohdnaw.github.io/case-studies/">
 <meta property="og:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
@@ -63,10 +63,11 @@
   </div>
   <div class="kicker"><span>Case studies</span><span>Applied statistics, from real systems</span></div>
   <h1>Evidence, not claims.</h1>
-  <p class="standfirst">Six studies from systems I built and run: a trading log audited to a
+  <p class="standfirst">Seven studies from systems I built and run: a trading log audited to a
   null result, statistical process control realigned at production scale, yield analytics, a backtest
   engine put through the measurement-system analysis it never had, 7,860 strategies that all
-  lost to doing nothing, and the false-alarm arithmetic of monitoring 15,000 charts.
+  lost to doing nothing, the false-alarm arithmetic of monitoring 15,000 charts, and attribute MSA
+  on AOI pass/fail before the defect Pareto.
   Each one page, each reproducible from the data it ships with.</p>
 
   <div class="study">
@@ -120,6 +121,14 @@
     every process is in control. Bonferroni and Benjamini–Hochberg on the same null run, and why the
     family of tests — not each chart — is the honest unit of inference.</p>
     <a class="open" href="spc-false-alarms.html">Read the study →</a>
+  </div>
+
+  <div class="study">
+    <div class="meta"><span>07 · Attribute MSA</span><span>300 units · 3 AOI machines · simulated</span></div>
+    <h2><a href="aoi-attribute-msa.html">Before you rank the defects, calibrate the camera</a></h2>
+    <p>Attribute gauge R&amp;R on AOI pass/fail: Cohen's κ, miss rate, and the lenient machine that
+    looked like a yield hero until you measured the gauge. The check Study 03 assumes.</p>
+    <a class="open" href="aoi-attribute-msa.html">Read the study →</a>
   </div>
 
   <div class="footer">
