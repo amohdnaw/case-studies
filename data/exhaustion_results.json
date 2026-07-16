@@ -20,5 +20,18 @@
   "cost_killed": 5,
   "signal_wrong": 16,
   "ok": 6
- }
+ },
+ "multiplicity_n_trials": 7860,
+ "multiplicity_null_sim_n": 8000,
+ "multiplicity_expected_max_sharpe": 0.663,
+ "multiplicity_p95_max_sharpe": 0.773,
+ "multiplicity_observed_best_sharpe": 1.323,
+ "multiplicity_best_strategy": "NVDA price_sma200",
+ "multiplicity_best_net_pct": 7874.6,
+ "multiplicity_best_buyhold_pct": 7925.8,
+ "multiplicity_deflated_sharpe_best": 1.0,
+ "multiplicity_raw_p005": 2237,
+ "multiplicity_bh_fdr005": 2068,
+ "multiplicity_beat_buyhold_stocks": 6,
+ "multiplicity_fdr_q": 0.05
 }

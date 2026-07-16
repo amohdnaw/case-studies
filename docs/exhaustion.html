@@ -191,6 +191,32 @@
   That is a far stronger result than one market refusing me twice. It is not a fee problem, a coin
   problem, or a lag problem.</p>
 
+  <h2>7,860 tries: what luck looks like</h2>
+  <p>Brute-force search is a multiple-testing machine. Run <b>7,860</b> backtests and, even if every
+  one is noise, the <b>best Sharpe you should expect</b> is not zero — it is about
+  <b>0.66</b> (95th percentile of the null max: <b>0.77</b> in an 8,000-draw simulation with
+  each trial's sample length matched to the data). The best Sharpe actually observed is
+  <b>1.32</b> (NVDA, price-above-SMA200). Selection bias explains part of the gap; it does not
+  explain the conclusion, because that strategy still <b>underperforms buy-and-hold</b>
+  (+7,875% vs +7,926% on the same window — still <code>lags_hold</code>).</p>
+  <p>Count one-sided p-values that Sharpe &gt; 0 (stocks: t-test on reported Sharpe; crypto: net
+  return vs a fee-scaled null SE) and <b>2,237</b> clear α = 0.05. Benjamini–Hochberg at FDR =
+  5% still leaves <b>2,068</b> “discoveries”. The honest null on stocks — beat buy-and-hold —
+  survives <b>6</b>. Multiplicity control trims the list; it does not replace the null.</p>
+
+  <figure>
+    <img src="figures/exh-fig4.svg" alt="Histogram of maximum Sharpe under null from 7860 tries; vertical lines at expected max 0.66 and observed best 1.32.">
+    <figcaption>FIG 4. Maximum Sharpe across 7,860 trials under H₀ (8,000 simulations, each
+    trial's effective sample size taken from the data). Expected best ≈ 0.66; observed best = 1.32.
+    Beating the null max is what luck looks like at this search depth.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="figures/exh-fig5.svg" alt="Bar chart: 2237 raw significant, 2068 BH survivors, 6 beat buy-and-hold.">
+    <figcaption>FIG 5. Declared winners vs the bar that matters. Raw p &lt; 0.05 flags 2,237 strategies;
+    BH FDR 5% leaves 2,068; only 6 stock strategies beat their own buy-and-hold.</figcaption>
+  </figure>
+
   <h2>What I got wrong, and how I know</h2>
 
   <p>This is the part worth publishing, because it is the part nobody publishes.</p>
@@ -231,6 +257,7 @@
   <div class="repro">
     <span class="lab">Reproduce</span>
     <code>python3 scripts/exhaustion.py     # recomputes every figure and number</code>
+    <code>python3 scripts/exhaustion_multiplicity.py  # Figs 4–5 + multiplicity keys in exhaustion_results.json</code>
     <p style="margin:.6rem 0 0;font-size:.82rem;color:var(--ink-soft)">Runs on
     <code>data/exhaustion_crypto.csv</code> (7,524 runs: 22 indicators × 11 coins × 3 combination
     tiers, hourly and daily, 0.15%/side) and <code>data/exhaustion_stocks.csv</code> (336 runs: the

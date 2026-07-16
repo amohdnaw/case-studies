@@ -149,6 +149,10 @@ def main():
         "stocks_verdicts": dict(Counter(r["verdict"] for r in stocks)),
     })
     json.dump(res, open(f"{DATA}/exhaustion_results.json", "w"), indent=1)
+
+    import subprocess, sys
+    subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "exhaustion_multiplicity.py")], check=True)
+
     print(json.dumps(res, indent=1))
     print(f"\nfigures -> {FIGS}/exh-fig1..3.svg")
 
