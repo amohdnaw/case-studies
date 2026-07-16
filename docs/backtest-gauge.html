@@ -25,7 +25,8 @@
   *{margin:0;padding:0;box-sizing:border-box}
   body{background:var(--paper);color:var(--ink);font-family:var(--serif);padding:4rem 1.5rem 5rem;line-height:1.6}
   .sheet{max-width:46rem;margin:0 auto}
-  a{color:var(--accent)}
+  a{color:var(--accent);font-weight:600;text-decoration:none;border-bottom:none}
+  a:hover{color:oklch(38% .095 196);text-decoration:none;border-bottom:none}
   /* Shared byline — the one component identical across the estate (portfolio home, the bench,
      and every study). It is what makes two differently-dressed sites read as one hand.
      Note it wears the LOCAL accent (rubric), not the portfolio's teal: one accent per surface. */
@@ -33,7 +34,7 @@
     display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:baseline;
     padding-bottom:.55rem;border-bottom:1px solid var(--hair-faint);margin-bottom:.55rem}
   .byline a{color:var(--accent);text-decoration:none}
-  .byline a:hover{text-decoration:underline}
+  .byline a:hover{color:oklch(38% .095 196);text-decoration:none}
   .byline .disc{color:var(--ink-faint);font-weight:600;letter-spacing:.12em}
   .kicker{font:600 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);
     border-bottom:1px solid var(--hair);padding-bottom:.6rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
