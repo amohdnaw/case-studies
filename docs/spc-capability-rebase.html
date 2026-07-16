@@ -185,6 +185,43 @@
     σ overall inflates and Ppk collapses. Within-spread vs between-drift, on one page.</figcaption>
   </figure>
 
+  <h2>When the within index lies: autocorrelation</h2>
+  <p>Everything above assumes readings inside a subgroup are independent. On a real line they often
+  are not: consecutive measurements in the same subgroup can be serially correlated (fixture
+  settling, shared chuck, sampling cadence). That correlation does not change the physical spread
+  the customer receives, but it <i>does</i> shrink the within-subgroup range R̄ — so R̄/d₂
+  underestimates σ within and <b>inflates Cwk</b> while Ppk (total sample σ) barely moves.</p>
+  <p>Hold the process stable and capable (σ within ≈ 0.17) and sweep within-subgroup AR(1)
+  correlation φ from 0 to 0.8 across 400 Monte Carlo replicates per level. Median Cwk rises from
+  <b>1.91</b> to <b>3.53</b> (+<b>85.5%</b> at φ = 0.8); median Ppk moves only 1.90 → 2.35. A
+  gate running on Cwk would read "capable" on autocorrelated noise that Ppk still sees honestly.
+  That is a second reason the overall index belongs on the classification gate — not just drift,
+  but any mechanism that makes within-subgroup spread look tighter than the run actually is.</p>
+
+  <figure>
+    <img src="figures/spc-fig4.svg" alt="Line chart. Median Cwk rises steeply with within-subgroup AR(1) correlation phi from 0 to 0.8; median Ppk stays nearly flat. A dotted horizontal line marks the 1.33 gate.">
+    <figcaption>Fig. 4. Autocorrelation sensitivity on a stable, capable process. Cwk (within index)
+    inflates with φ; Ppk (overall index) is nearly flat. Same physical spread; a within gate would
+    over-call capability.</figcaption>
+  </figure>
+
+  <h2>Gate operating curve: how much drift before the flip?</h2>
+  <p>The 2.14× headline comes from one committed generator with a fixed drift scale. A separate
+  question is operating-characteristic: for a pure drift population (tight subgroups, walking means),
+  what fraction fails Ppk — and what fraction <i>flips</i> (pass Cwk, fail Ppk) — as the
+  between-subgroup walk scale <b>s<sub>b</sub></b> increases?</p>
+  <p>Sweep s<sub>b</sub> from 0.06 to 0.40 on 250 replicates per grid point. Both the overall-fail
+  and flip curves cross 50% near <b>s<sub>b</sub> ≈ 0.22</b>. The shaded band is the s<sub>b</sub>
+  range baked into the generator (~0.16–0.34): the committed mix sits squarely in the region where
+  a within gate routinely passes what an overall gate would fail.</p>
+
+  <figure>
+    <img src="figures/spc-fig5.svg" alt="Operating curve. Percent failing Ppk and percent flipping from pass-Cwk to fail-Ppk rise with between-subgroup drift scale sb. Both curves cross 50 percent near sb equals 0.22. A shaded band marks the generator sb range.">
+    <figcaption>Fig. 5. Gate operating curve on a pure drift population. Flip rate (dashed) and Ppk
+    fail rate (solid) vs between-subgroup drift scale. 50% flip near s<sub>b</sub> ≈ 0.22; the
+    generator's drift band (shaded) sits in the high-flip region.</figcaption>
+  </figure>
+
   <h2>What the honest gate changed</h2>
   <p>The point of the rebase is what it changed operationally. Because of it:</p>
   <ul class="changes">
@@ -212,6 +249,9 @@
   run rules, which would flag some "stable" characteristics too.</li>
   <li><b>Normal-ish data.</b> The simulation uses Gaussian within-subgroup noise; one-sided tolerances
   and non-normal shapes, where the manual prescribes quantile-based indices, are out of scope.</li>
+  <li><b>i.i.d. within subgroups in the main dataset.</b> The autocorrelation sensitivity (Fig. 4)
+  is a separate Monte Carlo; the committed 2,000-characteristic CSV uses independent within-subgroup
+  readings unless noted.</li>
   </ul>
 
   <div class="repro">
@@ -220,6 +260,8 @@
     → <a href="https://github.com/amohdnaw/case-studies/blob/main/data/spc_synthetic.csv">data/spc_synthetic.csv</a>
     (250,000 rows, one per measurement) · Full analysis:
     <a href="https://github.com/amohdnaw/case-studies/blob/main/notebooks/spc-rebase.ipynb">notebooks/spc-rebase.ipynb</a>
+    · Sensitivity extensions (Figs. 4–5):
+    <a href="https://github.com/amohdnaw/case-studies/blob/main/scripts/spc_rebase_sensitivity.py">scripts/spc_rebase_sensitivity.py</a>
     · Headline numbers: <a href="https://github.com/amohdnaw/case-studies/blob/main/data/spc_results.json">data/spc_results.json</a>
     (every figure above regenerates exactly). Simulated data throughout; the phenomenon is real.
   </div>
