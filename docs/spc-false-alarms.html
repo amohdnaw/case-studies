@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>When forty charts fire and nothing changed</title>
+<meta name="description" content="A statistical case study: at 15,000 monitored X-bar charts and α = 0.0027, expect ~40 false alarms per shift even when the process is in control — and what Bonferroni and Benjamini–Hochberg do about it.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="When forty charts fire and nothing changed">
+<meta property="og:description" content="False alarms at 15,000-characteristic scale: multiplicity on an SPC platform, simulated and reproducible.">
+<meta property="og:url" content="https://amohdnaw.github.io/case-studies/spc-false-alarms.html">
+<meta property="og:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
+<style>
+  :root{
+    --paper:oklch(100% 0 0); --paper-deep:oklch(97.6% 0 0);
+    --ink:oklch(25% .008 65); --ink-soft:oklch(38% .02 65); --ink-faint:oklch(52% .018 70);
+    --rubric:oklch(43% .125 29); --accent:oklch(48% .085 196); --wash:oklch(43% .125 29 / .07);
+    --hair:oklch(25% .02 65 / .28); --hair-faint:oklch(25% .02 65 / .14);
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --mono:ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);padding:4rem 1.5rem 5rem;line-height:1.6}
+  .sheet{max-width:46rem;margin:0 auto}
+  a{color:var(--accent);font-weight:600;text-decoration:none;border-bottom:none}
+  a:hover{color:oklch(38% .095 196);text-decoration:none;border-bottom:none}
+  .byline{font:700 .68rem/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;
+    display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:baseline;
+    padding-bottom:.55rem;border-bottom:1px solid var(--hair-faint);margin-bottom:.55rem}
+  .byline a{color:var(--accent);text-decoration:none}
+  .byline a:hover{color:oklch(38% .095 196);text-decoration:none}
+  .byline .disc{color:var(--ink-faint);font-weight:600;letter-spacing:.12em}
+  .kicker{font:600 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);
+    border-bottom:1px solid var(--hair);padding-bottom:.6rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .kicker a{text-decoration:none}
+  h1{font-size:2.1rem;line-height:1.18;font-weight:600;margin:1.4rem 0 .8rem;letter-spacing:-.01em}
+  .standfirst{font-size:1.05rem;line-height:1.55;color:var(--ink-soft);font-style:italic;max-width:38rem}
+  h2{font-size:1.25rem;font-weight:600;margin:2.6rem 0 .7rem}
+  p{margin:.8rem 0;font-size:.98rem}
+  .verdict{margin:2rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.98rem;line-height:1.55}
+  .verdict b{color:var(--rubric)}
+  .verdict .vlabel{font:700 .62rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--rubric);display:block;margin-bottom:.55rem}
+  table{width:100%;border-collapse:collapse;margin:1.6rem 0;font-size:.85rem}
+  th{font:600 .68rem/1.3 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);
+    text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--hair)}
+  td{padding:.5rem .6rem;border-bottom:1px solid var(--hair-faint);font-family:var(--mono);font-size:.8rem}
+  td:first-child{font-family:var(--serif);font-size:.88rem}
+  .hit{color:var(--rubric);font-weight:700}
+  figure{margin:2rem 0;border:1px solid var(--hair);background:var(--paper-deep);padding:1rem}
+  figure img{width:100%;display:block}
+  figcaption{font:.72rem/1.5 var(--mono);color:var(--ink-soft);margin-top:.7rem}
+  code{font-family:var(--mono);font-size:.82em;background:var(--paper-deep);padding:.05em .35em}
+  .margin-note{float:right;width:11rem;margin:.2rem -13rem 1rem 1.5rem;font-size:.72rem;line-height:1.5;
+    color:var(--ink-faint);border-top:1px solid oklch(48% .085 196 / .55);padding-top:.4rem}
+  @media (max-width:76rem){.margin-note{float:none;width:auto;margin:1rem 0}}
+  .repro{margin:2.4rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.85rem}
+  .repro .lab{font:600 .65rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:.5rem}
+  .footnav{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:1rem;
+    font:.75rem/1.5 var(--mono);color:var(--accent)}
+  .footnav a{text-decoration:none}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="byline">
+    <a href="https://portfolio.amohdnaw.xyz/">Ammar Nawawi</a>
+    <span class="disc">Process Engineer (SPC)</span>
+  </div>
+  <div class="kicker">
+    <span><a href="index.html">Case studies</a> · 06 · SPC multiplicity</span>
+    <span>15,000 X-bar charts · α = 0.0027 · simulated</span>
+  </div>
+
+  <h1>When forty charts fire and nothing changed.</h1>
+  <p class="standfirst">An SPC platform monitoring ~15,000 measured characteristics in a
+  semiconductor assembly &amp; test (OSAT) line will flag dozens of X-bar charts every shift even
+  when every process is in control. That is not drift, tool wear, or a regression in the software.
+  It is arithmetic. This study counts the false alarms, compares three ways a plant might respond,
+  and argues the family of tests — not each chart in isolation — is the honest unit of inference.</p>
+  <p style="font:.8rem/1.6 var(--mono);color:var(--ink-soft);margin:.6rem 0 0">
+  Monte Carlo simulation with a fixed seed. No production data, part numbers, or customer names.
+  The scale and the per-chart α match a real platform; the alarms are synthetic Bernoulli draws
+  representing in-control 3σ limits.</p>
+
+  <div class="verdict"><span class="vlabel">Verdict</span>At <b>α = 0.0027</b> per chart (standard
+  3σ X-bar limits, in control), monitoring <b>15,000</b> characteristics produces
+  <b>~40.5 expected false alarms every shift</b> — and the probability of <i>at least one</i> false
+  alarm is effectively <b>100%</b>. A 365-shift simulation averages <b>41.0</b> raw alarms per shift
+  (95th percentile: <b>51</b>). <b>Bonferroni</b> adjustment (α/m per chart) cuts the mean to
+  <b>0.01</b>; <b>Benjamini–Hochberg</b> at FDR = 5% flags <b>0</b> on every shift in this null run.
+  <br><br><b>In plain terms:</b> when forty charts turn red on the same shift and there is no
+  assignable cause, the correct diagnosis is often multiplicity — not forty independent fires.</div>
+
+  <h2>The arithmetic nobody puts on the wall</h2>
+  <div class="margin-note">Each X-bar chart at 3σ carries α ≈ 0.0027 per subgroup when the process
+  is stable. One chart: a rare event. Fifteen thousand independent charts: a shift ticket every
+  day.</div>
+  <p>Each characteristic runs an X-bar chart with control limits set so that, if the process is
+  stable and the within-subgroup distribution is well behaved, the chance of a false alarm on any
+  one subgroup is about <b>α = 0.0027</b> (the usual 3-sigma convention). That is fine for a single
+  chart. It is not fine for a platform running the same test on <b>15,000</b> characteristics every
+  shift.</p>
+  <p>The expected number of false alarms per evaluation is simply <code>E = m · α</code>. At
+  production scale that is <b>15,000 × 0.0027 = 40.5</b>. The probability of seeing <i>at least
+  one</i> false alarm is <code>1 − (1 − α)<sup>m</sup></code>, which is already ~99.97% at
+  <b>m = 2,000</b> and rounds to <b>100%</b> at 15,000. The platform is working as designed; the
+  meeting is drowning anyway.</p>
+
+  <figure>
+    <img src="figures/mult-fig1.svg" alt="Line chart: expected false alarms per shift rises linearly with thousands of characteristics monitored, reaching 40.5 at 15,000.">
+    <figcaption>Fig. 1. Expected false alarms per shift (E[m·α]) vs characteristics monitored.
+    Production scale (15,000) highlighted: ~40.5 alarms per shift even when every process is in
+    control.</figcaption>
+  </figure>
+
+  <h2>Three policies on the same in-control process</h2>
+  <p>Run the same null process for <b>365 shifts</b> with <b>m = 15,000</b> charts and compare three
+  policies:</p>
+  <table>
+    <tr><th>Policy</th><th>Per-chart threshold</th><th>Mean false alarms / shift</th><th>95th percentile</th></tr>
+    <tr><td>Unadjusted 3σ</td><td>α = 0.0027</td><td class="hit">41.0</td><td class="hit">51</td></tr>
+    <tr><td>Bonferroni (FWER)</td><td>α/m ≈ 1.8×10<sup>−7</sup></td><td>0.01</td><td>0</td></tr>
+    <tr><td>Benjamini–Hochberg (FDR 5%)</td><td>rank-adjusted on p-values</td><td>0.0</td><td>0</td></tr>
+  </table>
+  <p>The unadjusted policy generates a full shift's worth of investigations from noise alone.
+  Bonferroni restores family-wise control at the cost of per-chart sensitivity so strict it is
+  impractical to ever see a single alarm under the null. BH, applied shift-wide to the batch of chart
+  p-values, rejects nothing here — which is the correct answer when every firing chart is a null
+  draw.</p>
+
+  <figure>
+    <img src="figures/mult-fig2.svg" alt="Bar chart comparing mean false alarms per shift under unadjusted, Bonferroni, and Benjamini-Hochberg policies. Unadjusted near 41; others near zero.">
+    <figcaption>Fig. 2. Simulated mean false alarms per shift under three multiplicity policies
+    (365 shifts, m = 15,000, in control). Error ticks mark the 95th percentile. Only the
+    unadjusted policy produces operator workload from noise.</figcaption>
+  </figure>
+
+  <h2>One shift, forty-one alarms, zero root causes</h2>
+  <p>Pick a shift near the median of the unadjusted simulation: <b>41</b> charts alarm. Under
+  Bonferroni, <b>0</b> would have cleared the stricter gate; under BH, <b>0</b> are called
+  discoveries. An operator chasing the raw list investigates forty-one characteristics; a engineer
+  who reads the batch sees one systemic pattern — "the family fired, nothing assignable" — and does
+  not burn the shift on phantom fires.</p>
+  <p>This is the signature to learn: <b>many charts, one shift, no matching equipment event</b>.
+  That profile is what multiplicity looks like on the floor. A single chart firing alone still
+  deserves a root-cause walk; forty firing together on an in-control day is a different hypothesis
+  test.</p>
+
+  <figure>
+    <img src="figures/mult-fig3.svg" alt="Left: histogram of false alarms per shift centered near 41. Right: bar chart for one example shift showing 41 unadjusted, 0 Bonferroni, 0 BH.">
+    <figcaption>Fig. 3. Left: distribution of unadjusted false alarms over 365 in-control shifts
+    (mean 41.0). Right: one median shift under three policies — 41 raw alarms, 0 after multiplicity
+    control.</figcaption>
+  </figure>
+
+  <h2>What changes operationally</h2>
+  <p>• <b>Batch alarms by shift, not by chart.</b> The first question when the alarm board fills is
+  "how many, and is there a common cause?" — not "investigate every red box in row order."<br>
+  • <b>Explicit family-wise logic for high-m dashboards.</b> At 15,000 characteristics, some form of
+  multiplicity control (Bonferroni for strict FWER, BH when you can tolerate a controlled false-discovery
+  rate) is not optional statistics — it is workload management.<br>
+  • <b>Do not confuse capability rebasing with alarm policy.</b> Study 02 showed the overall-σ gate
+  should flag <i>more</i> real drift; this study shows the X-bar alarm layer will flag <i>more false
+  positives</i> unless the family is handled. Both can be true.</p>
+
+  <h2>Limitations</h2>
+  <p>Independence across charts is an approximation: correlated characteristics would co-fire and
+  can look like a systemic event even when real. This simulation uses independent Bernoulli alarms
+  at fixed α — a clean upper bound on the "noise-only" story. Real run rules, autocorrelation, and
+  non-normal tails change the per-chart α; the scaling law <code>E = m·α</code> does not.</p>
+
+  <div class="repro">
+    <span class="lab">Reproduce this</span>
+    Simulation:
+    <a href="https://github.com/amohdnaw/case-studies/blob/main/scripts/spc_multiplicity.py">scripts/spc_multiplicity.py</a>
+    · Notebook:
+    <a href="https://github.com/amohdnaw/case-studies/blob/main/notebooks/spc-multiplicity.ipynb">notebooks/spc-multiplicity.ipynb</a>
+    · Headline numbers:
+    <a href="https://github.com/amohdnaw/case-studies/blob/main/data/spc_multiplicity_results.json">data/spc_multiplicity_results.json</a>
+    (fixed seed 20260716; Figs. 1–3 regenerate exactly). Synthetic throughout.
+  </div>
+
+  <div class="footnav">
+    <a href="exhaustion.html">← 05 · Research design</a>
+    <a href="index.html">All case studies →</a>
+  </div>
+</div>
+</body>
+</html>

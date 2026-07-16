@@ -1,0 +1,45 @@
+{
+  "synthetic": true,
+  "seed": 20260716,
+  "environment": "semiconductor assembly & test (OSAT) \u2014 simulated",
+  "n_characteristics_production": 15000,
+  "per_chart_alpha": 0.0027,
+  "per_chart_alpha_label": "3-sigma X-bar (in control)",
+  "fdr_q": 0.05,
+  "n_days_simulated": 365,
+  "expected_false_alarms_per_shift": 40.5,
+  "fwer_per_shift_pct": 100.0,
+  "bonferroni_alpha_per_chart": 1.8e-07,
+  "expected_bonferroni_per_shift": 0.0027,
+  "sim_mean_unadjusted": 41.01,
+  "sim_mean_bonferroni": 0.01,
+  "sim_mean_bh": 0.0,
+  "sim_p95_unadjusted": 51,
+  "sim_p95_bonferroni": 0,
+  "sim_p95_bh": 0,
+  "scale_curve_m": [
+    500,
+    1000,
+    2000,
+    5000,
+    10000,
+    12000,
+    15000
+  ],
+  "scale_curve_expected": [
+    1.35,
+    2.7,
+    5.4,
+    13.5,
+    27.0,
+    32.4,
+    40.5
+  ],
+  "example_shift": {
+    "example_shift_index": 16,
+    "example_raw_alarms": 41,
+    "example_bonferroni_alarms": 0,
+    "example_bh_alarms": 0
+  },
+  "operational_note": "When dozens of charts alarm on the same shift with no assignable cause, the family of tests \u2014 not each chart in isolation \u2014 is the honest unit of inference."
+}

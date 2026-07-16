@@ -63,10 +63,10 @@
   </div>
   <div class="kicker"><span>Case studies</span><span>Applied statistics, from real systems</span></div>
   <h1>Evidence, not claims.</h1>
-  <p class="standfirst">Five studies from systems I built and run: a trading log audited to a
+  <p class="standfirst">Six studies from systems I built and run: a trading log audited to a
   null result, statistical process control realigned at production scale, yield analytics, a backtest
-  engine put through the measurement-system analysis it never had, and 7,860 strategies that all
-  lost to doing nothing.
+  engine put through the measurement-system analysis it never had, 7,860 strategies that all
+  lost to doing nothing, and the false-alarm arithmetic of monitoring 15,000 charts.
   Each one page, each reproducible from the data it ships with.</p>
 
   <div class="study">
@@ -111,6 +111,15 @@
     the fees eat it; in stocks the signal makes money and still loses to buy-and-hold. Includes the four
     errors the apparatus caught in its own work.</p>
     <a class="open" href="exhaustion.html">Read the study →</a>
+  </div>
+
+  <div class="study">
+    <div class="meta"><span>06 · SPC multiplicity</span><span>15,000 charts · α = 0.0027 · simulated</span></div>
+    <h2><a href="spc-false-alarms.html">When forty charts fire and nothing changed</a></h2>
+    <p>At production scale, unadjusted 3σ X-bar limits generate ~40 false alarms every shift even when
+    every process is in control. Bonferroni and Benjamini–Hochberg on the same null run, and why the
+    family of tests — not each chart — is the honest unit of inference.</p>
+    <a class="open" href="spc-false-alarms.html">Read the study →</a>
   </div>
 
   <div class="footer">
