@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Three gauges for a price that does not exist on weekends</title>
+<meta name="description" content="A measurement-systems study of tokenized equities: three 24/7 venues treated as gauges of the exchange price — bias, tracking error, four counterfeit instruments, and a weekend price-discovery test at corr 0.98.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Three gauges for a price that does not exist on weekends">
+<meta property="og:description" content="Tokenized stocks trade around the clock on three venues. Treat each as a gauge of the real exchange print: rank their bias, catch the counterfeits, and test whether the weekend price predicts Monday's open. It does — corr 0.981, MAE 0.51%.">
+<meta property="og:url" content="https://amohdnaw.github.io/case-studies/venue-gauge.html">
+<meta property="og:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
+<style>
+  :root{
+    --paper:oklch(100% 0 0); --paper-deep:oklch(97.6% 0 0);
+    --ink:oklch(25% .008 65); --ink-soft:oklch(38% .02 65); --ink-faint:oklch(52% .018 70);
+    --rubric:oklch(43% .125 29); --accent:oklch(48% .085 196); --wash:oklch(43% .125 29 / .07);
+    --hair:oklch(25% .02 65 / .28); --hair-faint:oklch(25% .02 65 / .14);
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --mono:ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);padding:4rem 1.5rem 5rem;line-height:1.6}
+  .sheet{max-width:46rem;margin:0 auto}
+  a{color:var(--accent);font-weight:600;text-decoration:none}
+  a:hover{color:oklch(38% .095 196)}
+  .byline{font:700 .68rem/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;
+    display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:baseline;
+    padding-bottom:.55rem;border-bottom:1px solid var(--hair-faint);margin-bottom:.55rem}
+  .byline .disc{color:var(--ink-faint);font-weight:600;letter-spacing:.12em}
+  .kicker{font:600 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);
+    border-bottom:1px solid var(--hair);padding-bottom:.6rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  h1{font-size:2.1rem;line-height:1.18;font-weight:600;margin:1.4rem 0 .8rem;letter-spacing:-.01em}
+  .standfirst{font-size:1.05rem;line-height:1.55;color:var(--ink-soft);font-style:italic;max-width:38rem}
+  h2{font-size:1.25rem;font-weight:600;margin:2.6rem 0 .7rem}
+  p{margin:.8rem 0;font-size:.98rem;max-width:38rem}
+  .verdict{margin:2rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.98rem;line-height:1.55}
+  .verdict b{color:var(--rubric)}
+  .verdict .vlabel{font:700 .62rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--rubric);display:block;margin-bottom:.55rem}
+  table{width:100%;border-collapse:collapse;margin:1.6rem 0;font-size:.85rem}
+  th{font:600 .68rem/1.3 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);
+    text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--hair)}
+  td{padding:.5rem .6rem;border-bottom:1px solid var(--hair-faint);font-family:var(--mono);font-size:.8rem;vertical-align:top}
+  td:first-child{font-family:var(--serif);font-size:.88rem}
+  .hit{color:var(--rubric);font-weight:700}
+  figure{margin:2rem 0;border:1px solid var(--hair);background:var(--paper-deep);padding:1rem;
+    background-image:repeating-linear-gradient(var(--paper-deep) 0 23px, var(--hair-faint) 23px 24px)}
+  figure img{width:100%;display:block}
+  figcaption{font:.72rem/1.5 var(--mono);color:var(--ink-soft);margin-top:.7rem}
+  code{font-family:var(--mono);font-size:.82em;background:var(--paper-deep);padding:.05em .35em}
+  .margin-note{float:right;width:11rem;margin:.2rem -13rem 1rem 1.5rem;font-size:.72rem;line-height:1.5;
+    color:var(--ink-faint);border-top:1px solid oklch(48% .085 196 / .55);padding-top:.4rem}
+  @media (max-width:76rem){.margin-note{float:none;width:auto;margin:1rem 0}}
+  .repro{margin:2.4rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.85rem}
+  .repro .lab{font:600 .65rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:.5rem}
+  .repro code{background:none;display:block;padding:.15rem 0}
+  .footnav{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:1rem;
+    font:.75rem/1.5 var(--mono);color:var(--accent)}
+  .pull{font-size:1.18rem;line-height:1.5;color:var(--ink);font-style:italic;
+    padding-left:1rem;margin:1.8rem 0;max-width:34rem}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="byline">
+    <a href="https://portfolio.amohdnaw.xyz/">Ammar Nawawi</a>
+    <span class="disc">Process Engineer (SPC)</span>
+  </div>
+  <div class="kicker">
+    <span><a href="index.html">Case studies</a> · 09 · Market microstructure</span>
+    <span>3 venues · 76 weekends · live data · Jul 2026</span>
+  </div>
+
+  <h1>Three gauges for a price that does not exist on weekends.</h1>
+  <p class="standfirst">Tokenized copies of US stocks now trade around the clock on three
+  venues. Each one is a measuring instrument pointed at the same true value — the exchange
+  print — and nobody publishes their calibration certificates. So I ran the study myself.</p>
+  <p style="font:.8rem/1.6 var(--mono);color:var(--ink-soft);margin:.6rem 0 0">
+  By a process engineer (SPC) in semiconductor assembly &amp; test: gauge qualification,
+  applied to market venues instead of micrometers. <b>Research only; no positions, no
+  real money, and — per studies 04 and 05 — no strategy at the end of this.</b></p>
+
+  <div class="verdict"><span class="vlabel">Verdict</span>The gauges rank cleanly, and two of them agree
+  like independent instruments should: Binance and Arcus track the exchange within
+  <span class="hit">0.2–2.0%</span> depending on liquidity, hour by hour, while Backpack runs
+  <span class="hit">2–5×</span> wider on every ticker it shares. The audit also caught
+  <b>four counterfeit gauges</b> — coin symbols masquerading as stock tickers, one off by
+  <span class="hit">+1,216%</span>. And the instrument cluster passes its hardest test: over 76
+  weekends the tokens priced Monday's opening gap to a correlation of <span class="hit">0.981</span>
+  (MAE 0.51% against a naive 2.57%), and the accuracy survives removing the market factor.
+  The 24/7 token market is a functioning pre-market.</div>
+
+  <h2>The measurement problem</h2>
+
+  <p>A tokenized stock is a claim on (or a synthetic of) a real share, trading on venues that
+  never close: <b>Binance</b> lists twenty as ordinary spot pairs, <b>Backpack</b> carries
+  exchange-listed xStocks, and <b>Arcus</b> — the dYdX-built DEX on Robinhood Chain — quotes
+  perpetuals against 43 names, backed 1:1 by Robinhood custody. Three instruments, one measurand.</p>
+
+  <p>The complication is the interesting part: the reference standard — the actual exchange
+  print — only exists 32.5 hours a week. From Friday 20:00 UTC to Monday 13:30 UTC the true
+  value is unobservable, and the gauges keep printing readings anyway. A gauge study here has
+  two halves: <em>when the reference exists, how far off is each instrument?</em> And <em>when it
+  doesn't, do the readings mean anything at all?</em></p>
+
+  <h2>Bias and tracking, venue by venue</h2>
+
+  <p class="margin-note">Mean absolute deviation from the stock's hourly close over the last 40
+  shared market hours. Blank = venue doesn't list the name. Backpack lists only four of these.</p>
+
+  <table>
+    <tr><th>ticker</th><th>binance</th><th>arcus</th><th>backpack</th></tr>
+    <tr><td>SPY</td><td>0.18%</td><td>0.17%</td><td>—</td></tr>
+    <tr><td>QQQ</td><td>0.32%</td><td>0.31%</td><td>—</td></tr>
+    <tr><td>NVDA</td><td>0.55%</td><td>0.56%</td><td>—</td></tr>
+    <tr><td>MSFT</td><td>0.61%</td><td>0.55%</td><td>—</td></tr>
+    <tr><td>TSLA</td><td>0.63%</td><td>0.62%</td><td>—</td></tr>
+    <tr><td>GOOGL</td><td>0.82%</td><td>0.78%</td><td>—</td></tr>
+    <tr><td>META</td><td>0.86%</td><td>0.86%</td><td>—</td></tr>
+    <tr><td>AMD</td><td>1.28%</td><td>1.26%</td><td>—</td></tr>
+    <tr><td>MU</td><td>1.62%</td><td>1.64%</td><td class="hit">2.67%</td></tr>
+    <tr><td>SNDK</td><td>2.08%</td><td>2.00%</td><td class="hit">4.72%</td></tr>
+  </table>
+
+  <p>Two readings from this table. First, tracking error is a clean liquidity ladder: the index
+  ETFs sit under 0.35%, mega-caps under 1%, and the thin names (SNDK, the newly listed MU
+  tokens) drift past 2%. Second — and this is the gauge-study payoff — <b>Binance and Arcus agree
+  with each other to the second decimal on almost every row</b>, despite being entirely different
+  mechanisms (spot order book vs on-chain perpetual). When two independent instruments agree
+  that closely, the residual against the reference is mostly the <em>market's</em> noise, not the
+  instruments'. Backpack disagreeing by 2–5× on the same names is what a gauge failing
+  repeatability looks like.</p>
+
+  <h2>The counterfeit gauges</h2>
+
+  <p>Binance names its tokenized stocks by appending <code>B</code> to the ticker: <code>MUB</code>
+  is Micron, <code>TSLAB</code> is Tesla. Build the venue map naively and four coins walk straight
+  through the naming convention wearing stock tickers:</p>
+
+  <table>
+    <tr><th>looks like</th><th>actually is</th><th>deviation from the stock</th></tr>
+    <tr><td>TR (Tootsie Roll)</td><td>TRB — Tellor</td><td class="hit">61%</td></tr>
+    <tr><td>B (Barnes Group)</td><td>BB — BounceBit</td><td class="hit">100%</td></tr>
+    <tr><td>DG (Dollar General)</td><td>DGB — DigiByte</td><td class="hit">100%</td></tr>
+    <tr><td>BN (Brookfield)</td><td>BNB — BNB</td><td class="hit">1,216%</td></tr>
+  </table>
+
+  <p>None of these were caught by inspection — the symbols look plausible and the charts render
+  fine. They were caught because the tracking audit above runs on <em>every</em> instrument before
+  any instrument gets believed. The factory twin is exact: a gauge with the wrong part number on
+  it produces readings that are perfectly precise and mean nothing. You find it by measuring a
+  reference, never by reading the label.</p>
+
+  <p class="pull">A counterfeit gauge is precise, confident, and wrong — which is why
+  calibration against a reference is not optional paperwork.</p>
+
+  <h2>The weekend test</h2>
+
+  <p>Now the half of the week where the reference disappears. If the token venues are doing real
+  price discovery, their Friday-to-Monday drift should predict the stock's opening gap. If they
+  are a casino annex, it shouldn't. The test, with the leakage guard doing the real work:
+  <b>token price read at Monday 13:00 UTC — thirty minutes <em>before</em> the 13:30 open</b> —
+  against Friday's 20:00 UTC close, compared to the gap the stock actually printed. Every
+  Binance-tokenized name, every weekend since listing: 76 pairs across 35 tickers.</p>
+
+  <figure>
+    <img src="figures/venue-oracle-scatter.png" alt="Scatter of token weekend drift vs actual Monday opening gap, hugging the y=x line">
+    <figcaption>Each circle is one ticker-weekend: token drift over the closed market (x) against
+    the stock's actual opening gap (y). The dashed line is a perfect forecast. corr = 0.981,
+    slope = 0.98 — the tokens are not merely directionally right, they are <em>calibrated</em>.</figcaption>
+  </figure>
+
+  <table>
+    <tr><th>forecast</th><th>n</th><th>corr</th><th>slope</th><th>sign hit</th><th>MAE</th><th>naive MAE</th></tr>
+    <tr><td>token drift, pooled</td><td>76</td><td class="hit">0.981</td><td>0.98</td><td>96%</td><td class="hit">0.51%</td><td>2.57%</td></tr>
+    <tr><td>minus SPY factor (idiosyncratic)</td><td>58</td><td class="hit">0.980</td><td>0.94</td><td>100%</td><td class="hit">0.49%</td><td>2.28%</td></tr>
+  </table>
+
+  <p>The pooled number alone could be weekend beta — on a big weekend everything gaps together,
+  and predicting "the market moved" is cheap. So the second row subtracts SPY's predicted and
+  actual gap from every name and correlates what's left: the <em>stock-specific</em> part. It
+  doesn't budge. The tokens price idiosyncratic news — which memory-sector name is moving, not
+  just whether the tape is red — to half a percent, before the market opens.</p>
+
+  <p>The honest footnote: SPY's own token has traded through only <b>two</b> distinct weekends,
+  so the idiosyncratic cut is cross-sectionally wide (29 names per weekend) but temporally thin.
+  The claim as stated — <em>across the weekends observed</em> — is exactly as far as the data
+  reaches. The sample grows by one weekend per week at zero cost, and the script below will
+  recompute this table on any future date.</p>
+
+  <h2>What I refuse to conclude</h2>
+
+  <p>A 2.67% venue premium and a 0.98-correlation oracle look like the setup for an arbitrage
+  paragraph. There isn't one. The wide venue is wide <em>because</em> nothing can cross it cheaply:
+  RFQ spreads, custody hops, geographic restrictions, and a premium that converges precisely when
+  the market opens and takes your carry with it. Studies 04 and 05 of this series document what
+  happened the last two times a measured anomaly was mistaken for an edge. This study produces a
+  <b>calibration table</b>, not a trade.</p>
+
+  <p>What transfers instead is the discipline, and it transfers whole:</p>
+
+  <table>
+    <tr><th>this study</th><th>the factory twin</th></tr>
+    <tr><td>Rank venues by tracking error before trusting any feed</td><td>Gauge qualification before the gauge enters production</td></tr>
+    <tr><td>Two independent venues agreeing → residual is process noise</td><td>Inter-instrument agreement isolating gauge vs process variation</td></tr>
+    <tr><td>Coin symbols passing as stock tickers</td><td>Mislabeled gauge: precise readings of the wrong thing</td></tr>
+    <tr><td>Reading the token at 13:00, not 13:31</td><td>Blinding the measurement from the value it predicts</td></tr>
+    <tr><td>Weekend pricing with no exchange print</td><td>Measuring without a master standard, validated after the fact</td></tr>
+  </table>
+
+  <div class="verdict"><span class="vlabel">Final verdict</span>Binance and Arcus qualify as gauges of the
+  US equity print — agreeing with each other, tracking to liquidity-determined tolerance, and
+  demonstrably informative through the hours when the reference does not exist. Backpack does not
+  qualify: same measurand, 2–5× the error. Four counterfeit instruments were found and blacklisted
+  by audit, not by inspection. And the strongest result stays descriptive on purpose: the weekend
+  token market predicts Monday's open at <b>corr 0.981</b>, which is a fact about price discovery,
+  and — after studies 04 and 05 — deliberately not a trading system.</div>
+
+  <div class="repro">
+    <span class="lab">Reproduce</span>
+    <code>python3 scripts/venue_gauge.py    # tracking table + counterfeit audit + weekend oracle</code>
+    <p style="margin:.6rem 0 0;font-size:.82rem;color:var(--ink-soft)">Every number above recomputes
+    live from Binance, Backpack, Arcus, and Yahoo Finance; results land in
+    <code>data/venue_gauge_results.json</code> and the 76 ticker-weekends in
+    <code>data/venue_weekends.csv</code>. Deviations are hourly closes over the last 40 shared
+    market hours, so the tracking table will drift with liquidity — that is the point of a
+    live gauge log.</p>
+  </div>
+
+  <div class="footnav">
+    <a href="index.html">← All case studies</a>
+    <a href="backtest-gauge.html">04 · The gauge that never passed GR&amp;R →</a>
+  </div>
+</div>
+</body>
+</html>

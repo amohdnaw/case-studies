@@ -15,6 +15,7 @@ repo.
 | 06 | [When forty charts fire and nothing changed](https://amohdnaw.github.io/case-studies/spc-false-alarms.html) · [script](scripts/spc_multiplicity.py) | Live |
 | 07 | [Before you rank the defects, calibrate the camera](https://amohdnaw.github.io/case-studies/aoi-attribute-msa.html) · [notebook](notebooks/aoi-attribute-msa.ipynb) | Live |
 | 08 | [Which chart catches the shift first?](https://amohdnaw.github.io/case-studies/spc-shift-detect.html) · [script](scripts/spc_shift_detect.py) | Live |
+| 09 | [Three gauges for a price that does not exist on weekends](https://amohdnaw.github.io/case-studies/venue-gauge.html) · [script](scripts/venue_gauge.py) | Draft — not pushed |
 
 ## Reproduce study 04
 

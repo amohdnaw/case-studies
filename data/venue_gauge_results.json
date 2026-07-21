@@ -1,0 +1,119 @@
+{
+  "generated": "2026-07-21T16:19:32+00:00",
+  "tracking": [
+    {
+      "ticker": "SPY",
+      "bnc": 0.18428861266023722,
+      "bpx": null,
+      "arc": 0.17345268989720303
+    },
+    {
+      "ticker": "QQQ",
+      "bnc": 0.31593884883393764,
+      "bpx": null,
+      "arc": 0.31074163483510026
+    },
+    {
+      "ticker": "TSLA",
+      "bnc": 0.6305495942426673,
+      "bpx": null,
+      "arc": 0.6168683106269424
+    },
+    {
+      "ticker": "MSFT",
+      "bnc": 0.605954500126687,
+      "bpx": null,
+      "arc": 0.5457422164074455
+    },
+    {
+      "ticker": "NVDA",
+      "bnc": 0.5457632637966967,
+      "bpx": null,
+      "arc": 0.5596649997272898
+    },
+    {
+      "ticker": "GOOGL",
+      "bnc": 0.8151940712379779,
+      "bpx": null,
+      "arc": 0.7810596171820436
+    },
+    {
+      "ticker": "META",
+      "bnc": 0.8564842531002687,
+      "bpx": null,
+      "arc": 0.8628839102348274
+    },
+    {
+      "ticker": "MSTR",
+      "bnc": 0.8000179068360338,
+      "bpx": null,
+      "arc": null
+    },
+    {
+      "ticker": "AMD",
+      "bnc": 1.281295492596225,
+      "bpx": null,
+      "arc": 1.2642148702999199
+    },
+    {
+      "ticker": "TSM",
+      "bnc": 0.786454507188122,
+      "bpx": null,
+      "arc": null
+    },
+    {
+      "ticker": "MU",
+      "bnc": 1.6183272586402513,
+      "bpx": 2.6663311132115313,
+      "arc": 1.637387037499425
+    },
+    {
+      "ticker": "SNDK",
+      "bnc": 2.0763807256236326,
+      "bpx": 4.723729225652759,
+      "arc": 2.004943301086732
+    }
+  ],
+  "fakes": [
+    {
+      "ticker": "TR",
+      "coin": "Tellor",
+      "dev": 61.4495435512474
+    },
+    {
+      "ticker": "B",
+      "coin": "BounceBit",
+      "dev": 99.94814237888949
+    },
+    {
+      "ticker": "DG",
+      "coin": "DigiByte",
+      "dev": 99.9975703947696
+    },
+    {
+      "ticker": "BN",
+      "coin": "BNB",
+      "dev": 1215.8240778636282
+    }
+  ],
+  "oracle": {
+    "pooled": {
+      "n": 76,
+      "corr": 0.981,
+      "beta": 0.976,
+      "hit": 96,
+      "mae_token": 0.51,
+      "mae_naive": 2.57
+    },
+    "idiosyncratic": {
+      "n": 58,
+      "corr": 0.98,
+      "beta": 0.935,
+      "hit": 100,
+      "mae_token": 0.49,
+      "mae_naive": 2.28,
+      "spy_weekends": 2
+    },
+    "tickers": 35
+  }
+}
