@@ -152,3 +152,12 @@ estate split: **red only on the finding, teal only on the answer**, faint ink fo
 fourth hue. The icon's key mark redraws on hover and once on scroll-in (under 1.5 s); reduced motion
 keeps it still. A new study gets its own icon drawn from its own headline result, never a shared
 category glyph.
+
+## Link buttons (added 2026-09-25, picked B in portfolio `specs/chip2-mock.png`)
+
+"Read the study" on the index and both footnav links on every study page are link buttons: faint
+teal outline (radius 0, per the radius rule), a solid teal arrow chip at the arrow's end, and on
+hover/focus the chip sweeps across the whole button (0.38s, ease-out-expo) while the label flips to
+paper. "← prev" sweeps from the left (`a.back`), "Next →" from the right. The CSS block is repeated
+in each single-file page; change one, change all twelve. The portfolio home uses the same grammar at
+6px radius.

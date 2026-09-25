@@ -66,6 +66,17 @@
   .repro code{background:none;display:block;padding:.15rem 0}
   .footnav{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:1rem;
     font:.75rem/1.5 var(--mono);color:var(--accent)}
+  .footnav{flex-wrap:wrap} .footnav a:last-child{margin-left:auto}
+  /* link button (DESIGN.md "Link buttons"): the teal arrow chip sweeps across the label on hover */
+  .footnav a{position:relative;isolation:isolate;display:inline-flex;align-items:center;gap:8px;padding:4px 4px 4px 12px;
+    white-space:nowrap;text-decoration:none;color:var(--accent);transition:color .3s;gap:12px}
+  .footnav a::before{content:"";position:absolute;inset:0;border:1px solid currentColor;opacity:.35;z-index:-2}
+  .footnav a::after{content:"";position:absolute;top:0;bottom:0;right:0;width:26px;background:var(--accent);z-index:-1;transition:width .38s cubic-bezier(.22,1,.36,1)}
+  .footnav a i{font-style:normal;width:18px;height:18px;display:grid;place-items:center;color:var(--paper);font-size:14px;line-height:1;padding-bottom:2px;transition:transform .38s cubic-bezier(.22,1,.36,1)}
+  .footnav a.back{padding:4px 12px 4px 4px} .footnav a.back::after{right:auto;left:0}
+  .footnav a:is(:hover,:focus-visible){color:var(--paper)} .footnav a:is(:hover,:focus-visible)::after{width:100%}
+  .footnav a:is(:hover,:focus-visible) i{transform:translateX(2px)} .footnav a.back:is(:hover,:focus-visible) i{transform:translateX(-2px)}
+  @media (prefers-reduced-motion:reduce){ .footnav a,.footnav a::after,.footnav a i{transition:none} }
   .footnav a{text-decoration:none}
   .pull{font-size:1.18rem;line-height:1.5;color:var(--ink);font-style:italic;
     padding-left:1rem;margin:1.8rem 0;max-width:34rem}
@@ -282,8 +293,8 @@
   </div>
 
   <div class="footnav">
-    <a href="spc-shift-detect.html">← 08 · Shift detection</a>
-    <a href="aoi-attribute-msa.html">Next: 07 · Attribute MSA →</a>
+    <a class="back" href="spc-shift-detect.html"><i aria-hidden="true">←</i>08 · Shift detection</a>
+    <a href="aoi-attribute-msa.html">Next: 07 · Attribute MSA <i aria-hidden="true">→</i></a>
   </div>
 </div>
 </body>
