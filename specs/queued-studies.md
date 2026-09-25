@@ -10,6 +10,6 @@ Each gets its own grill (question, data safety, outcome contract) before any wri
    disagree (832 / 570 / 356 / 159)? Evidence: `~/html-dashboard/spc/reports/build/blf_config.py`,
    `chart_register.py`, NOW.md BLF section. Needs a from-scratch synthetic replica; never floor data,
    never spc-api :3005. ~8-12 h. Likely a Measurement systems or new "Data integrity" section.
-3. **Gates that pass vacuously.** The CV-pipeline audit that passed all 18 packs while a contact row
+3. **DONE 2026-09-25 as Study 10 (docs/cv-gates.html).** **Gates that pass vacuously.** The CV-pipeline audit that passed all 18 packs while a contact row
    wrapped (a rejoined-line extraction cannot see a wrap). Evidence: `~/career-ops/` ats_check.py
    check 6, pack_audit `head_raw()`. Own documents, safe. ~4-5 h.
