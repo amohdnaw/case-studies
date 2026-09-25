@@ -2,7 +2,7 @@
 
 Live: **https://amohdnaw.github.io/case-studies/**
 
-Nine one-page studies from systems I built and run, each reproducible from the data in this
+Ten one-page studies from systems I built and run, each reproducible from the data in this
 repo.
 
 | # | Study | Status |
@@ -16,6 +16,7 @@ repo.
 | 07 | [Before you rank the defects, calibrate the camera](https://amohdnaw.github.io/case-studies/aoi-attribute-msa.html) · [notebook](notebooks/aoi-attribute-msa.ipynb) | Live |
 | 08 | [Which chart catches the shift first?](https://amohdnaw.github.io/case-studies/spc-shift-detect.html) · [script](scripts/spc_shift_detect.py) | Live |
 | 09 | [Three gauges for a price that does not exist on weekends](https://amohdnaw.github.io/case-studies/venue-gauge.html) · [script](scripts/venue_gauge.py) | Live |
+| 10 | [Every gate passed. Every CV was broken.](https://amohdnaw.github.io/case-studies/cv-gates.html) · [script](scripts/gates_escape.py) | Live |
 
 ## Reproduce study 04
 

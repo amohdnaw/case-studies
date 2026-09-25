@@ -65,6 +65,8 @@
   .footnav{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:1rem;
     font:.75rem/1.5 var(--mono);color:var(--accent)}
   .footnav a{text-decoration:none}
+  /* narrow screens: a wide table scrolls inside itself instead of pushing the page sideways */
+  @media (max-width:520px){ table{display:block;overflow-x:auto} }
 </style>
 </head>
 <body>

@@ -61,6 +61,8 @@
     font:.75rem/1.5 var(--mono);color:var(--accent)}
   .pull{font-size:1.18rem;line-height:1.5;color:var(--ink);font-style:italic;
     padding-left:1rem;margin:1.8rem 0;max-width:34rem}
+  /* narrow screens: a wide table scrolls inside itself instead of pushing the page sideways */
+  @media (max-width:520px){ table{display:block;overflow-x:auto} }
 </style>
 </head>
 <body>

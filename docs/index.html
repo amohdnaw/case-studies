@@ -7,7 +7,7 @@
 <meta name="description" content="Case studies in applied statistics: honest inference on trading data, SPC capability at production scale, yield analytics.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Evidence, not claims: case studies by Ammar Nawawi">
-<meta property="og:description" content="Nine studies in applied statistics, reproducible from the data they ship with. Published even when the answer was no.">
+<meta property="og:description" content="Ten studies in applied statistics, reproducible from the data they ship with. Published even when the answer was no.">
 <meta property="og:url" content="https://amohdnaw.github.io/case-studies/">
 <meta property="og:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
@@ -87,7 +87,7 @@
   </div>
   <div class="kicker"><span>Case studies</span><span>Applied statistics, from real systems</span></div>
   <h1>Evidence, not claims.</h1>
-  <p class="standfirst">Nine studies from systems I built and run, grouped by the question they ask.
+  <p class="standfirst">Ten studies from systems I built and run, grouped by the question they ask.
   Each fits on one page and each is reproducible from the data it ships with. Three of them end on a
   null result.</p>
 
@@ -133,7 +133,7 @@
   </section>
 
   <section class="group">
-  <div class="sec"><span>Measurement systems</span><span>3 studies</span></div>
+  <div class="sec"><span>Measurement systems</span><span>4 studies</span></div>
   <p class="secp">Before trusting a number, test whatever produced it: a camera, a backtest, a price feed.</p>
 
   <div class="study">
@@ -169,6 +169,18 @@
       and over 76 weekends the tokens price Monday's open at corr 0.981, reported as price
       discovery, deliberately not as a trade.</p>
       <a class="open" href="venue-gauge.html">Read the study →</a>
+    </div>
+  </div>
+
+  <div class="study">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><rect class="w" x=".5" y=".5" width="63" height="63"/><line class="b" x1="6" y1="32" x2="58" y2="32"/><line class="s" x1="20" y1="14" x2="20" y2="50"/><line class="s" x1="34" y1="14" x2="34" y2="50"/><line class="s" x1="48" y1="14" x2="48" y2="50"/><circle class="i" cx="15" cy="24" r="2.6"/><circle class="i" cx="29" cy="40" r="2.6"/><circle class="rf p" cx="55" cy="32" r="3"/></svg>
+    <div>
+    <div class="meta"><span>10 · Gate validation</span><span>20 seeded defects · 4 gates · synthetic</span></div>
+    <h2><a href="cv-gates.html">Every gate passed. Every CV was broken.</a></h2>
+    <p>Every check on my CV pipeline was watched failing before I trusted it, and each still missed
+    the next defect. Over 20 seeded defects the first gate let 9 through and the last lets 2 through,
+    both invisible to any check that reads only text.</p>
+    <a class="open" href="cv-gates.html">Read the study →</a>
     </div>
   </div>
   </section>

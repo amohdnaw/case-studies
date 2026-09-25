@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Every gate passed. Every CV was broken.</title>
+<meta name="description" content="A gauge study of the checks on my own CV pipeline: three gates that each passed their own test and missed the next defect, and an escape-rate experiment over 20 seeded defects.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Every gate passed. Every CV was broken.">
+<meta property="og:description" content="Every gate was watched failing before I trusted it. Each still missed the next defect. Over 20 seeded defects: 9 escapes, then 7, then 2.">
+<meta property="og:url" content="https://amohdnaw.github.io/case-studies/cv-gates.html">
+<meta property="og:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
+<style>
+  :root{
+    --paper:oklch(100% 0 0); --paper-deep:oklch(97.6% 0 0);
+    --ink:oklch(25% .008 65); --ink-soft:oklch(38% .02 65); --ink-faint:oklch(52% .018 70);
+    --rubric:oklch(43% .125 29); --accent:oklch(48% .085 196); --wash:oklch(43% .125 29 / .07);
+    --hair:oklch(25% .02 65 / .28); --hair-faint:oklch(25% .02 65 / .14);
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --mono:ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);padding:4rem 1.5rem 5rem;line-height:1.6}
+  .sheet{max-width:46rem;margin:0 auto}
+  a{color:var(--accent);font-weight:600;text-decoration:none;border-bottom:none}
+  a:hover{color:oklch(38% .095 196);text-decoration:none;border-bottom:none}
+  .byline{font:700 .68rem/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;
+    display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:baseline;
+    padding-bottom:.55rem;border-bottom:1px solid var(--hair-faint);margin-bottom:.55rem}
+  .byline a{color:var(--accent);text-decoration:none}
+  .byline a:hover{color:oklch(38% .095 196);text-decoration:none}
+  .byline .disc{color:var(--ink-faint);font-weight:600;letter-spacing:.12em}
+  .kicker{font:600 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);
+    border-bottom:1px solid var(--hair);padding-bottom:.6rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .kicker a{text-decoration:none}
+  h1{font-size:2.1rem;line-height:1.18;font-weight:600;margin:1.4rem 0 .8rem;letter-spacing:-.01em}
+  .standfirst{font-size:1.05rem;line-height:1.55;color:var(--ink-soft);font-style:italic;max-width:38rem}
+  h2{font-size:1.25rem;font-weight:600;margin:2.6rem 0 .7rem}
+  p{margin:.8rem 0;font-size:.98rem}
+  .verdict{margin:2rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.98rem;line-height:1.55}
+  .verdict b{color:var(--rubric)}
+  .verdict .vlabel{font:700 .62rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--rubric);display:block;margin-bottom:.55rem}
+  table{width:100%;border-collapse:collapse;margin:1.6rem 0;font-size:.85rem}
+  th{font:600 .68rem/1.3 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);
+    text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--hair)}
+  td{padding:.5rem .6rem;border-bottom:1px solid var(--hair-faint);font-family:var(--mono);font-size:.8rem}
+  td:first-child{font-family:var(--serif);font-size:.88rem}
+  .hit{color:var(--rubric);font-weight:700}
+  figure{margin:2rem 0;border:1px solid var(--hair);background:var(--paper-deep);padding:1rem}
+  figure img{width:100%;display:block}
+  figcaption{font:.72rem/1.5 var(--mono);color:var(--ink-soft);margin-top:.7rem}
+  code{font-family:var(--mono);font-size:.82em;background:var(--paper-deep);padding:.05em .35em}
+  .margin-note{float:right;width:11rem;margin:.2rem -13rem 1rem 1.5rem;font-size:.72rem;line-height:1.5;
+    color:var(--ink-faint);border-top:1px solid oklch(48% .085 196 / .55);padding-top:.4rem}
+  @media (max-width:76rem){.margin-note{float:none;width:auto;margin:1rem 0}}
+  .repro{margin:2.4rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.85rem}
+  .repro .lab{font:600 .65rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:.5rem}
+  .footnav{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:1rem;
+    font:.75rem/1.5 var(--mono);color:var(--accent)}
+  .footnav a{text-decoration:none}
+  .gk{text-transform:none}
+  /* narrow screens: a wide table scrolls inside itself instead of pushing the page sideways */
+  @media (max-width:520px){ table{display:block;overflow-x:auto} }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="byline">
+    <a href="https://portfolio.amohdnaw.xyz/">Ammar Nawawi</a>
+    <span class="disc">Process Engineer (SPC)</span>
+  </div>
+  <div class="kicker">
+    <span><a href="index.html">Case studies</a> · 10 · Gate validation</span>
+    <span>20 seeded defects · 4 gates · synthetic</span>
+  </div>
+
+  <h1>Every gate passed. Every CV was broken.</h1>
+  <p class="standfirst">Scripts I wrote check every CV and cover letter before it goes out. I proved
+  each check the usual way: break something on purpose, watch the check fail, then trust it. In four
+  days in September, three broken documents got past, two of them through a check I had already
+  proved. This is what each one missed,
+  and an experiment that puts a number on it.</p>
+  <p style="font:.8rem/1.6 var(--mono);color:var(--ink-soft);margin:.6rem 0 0">
+  The incidents are real and reported as counts only: no application, company or real CV appears.
+  The experiment uses a <b>made-up CV and cover letter</b> (fake name, example.com contacts) printed
+  to PDF by headless Chrome, and the gates copied line for line from the pipeline.</p>
+
+  <div class="verdict"><span class="vlabel">Verdict</span>Watching a gate fail proves it catches the
+  defect you seeded. It says nothing about the ones you didn't think of. Over a library of
+  <b>20</b> designed defects, the contact-row check I shipped first let <b class="hit">9</b> through
+  (45%, 95% CI 26–66%). Reading the cover letter too brought that to 7; adding a layout check brought
+  it to <b>2</b> (10%, 3–30%). Both of those last two are invisible to any check that reads only
+  text: a link in white, and a link whose text is right while its URL is not. No version raised a
+  false alarm on the three clean packs. <br><br><b>In plain terms:</b> a gate is a gauge, and one
+  known-bad part is not a gauge study.</div>
+
+  <h2>Three gates, three blind spots</h2>
+  <p>The defect was always the same small thing: the row of contact details under my name. It has
+  six items, the links a recruiter clicks, and an application pack is a CV and a cover letter that
+  both carry it.</p>
+  <div class="margin-note">Each gate here was watched failing on a known-bad file before it was
+  trusted. That step is necessary. The study is about why it is not enough.</div>
+  <table>
+    <tr><th>Gate</th><th>What it read</th><th>What got past it</th></tr>
+    <tr><td>None</td><td>nothing</td><td>A CV forked from an older pack inherited that pack's header and
+    went out <b class="hit">3</b> times without the portfolio link.</td></tr>
+    <tr><td>Check 6</td><td>CV text, first 10 lines</td><td>The cover letter in the same pack carried
+    the same missing link. The check never opened it.</td></tr>
+    <tr><td>Check 6, CV + letter</td><td>Both files, lines rejoined</td><td>All <b class="hit">18</b>
+    packs of one batch wrapped the row onto two lines and stranded a separator. Every item was
+    present, so every pack passed.</td></tr>
+    <tr><td>+ Layout check</td><td>The email's own line, breaks kept</td><td>Nothing in the real
+    history yet. Fails at the old 9.6px row, passes at 9.0px.</td></tr>
+  </table>
+  <p>The third miss taught the most. The presence check reads the first lines of
+  <code>pdftotext -raw</code> and joins them into one string on purpose, so a row the extractor splits
+  still counts as one. That same choice makes it blind to layout. A row that fits and a row that wraps produce the
+  same joined text. The fix was not a better presence check but a second check that reads a
+  different extraction, the one that keeps the page's line breaks.</p>
+  <p>Check 6 found real damage on its first run. Of one batch of quality-engineering packs,
+  <b>7</b> carried the portfolio link but no GitHub, and <b>3</b> carried GitHub but no portfolio.
+  Nobody had diffed a header against the master, so nobody had seen it.</p>
+
+  <h2>Two more from the same files</h2>
+  <p>• <b>A lint gate that could neither pass nor fail.</b> The prose linter writes its report to
+  stderr. The gate read stdout, found no count, and returned −1 for every file. It never passed a
+  clean document and never failed a dirty one for the right reason.<br>
+  • <b>A page-size gate that failed a correct PDF.</b> It matched the string "594" to spot A4. Chrome
+  writes A4 as 594.96 points wide on one version and 595.92 on another, so a real A4 page failed and
+  sent me rebuilding a document that was already right. It now measures against 595.28 ± 2.</p>
+
+  <h2>The experiment</h2>
+  <p>One made-up pack, then 20 copies of it, each with one designed defect: six single items dropped
+  from the CV, two dropped from the letter only, four ways for the row to wrap, two broken
+  separators, a misspelling, an invisible character inside a URL, a link in white text, a link
+  pointing somewhere else, the row moved to the footer, and one item clipped off the edge. Three
+  clean packs (the original, the items reordered, a smaller font) measure false alarms. Every pack
+  runs through four gate versions: none, check 6, check 6 on both files, and both plus the layout
+  check.</p>
+  <div class="margin-note">The truth for a wrap comes from word boxes (<code>pdftotext -bbox</code>),
+  an extraction no gate reads. The first version of that probe matched known words, and so could not
+  see a break inside a URL. A calibration assert caught it before any number was reported.</div>
+  <p>The clean packs pass every version, and the script refuses to report if they don't.</p>
+
+  <figure>
+    <img src="figures/gates-fig1.svg" alt="Matrix of 23 packs by 4 gate versions. Red cells are defects that escaped. The no-gate column is all red; the last column is red only for white text and a wrong link.">
+    <figcaption>Fig. 1. Every pack against every gate version. Filled ink = defect caught, filled
+    red = defect escaped, hollow = clean pack (a hatched red one would be a false alarm; there are
+    none).</figcaption>
+  </figure>
+
+  <table>
+    <tr><th>Gate version</th><th>Escaped</th><th>Escape rate</th><th>95% CI (Wilson)</th><th>False alarms</th></tr>
+    <tr><td>None</td><td>20 / 20</td><td>100%</td><td>84–100%</td><td>0 / 3</td></tr>
+    <tr><td>Check 6, CV</td><td>9 / 20</td><td class="hit">45%</td><td>26–66%</td><td>0 / 3</td></tr>
+    <tr><td>Check 6, CV + letter</td><td>7 / 20</td><td>35%</td><td>18–57%</td><td>0 / 3</td></tr>
+    <tr><td>+ Layout check</td><td>2 / 20</td><td class="hit">10%</td><td>3–30%</td><td>0 / 3</td></tr>
+  </table>
+  <p>These rates are over a library I designed, not a sample of real mistakes. They rank the gate
+  versions against each other. They do not predict how often a real defect gets through, and the
+  wide intervals on twenty cases say so.</p>
+
+  <h2>Where the line breaks decides the verdict</h2>
+  <p>Two of the wrap cases are the same defect, a row too wide for the page, at two font sizes. At
+  10.5px Chrome breaks the row at a separator. Every item stays whole, the presence check passes,
+  and the row wraps: the shape of the real bug. At 9.6px it breaks inside the GitHub URL, at its
+  hyphen. The URL is now two words, the presence check no longer finds it, and it fails. The same
+  overflow is caught or missed depending on how long the items happen to be. A gate whose verdict
+  hangs on that is not measuring the defect.</p>
+
+  <h2>What the last two escapes need</h2>
+  <p>Both survivors live outside the text layer. White text is in the text, just unreadable on the
+  page, so catching it takes a look at pixels or at the source's colours. A wrong URL behind the
+  right label lives in the PDF's link annotations, which no text extraction returns. Each one needs
+  its own reading of the file, the same lesson the layout check taught.</p>
+
+  <h2>What changes</h2>
+  <p>• <b>Give each gate a library, not one bad file.</b> Twenty cases and 46 PDF renders take a few
+  minutes and found both blind spots the single-file test could not.<br>
+  • <b>One check per reading of the file.</b> Presence on joined text, layout on line-preserving
+  text, links on annotations, visibility on pixels. A check that serves two readings is blind in one
+  of them.<br>
+  • <b>Report escapes by kind.</b> "2 of 20" hides that both have the same cause.<br>
+  • <b>Keep the clean controls.</b> A gate that fails everything also has a 0% escape rate.</p>
+
+  <div class="repro">
+    <span class="lab">Reproduce this</span>
+    One command, synthetic inputs built in:
+    <a href="https://github.com/amohdnaw/case-studies/blob/main/scripts/gates_escape.py">scripts/gates_escape.py</a>
+    (needs Chrome or Chromium and poppler's <code>pdftotext</code>)
+    · Results:
+    <a href="https://github.com/amohdnaw/case-studies/blob/main/data/gates_results.json">data/gates_results.json</a>
+  </div>
+
+  <div class="footnav">
+    <a href="index.html">← All case studies</a>
+    <a href="aoi-attribute-msa.html">07 · Calibrate the camera →</a>
+  </div>
+</div>
+</body>
+</html>
