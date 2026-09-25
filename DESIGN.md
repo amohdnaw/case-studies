@@ -141,3 +141,14 @@ remediate the flagged tells. Surgical, Direction A ("enclosed"). Contract: `spec
 **Not done (deliberate):** the detector also flags `repeated-section-kickers` and
 `aphoristic-cadence` copy — Ammar kept both; the kicker grammar and the terse voice are the estate's
 identity, not slop to strip. Surgical scope = the load-bearing side-tabs + markers + em-dashes only.
+
+## Index icons (added 2026-09-25, `specs/index-sections-contract.md`)
+
+The index groups studies under four sections (process control, measurement systems, yield and
+defects, research honesty), each opened by a `.sec` kicker with a count and one italic `.secp` line.
+Every study row carries a 56px square icon (44px under 520px) that reads as a tiny figure from the
+study: `--paper-deep` well, `--hair` border, **radius 0**, ink data at 1.5px. Colour follows the
+estate split: **red only on the finding, teal only on the answer**, faint ink for baselines. No
+fourth hue. The icon's key mark redraws on hover and once on scroll-in (under 1.5 s); reduced motion
+keeps it still. A new study gets its own icon drawn from its own headline result, never a shared
+category glyph.

@@ -2,7 +2,7 @@
 
 Live: **https://amohdnaw.github.io/case-studies/**
 
-Eight one-page studies from systems I built and run, each reproducible from the data in this
+Nine one-page studies from systems I built and run, each reproducible from the data in this
 repo.
 
 | # | Study | Status |
