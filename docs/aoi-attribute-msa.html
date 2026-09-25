@@ -61,6 +61,7 @@
   .footnav{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:1rem;
     font:.75rem/1.5 var(--mono);color:var(--accent)}
   .footnav a{text-decoration:none}
+  .gk{text-transform:none}
 </style>
 </head>
 <body>
@@ -102,7 +103,7 @@
   <div class="margin-note">Cohen's κ corrects for agreement you'd get by chance on a skewed
   pass/fail panel. AIAG commonly uses κ ≥ 0.7 as a gate before trusting attribute data.</div>
   <table>
-    <tr><th>Machine</th><th>κ vs truth</th><th>Effectiveness</th><th>Miss rate (escapes)</th><th>False alarm rate</th></tr>
+    <tr><th>Machine</th><th><span class="gk">κ</span> vs truth</th><th>Effectiveness</th><th>Miss rate (escapes)</th><th>False alarm rate</th></tr>
     <tr><td>M05 (reference-class)</td><td class="hit">0.87</td><td>96.3%</td><td>8.2%</td><td>2.8%</td></tr>
     <tr><td>M07 (lenient)</td><td>0.66</td><td>92.0%</td><td class="hit">40.8%</td><td>1.6%</td></tr>
     <tr><td>M03 (strict)</td><td>0.62</td><td>87.3%</td><td>12.2%</td><td class="hit">12.7%</td></tr>
