@@ -7,7 +7,7 @@
 <meta name="description" content="Case studies in applied statistics: honest inference on trading data, SPC capability at production scale, yield analytics.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Evidence, not claims: case studies by Ammar Nawawi">
-<meta property="og:description" content="Ten studies in applied statistics, reproducible from the data they ship with. Published even when the answer was no.">
+<meta property="og:description" content="Eleven studies in applied statistics, reproducible from the data they ship with. Published even when the answer was no.">
 <meta property="og:url" content="https://amohdnaw.github.io/case-studies/">
 <meta property="og:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
@@ -87,7 +87,7 @@
   </div>
   <div class="kicker"><span>Case studies</span><span>Applied statistics, from real systems</span></div>
   <h1>Evidence, not claims.</h1>
-  <p class="standfirst">Ten studies from systems I built and run, grouped by the question they ask.
+  <p class="standfirst">Eleven studies from systems I built and run, grouped by the question they ask.
   Each fits on one page and each is reproducible from the data it ships with. Three of them end on a
   null result.</p>
 
@@ -181,6 +181,24 @@
     the next defect. Over 20 seeded defects the first gate let 9 through and the last lets 2 through,
     both invisible to any check that reads only text.</p>
     <a class="open" href="cv-gates.html">Read the study →</a>
+    </div>
+  </div>
+  </section>
+
+  <section class="group">
+  <div class="sec"><span>Data integrity</span><span>1 study</span></div>
+  <p class="secp">When two systems disagree about what a thing is, which one do you believe?</p>
+
+  <div class="study">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><rect class="w" x=".5" y=".5" width="63" height="63"/><line class="s" x1="10" y1="18" x2="32" y2="18"/><rect class="t" x="37" y="13" width="17" height="10"/><rect class="r" x="10" y="40" width="44" height="13" stroke-dasharray="3 2.5"/><path class="t d" pathLength="1" d="M45.5 24.5V37"/><path class="t p" d="M41.5 33L45.5 37L49.5 33"/></svg>
+    <div>
+    <div class="meta"><span>11 · Data integrity</span><span>6,000 charts × 1,500 plants · synthetic</span></div>
+    <h2><a href="machine-identity.html">The machine was never recorded. The chart name knew.</a></h2>
+    <p>One SPC chart in six has no machine ID, so the report reads the machine from the chart name
+    and scores that guess on charts that have one. On a synthetic plant the score held when blanks
+    were random, and read 2 to 3 times low when they sat in hand-typed charts. A check on the names
+    alone caught the difference.</p>
+    <a class="open" href="machine-identity.html">Read the study →</a>
     </div>
   </div>
   </section>

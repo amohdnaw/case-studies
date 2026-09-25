@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The machine was never recorded. The chart name knew.</title>
+<meta name="description" content="One SPC chart in six has no machine ID, so the machine is read from the chart name and the guess is scored on charts that do have one. A synthetic plant tests whether that score holds on the blanks.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The machine was never recorded. The chart name knew.">
+<meta property="og:description" content="A holdout score only transfers if the blanks look like the holdout. When blanks sat in hand-typed charts, the score read 0.30% and the blanks were 0.79% wrong. A check on the names caught it.">
+<meta property="og:url" content="https://amohdnaw.github.io/case-studies/machine-identity.html">
+<meta property="og:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://amohdnaw.github.io/case-studies/og-case-studies.png">
+<style>
+  :root{
+    --paper:oklch(100% 0 0); --paper-deep:oklch(97.6% 0 0);
+    --ink:oklch(25% .008 65); --ink-soft:oklch(38% .02 65); --ink-faint:oklch(52% .018 70);
+    --rubric:oklch(43% .125 29); --accent:oklch(48% .085 196); --wash:oklch(43% .125 29 / .07);
+    --hair:oklch(25% .02 65 / .28); --hair-faint:oklch(25% .02 65 / .14);
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --mono:ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);padding:4rem 1.5rem 5rem;line-height:1.6}
+  .sheet{max-width:46rem;margin:0 auto}
+  a{color:var(--accent);font-weight:600;text-decoration:none;border-bottom:none}
+  a:hover{color:oklch(38% .095 196);text-decoration:none;border-bottom:none}
+  .byline{font:700 .68rem/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;
+    display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:baseline;
+    padding-bottom:.55rem;border-bottom:1px solid var(--hair-faint);margin-bottom:.55rem}
+  .byline a{color:var(--accent);text-decoration:none}
+  .byline a:hover{color:oklch(38% .095 196);text-decoration:none}
+  .byline .disc{color:var(--ink-faint);font-weight:600;letter-spacing:.12em}
+  .kicker{font:600 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);
+    border-bottom:1px solid var(--hair);padding-bottom:.6rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .kicker a{text-decoration:none}
+  h1{font-size:2.1rem;line-height:1.18;font-weight:600;margin:1.4rem 0 .8rem;letter-spacing:-.01em}
+  .standfirst{font-size:1.05rem;line-height:1.55;color:var(--ink-soft);font-style:italic;max-width:38rem}
+  h2{font-size:1.25rem;font-weight:600;margin:2.6rem 0 .7rem}
+  p{margin:.8rem 0;font-size:.98rem}
+  .verdict{margin:2rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.98rem;line-height:1.55}
+  .verdict b{color:var(--rubric)}
+  .verdict .vlabel{font:700 .62rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--rubric);display:block;margin-bottom:.55rem}
+  table{width:100%;border-collapse:collapse;margin:1.6rem 0;font-size:.85rem}
+  th{font:600 .68rem/1.3 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);
+    text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--hair)}
+  td{padding:.5rem .6rem;border-bottom:1px solid var(--hair-faint);font-family:var(--mono);font-size:.8rem}
+  td:first-child{font-family:var(--serif);font-size:.88rem}
+  .hit{color:var(--rubric);font-weight:700}
+  figure{margin:2rem 0;border:1px solid var(--hair);background:var(--paper-deep);padding:1rem}
+  figure img{width:100%;display:block}
+  figcaption{font:.72rem/1.5 var(--mono);color:var(--ink-soft);margin-top:.7rem}
+  code{font-family:var(--mono);font-size:.82em;background:var(--paper-deep);padding:.05em .35em}
+  .margin-note{float:right;width:11rem;margin:.2rem -13rem 1rem 1.5rem;font-size:.72rem;line-height:1.5;
+    color:var(--ink-faint);border-top:1px solid oklch(48% .085 196 / .55);padding-top:.4rem}
+  @media (max-width:76rem){.margin-note{float:none;width:auto;margin:1rem 0}}
+  .repro{margin:2.4rem 0;padding:1rem 1.2rem;border:1px solid var(--hair);font-size:.85rem}
+  .repro .lab{font:600 .65rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:.5rem}
+  .footnav{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:1rem;
+    font:.75rem/1.5 var(--mono);color:var(--accent)}
+  .footnav a{text-decoration:none}
+  .gk{text-transform:none}
+  .nw td{white-space:nowrap}
+  /* narrow screens: a wide table scrolls inside itself instead of pushing the page sideways */
+  @media (max-width:520px){ table{display:block;overflow-x:auto} }
+</style>
+<body>
+<div class="sheet">
+  <div class="byline">
+    <a href="https://portfolio.amohdnaw.xyz/">Ammar Nawawi</a>
+    <span class="disc">Process Engineer (SPC)</span>
+  </div>
+  <div class="kicker">
+    <span><a href="index.html">Case studies</a> · 11 · Data integrity</span>
+    <span>6,000 charts × 1,500 plants · synthetic</span>
+  </div>
+
+  <h1>The machine was never recorded. The chart name knew.</h1>
+  <p class="standfirst">About one SPC chart in six in the system I report from has no machine ID.
+  Most of their names still carry one, so I read the machine from the name, and score that guess on
+  the charts that do have an ID. The score is good. This study asks whether a good score on the
+  charts with an ID says anything about the charts without one.</p>
+  <p style="font:.8rem/1.6 var(--mono);color:var(--ink-soft);margin:.6rem 0 0">
+  The real system appears here as ratios only: no machine, product or area code, no count, no file.
+  The experiment runs on a <b>made-up plant</b> built by a fixed-seed generator. Its sizes and error
+  rates are chosen to echo the real ratios, not measured from them.</p>
+
+  <div class="verdict"><span class="vlabel">Verdict</span>A holdout score transfers to the blanks
+  only when the blanks look like the holdout. When blank IDs were a random slice of charts, the score
+  on known charts matched the true error on the blanks at every noise level (ratio 0.95 to 1.10).
+  When blanks sat mostly in hand-typed charts, the score read <b>2 to 3 times low</b>: at the
+  setting nearest the real system it said <b>0.30%</b> wrong while the blanks were
+  <b class="hit">0.79%</b> wrong. A check that needs only the chart names flagged that shift in
+  every run from moderate noise up, and fired on 3 of 750 runs where nothing had shifted.
+  <br><br><b>In plain terms:</b> test the guess on the charts you know, then check that the charts
+  you don't know look the same. The second step is the one people skip.</div>
+
+  <h2>The real system, in ratios</h2>
+  <p>A chart's machine ID is a field filled in at setup, and about one chart in six has it blank.
+  Chart names are free text, but most of them carry the tool's code, since that is how people tell
+  one chart from its neighbours on a list. So the report reads the last
+  code-shaped token in the name and looks it up.</p>
+  <div class="margin-note">An inferred machine is never folded into the hard count. The report
+  shows it beside the count, marked as inferred, so the reader can drop it.</div>
+  <p>On charts that have both an ID and a name, the name agrees with the ID all but <b>0.33%</b> of
+  the time. The report reruns that check on every build. About a quarter of the blank charts name a
+  machine the SPC system has no record of. I left those as an open question rather than map them to
+  the nearest tool: a name that points at nothing is a finding, not a typo to repair.</p>
+  <p>The same report once guessed a different field, the product, from the chart name. When the
+  real product column appeared, the guess agreed with it on <b class="hit">11.6%</b> of charts, and I
+  retired it that day. The machine guess survived its test and the product guess did not, which is
+  the point of scoring a guess the day a real answer exists. It also raised the question this study
+  answers: the 0.33% was measured on charts that were set up properly. The blanks, by definition,
+  were not.</p>
+
+  <h2>The replica</h2>
+  <p>A made-up plant: five equipment classes of 60 tools each, codes like <code>WB-012</code>,
+  6,000 charts named like <code>QFN48_WIRE_PULL_WB-012</code>. Four charts in ten are hand-typed; the
+  rest come from a feed. Every name can go wrong in three ways:</p>
+  <table>
+    <tr><th>Name fault</th><th>Example</th><th>What the guess does</th></tr>
+    <tr><td>Token missing</td><td>QFN48_WIRE_PULL</td><td>No guess. Visible.</td></tr>
+    <tr><td>Digit dropped</td><td>…_WB-12</td><td>No such tool, no guess. Visible.</td></tr>
+    <tr><td>Digits swapped</td><td>…_WB-021</td><td>If WB-021 exists, a clean guess of the
+    <b class="hit">wrong machine</b>. Silent.</td></tr>
+  </table>
+  <p>Only the swap onto a real tool, a sister machine one keystroke away, produces a wrong answer
+  that looks right. The other faults leave a chart unresolved, which is honest. Hand-typed names make
+  every fault <i>k</i> times more often than feed names.</p>
+  <div class="margin-note"><i>k</i> is a knob, not a measurement. I don't know the real one, so the
+  study sweeps it from 1 to 6.</div>
+  <p>Blank IDs are then assigned two ways, one chart in six either way:</p>
+  <p>• <b>At random.</b> Any chart is equally likely to be blank.<br>
+  • <b>In hand-typed charts.</b> 35% of hand-typed charts are blank and about 4% of feed charts, so
+  84% of the blanks are hand-typed against 40% of the plant. This is my guess at how blanks arise:
+  the charts someone set up by hand are the ones that skipped the feed.</p>
+  <p>Each of the ten settings runs on 150 fresh plants. The holdout score is the error on known-ID
+  charts; the true error is the same measure on the blanks, which the replica can see and the real
+  system cannot.</p>
+
+  <h2>What the runs show</h2>
+  <figure>
+    <img src="figures/mid-fig1.svg" alt="Two panels. With blanks at random, the holdout estimate and the true error on blanks lie on top of each other as noise rises. With blanks in hand-typed charts, the true error climbs to about three times the holdout estimate.">
+    <figcaption>Fig 1. Share of resolved charts given the wrong machine, as hand-typed names get
+    messier. Lines are means over 150 plants; bands hold 90% of runs. Left: the holdout tells the
+    truth. Right: it reads low, and the gap widens with <i>k</i>.</figcaption>
+  </figure>
+  <table class="nw">
+    <tr><th>Blanks</th><th><i>k</i></th><th>Holdout says</th><th>Blanks really</th><th>Ratio</th><th>Check fired</th></tr>
+    <tr><td>At random</td><td>1</td><td>0.15%</td><td>0.16% (0.00–0.41)</td><td>1.10</td><td>2 / 150</td></tr>
+    <tr><td>At random</td><td>2</td><td>0.26%</td><td>0.25% (0.00–0.53)</td><td>0.95</td><td>0 / 150</td></tr>
+    <tr><td>At random</td><td>3</td><td>0.38%</td><td>0.36% (0.10–0.73)</td><td>0.95</td><td>0 / 150</td></tr>
+    <tr><td>At random</td><td>4</td><td>0.51%</td><td>0.53% (0.11–0.85)</td><td>1.04</td><td>0 / 150</td></tr>
+    <tr><td>At random</td><td>6</td><td>0.77%</td><td>0.80% (0.32–1.38)</td><td>1.04</td><td>1 / 150</td></tr>
+    <tr><td>Hand-typed</td><td>1</td><td>0.13%</td><td>0.25% (0.00–0.61)</td><td class="hit">1.98</td><td>96 / 150</td></tr>
+    <tr><td>Hand-typed</td><td>2</td><td>0.21%</td><td>0.50% (0.11–0.92)</td><td class="hit">2.36</td><td>144 / 150</td></tr>
+    <tr><td>Hand-typed</td><td>3</td><td>0.30%</td><td class="hit">0.79% (0.33–1.28)</td><td class="hit">2.59</td><td>150 / 150</td></tr>
+    <tr><td>Hand-typed</td><td>4</td><td>0.41%</td><td>1.06% (0.57–1.65)</td><td class="hit">2.57</td><td>150 / 150</td></tr>
+    <tr><td>Hand-typed</td><td>6</td><td>0.60%</td><td>1.71% (0.92–2.32)</td><td class="hit">2.86</td><td>150 / 150</td></tr>
+  </table>
+  <p>Ranges hold 90% of the 150 runs. Two things in the table matter more than the ratios.</p>
+  <p>First, the misleading score is also the <i>better-looking</i> one. At <i>k</i> = 3 the
+  hand-typed plant's holdout reads 0.30%, lower than the random plant's 0.38%, because moving the
+  messy charts into the blanks leaves the known charts cleaner. A score that improves when the data
+  gets worse is the one to distrust.</p>
+  <p>Second, the fault never hides completely. The blanks resolve less often (92% against 97% of
+  known charts at <i>k</i> = 3), and they carry more visibly broken names. The same process that
+  makes silent errors also makes loud ones, and the loud ones can be counted without knowing the
+  answer.</p>
+
+  <h2>A check that needs no answer key</h2>
+  <p>Split the charts by whether the ID is blank. In each group, count the names that are visibly
+  broken: no code token, or a token that names no tool. Test whether the two shares differ
+  (two-proportion z-test, flag at p &lt; 0.01). If the blanks were a random slice, the shares match
+  and the holdout score can stand. If they differ, the blanks came from a different process, and so
+  does their error.</p>
+  <figure>
+    <img src="figures/mid-fig2.svg" alt="Bar chart. The check fired on almost no runs with blanks at random, and on 64% to 100% of runs with blanks in hand-typed charts.">
+    <figcaption>Fig 2. Share of runs where the name check fired, out of 150 per bar. It stays at or
+    under its 1% allowance when nothing shifted, and catches the shift in 64% of runs at
+    <i>k</i> = 1 and every run from <i>k</i> = 3.</figcaption>
+  </figure>
+  <div class="margin-note">At <i>k</i> = 3: 3.4% of known-chart names are visibly broken, against
+  8.0% of blank-chart names.</div>
+  <p>It uses nothing the real system lacks: the chart names and the blank flag. It does not say how
+  wrong the blanks are, only whether the holdout has earned the right to speak for them. When it
+  fires, the honest report is the holdout score with a note that it is a floor.</p>
+
+  <h2>What the replica cannot tell me</h2>
+  <p>It cannot say which regime the real plant is in. That is what the check is for. It assumes a
+  swap is the only silent fault; a chart renamed after a tool move would be silent too, and nothing
+  in the name would show it. And it models blanks as a property of how a chart was made. If blanks
+  depend on something the name doesn't carry, such as who set the chart up and when, the check can
+  stay quiet while the score still misleads.</p>
+
+  <h2>What changes</h2>
+  <p>• <b>Score an inferred field on the rows that have the answer.</b> The product guess would have
+  shipped at 11.6% without it.<br>
+  • <b>Then compare those rows with the ones you're filling.</b> Any feature you can see in both
+  groups will do; broken names were enough here.<br>
+  • <b>Keep inferred values beside the hard count, marked.</b> A reader can drop them. A merged
+  count can't be taken apart.<br>
+  • <b>Leave a name that points at nothing as a finding.</b> Mapping it to the nearest tool turns
+  an open question into a silent error.</p>
+
+  <div class="repro">
+    <span class="lab">Reproduce this</span>
+    One command, about two minutes, numpy and matplotlib only:
+    <a href="https://github.com/amohdnaw/case-studies/blob/main/scripts/machine_identity.py">scripts/machine_identity.py</a>
+    · Results:
+    <a href="https://github.com/amohdnaw/case-studies/blob/main/data/machine_identity_results.json">data/machine_identity_results.json</a>
+    · The script asserts that the random regime stays unbiased, and fails if a change to the
+    simulation breaks that.
+  </div>
+
+  <div class="footnav">
+    <a href="cv-gates.html">← 10 · Gate validation</a>
+    <a href="icos-yield-signal.html">Next: 03 · Yield analytics →</a>
+  </div>
+</div>
+</body>
+</html>

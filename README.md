@@ -2,7 +2,7 @@
 
 Live: **https://amohdnaw.github.io/case-studies/**
 
-Ten one-page studies from systems I built and run, each reproducible from the data in this
+Eleven one-page studies from systems I built and run, each reproducible from the data in this
 repo.
 
 | # | Study | Status |
@@ -17,6 +17,7 @@ repo.
 | 08 | [Which chart catches the shift first?](https://amohdnaw.github.io/case-studies/spc-shift-detect.html) · [script](scripts/spc_shift_detect.py) | Live |
 | 09 | [Three gauges for a price that does not exist on weekends](https://amohdnaw.github.io/case-studies/venue-gauge.html) · [script](scripts/venue_gauge.py) | Live |
 | 10 | [Every gate passed. Every CV was broken.](https://amohdnaw.github.io/case-studies/cv-gates.html) · [script](scripts/gates_escape.py) | Live |
+| 11 | [The machine was never recorded. The chart name knew.](https://amohdnaw.github.io/case-studies/machine-identity.html) · [script](scripts/machine_identity.py) | Live |
 
 ## Reproduce study 04
 
