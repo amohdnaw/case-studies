@@ -1,0 +1,420 @@
+{
+ "cases": [
+  {
+   "id": "C1",
+   "label": "clean pack",
+   "kind": "control",
+   "truth": false,
+   "caught": {
+    "V0": false,
+    "V1": false,
+    "V2": false,
+    "V3": false
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 1
+   }
+  },
+  {
+   "id": "C2",
+   "label": "clean, tokens reordered",
+   "kind": "benign",
+   "truth": false,
+   "caught": {
+    "V0": false,
+    "V1": false,
+    "V2": false,
+    "V3": false
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 1
+   }
+  },
+  {
+   "id": "C3",
+   "label": "clean, 8.5px row",
+   "kind": "benign",
+   "truth": false,
+   "caught": {
+    "V0": false,
+    "V1": false,
+    "V2": false,
+    "V3": false
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 1
+   }
+  },
+  {
+   "id": "D01",
+   "label": "CV drops +60 12-345 6789",
+   "kind": "missing",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": true,
+    "V2": true,
+    "V3": true
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 1
+   }
+  },
+  {
+   "id": "D02",
+   "label": "CV drops sam.tan@example.com",
+   "kind": "missing",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": true,
+    "V2": true,
+    "V3": true
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 1
+   }
+  },
+  {
+   "id": "D03",
+   "label": "CV drops Penang, Malaysia",
+   "kind": "missing",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": true,
+    "V2": true,
+    "V3": true
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 1
+   }
+  },
+  {
+   "id": "D04",
+   "label": "CV drops linkedin.com",
+   "kind": "missing",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": true,
+    "V2": true,
+    "V3": true
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 1
+   }
+  },
+  {
+   "id": "D05",
+   "label": "CV drops samtan.example.com",
+   "kind": "missing",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": true,
+    "V2": true,
+    "V3": true
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 1
+   }
+  },
+  {
+   "id": "D06",
+   "label": "CV drops github.com",
+   "kind": "missing",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": true,
+    "V2": true,
+    "V3": true
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 1
+   }
+  },
+  {
+   "id": "D07",
+   "label": "cover letter drops the site",
+   "kind": "missing, CL only",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": false,
+    "V2": true,
+    "V3": true
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 1
+   }
+  },
+  {
+   "id": "D08",
+   "label": "cover letter drops github",
+   "kind": "missing, CL only",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": false,
+    "V2": true,
+    "V3": true
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 1
+   }
+  },
+  {
+   "id": "D09",
+   "label": "row breaks at a separator (the real bug)",
+   "kind": "wrap",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": false,
+    "V2": false,
+    "V3": true
+   },
+   "row_lines": {
+    "cv": 2,
+    "cl": 2
+   }
+  },
+  {
+   "id": "D10",
+   "label": "row breaks inside a URL",
+   "kind": "wrap",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": true,
+    "V2": true,
+    "V3": true
+   },
+   "row_lines": {
+    "cv": 2,
+    "cl": 1
+   }
+  },
+  {
+   "id": "D11",
+   "label": "letter row breaks at a separator",
+   "kind": "wrap, CL only",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": false,
+    "V2": false,
+    "V3": true
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 2
+   }
+  },
+  {
+   "id": "D12",
+   "label": "hard line break inside the row",
+   "kind": "wrap",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": false,
+    "V2": false,
+    "V3": true
+   },
+   "row_lines": {
+    "cv": 2,
+    "cl": 1
+   }
+  },
+  {
+   "id": "D13",
+   "label": "emptied slot, doubled separator",
+   "kind": "separator",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": false,
+    "V2": false,
+    "V3": true
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 1
+   }
+  },
+  {
+   "id": "D14",
+   "label": "trailing separator",
+   "kind": "separator",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": false,
+    "V2": false,
+    "V3": true
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 1
+   }
+  },
+  {
+   "id": "D15",
+   "label": "site misspelled",
+   "kind": "wrong text",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": true,
+    "V2": true,
+    "V3": true
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 1
+   }
+  },
+  {
+   "id": "D16",
+   "label": "zero-width space inside github",
+   "kind": "wrong text",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": true,
+    "V2": true,
+    "V3": true
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 1
+   }
+  },
+  {
+   "id": "D17",
+   "label": "github in white text",
+   "kind": "hidden",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": false,
+    "V2": false,
+    "V3": false
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 1
+   }
+  },
+  {
+   "id": "D18",
+   "label": "github link points elsewhere",
+   "kind": "wrong link",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": false,
+    "V2": false,
+    "V3": false
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 1
+   }
+  },
+  {
+   "id": "D19",
+   "label": "contact row moved to the footer",
+   "kind": "misplaced",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": true,
+    "V2": true,
+    "V3": true
+   },
+   "row_lines": {
+    "cv": 0,
+    "cl": 1
+   }
+  },
+  {
+   "id": "D20",
+   "label": "linkedin clipped by overflow",
+   "kind": "hidden",
+   "truth": true,
+   "caught": {
+    "V0": false,
+    "V1": true,
+    "V2": true,
+    "V3": true
+   },
+   "row_lines": {
+    "cv": 1,
+    "cl": 1
+   }
+  }
+ ],
+ "summary": {
+  "V0": {
+   "escaped": 20,
+   "defects": 20,
+   "escape_rate": 1.0,
+   "ci95": [
+    0.8388698745050667,
+    1.0
+   ],
+   "false_alarms": 0,
+   "benign": 3
+  },
+  "V1": {
+   "escaped": 9,
+   "defects": 20,
+   "escape_rate": 0.45,
+   "ci95": [
+    0.25819502085709295,
+    0.6579179916924003
+   ],
+   "false_alarms": 0,
+   "benign": 3
+  },
+  "V2": {
+   "escaped": 7,
+   "defects": 20,
+   "escape_rate": 0.35,
+   "ci95": [
+    0.18118954786794464,
+    0.5671494897805354
+   ],
+   "false_alarms": 0,
+   "benign": 3
+  },
+  "V3": {
+   "escaped": 2,
+   "defects": 20,
+   "escape_rate": 0.1,
+   "ci95": [
+    0.027865893984153206,
+    0.30103820641179335
+   ],
+   "false_alarms": 0,
+   "benign": 3
+  }
+ },
+ "row_mm": 168,
+ "note": "designed defect library, not a field sample"
+}
