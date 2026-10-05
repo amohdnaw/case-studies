@@ -31,7 +31,8 @@ reading like generic articles, the cream is the first thing to try putting back.
 
 ## Type
 
-- Serif (body, headings, td first-col): `"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif`
+- Serif (body, headings, td first-col): `Libron,"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif`
+  - **Libron (2026-10-05)**: self-hosted from `docs/fonts/` (OFL, Latin subset ~40 KB per style). Iowan only ever rendered on Apple; Windows and Android readers got Palatino or Georgia. Libron gives every reader the same serif. Figures (matplotlib SVG) still name Iowan; they are images and were left alone.
 - Mono (kickers, tables, captions, figure labels): `ui-monospace,Menlo,Consolas,monospace`
 - Scale: h1 2.1rem/1.18 w600 ls-.01em · standfirst 1.05rem italic ink-soft · body .98rem/1.6
   · table data .8rem mono · kicker/caption .68–.75rem mono uppercase ls .08–.14em
